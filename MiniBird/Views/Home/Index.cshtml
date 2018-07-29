@@ -2,30 +2,339 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
-
 <div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+    <div class="col-md-3">
+        <div class="sticky-top">
+            <div class="card mb-2">                
+                <img class="card-img-top" style="height: 95px; width: 100%; display: block;" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22318%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20318%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_158bd1d28ef%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A16pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_158bd1d28ef%22%3E%3Crect%20width%3D%22318%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22129.359375%22%20y%3D%2297.35%22%3EImage%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Card image">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <img class="profile-section-avatar" src="https://pbs.twimg.com/profile_images/1009541059825635328/r-qkBD7g_bigger.jpg" width="64" height="64" alt="profile_image" />
+                            <h5 class="card-title text-center">GustavoProfile</h5>
+                            <h6 class="card-subtitle text-center">@@gustavoprofile22</h6>
+                        </div>                        
+                        @*<div class="col-5 col-md-5">
+                            <img src="https://pbs.twimg.com/profile_images/1009541059825635328/r-qkBD7g_bigger.jpg" width="64" height="64" alt="profile_image" style="border-radius: 50%;" />
+                        </div>*@
+                        @*<div class="col-7 col-md-7 user-names">
+                            <p class="card-title">Nickname</p>
+                            <p class="card-subtitle mb-2 text-muted">@@username</p>
+                        </div>*@
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4 col-md-4">
+                            <a href="#" class="legends">
+                                <span>Posts</span>
+                                <span>2000</span>
+                            </a>                            
+                        </div>
+                        <div class="col-4 col-md-4">
+                            <a href="#" class="legends">
+                                <span>Siguiendo</span>
+                                <span>60</span>
+                            </a>
+                        </div>
+                        <div class="col-4 col-md-4">
+                            <a href="#" class="legends">
+                                <span>Seguidores</span>
+                                <span>38</span>
+                            </a>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="trendsSection" class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-9 col-md-9">
+                            <b>Tendencias</b>
+                        </div>
+                        <div class="col-3 col-md-3 text-right">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                    </div>
+                </div>                
+                <div class="card-body">
+                    <ul class="trends-list">
+                        <li>
+                            <a href="#" class="card-link">
+                                <span class="trend-name">#TendenciaNumero1</span>
+                                <div class="trend-stats">1.000.000 posts</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="card-link">
+                                <span class="trend-name">#TendenciaNumero2</span>
+                                <div class="trend-stats">1.000.000 posts</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="card-link">
+                                <span class="trend-name">#TendenciaNumero3</span>
+                                <div class="trend-stats">1.000.000 posts</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="card-link">
+                                <span class="trend-name">#TendenciaNumero4</span>
+                                <div class="trend-stats">860.015 posts</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="card-link">
+                                <span class="trend-name">#TendenciaNumero5</span>
+                                <div class="trend-stats">439.486 posts</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="card-link">
+                                <span class="trend-name">#TendenciaNumero6</span>
+                                <div class="trend-stats">144.174 posts</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="card-link">
+                                <span class="trend-name">#TendenciaNumero7</span>
+                                <div class="trend-stats">79.955 posts</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="card-link">
+                                <span class="trend-name">#TendenciaNumero8</span>
+                                <div class="trend-stats">56.113 posts</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="card-link">
+                                <span class="trend-name">#TendenciaNumero9</span>
+                                <div class="trend-stats">26.887 posts</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="card-link">
+                                <span class="trend-name">#TendenciaNumero10</span>
+                                <div class="trend-stats">15.477 posts</div>
+                            </a>
+                        </li>                        
+                    </ul>                                        
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
+
+    <div class="col-md-9">        
+        <div class="card mb-1">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <a class="card-link" href="#">
+                            <img class="mr-2" src="https://pbs.twimg.com/profile_images/1009541059825635328/r-qkBD7g_bigger.jpg" width="48" height="48" alt="profile_image" style="border-radius: 50%;" />
+                            <span class="card-title"><b>GustavoProfile</b></span>
+                            <span class="card-subtitle mb-2 text-muted">@@gustavoprofile22</span>                            
+                        </a>                                                
+                        <div class="dropdown post-actions-menu">
+                            <a id="menuLinkActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-caret-square-down ml-2"></i></a>
+                            <div class="dropdown-menu" aria-labelledby="menuLinkActions">                                
+                                <a class="dropdown-item" href="#"><i class="far fa-copy"></i> Copiar enlace del post</a>
+                                <a class="dropdown-item" href="#"><i class="far fa-plus-square"></i> Insertar post</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#"><i class="fas fa-microphone-alt-slash"></i> Silenciar a @@usuario</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-lock"></i> Bloquear a @@usuario</a>                                
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#"><i class="far fa-flag"></i> Denunciar este post</a>                                                                
+                            </div>
+                        </div>                        
+                    </div>                    
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <p class="card-text">
+                            It's cheaper than a fancy coffee and won't leave plastic to strangle the environment. So really, you're saving the planet while getting a kick-ass game.
+
+                            Go you! Rogue Legacy - <a href="#" class="card-link">http://bit.ly/2Otom3M  (-80%)</a>
+
+                            <a href="#" class="card-link">#DailyDeal</a>
+                        </p>
+                        <div class="card">
+                            <img class="card-img" src="https://pbs.twimg.com/media/DjO5Z8bX4AArKSW.jpg" width="506" alt="Card image">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4 justify-content-center">
+                    <div class="col-md-5">
+                        <a href="#" class="card-link"><i class="far fa-comment"></i><span> 28</span></a>
+                        <a href="#" class="card-link"><i class="fas fa-retweet"></i><span> 152K</span></a>
+                        <a href="#" class="card-link"><i class="far fa-heart"></i><span> 11K</span></a>
+                    </div>
+                    <div class="col-md-5 text-right">
+                        <p class="text-muted"><i class="far fa-clock"></i> 43 min.</p>
+                    </div>
+                </div>
+            </div>
+        </div>            
+
+        <div class="card mb-1">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <a href="#">
+                            <img class="mr-2" src="https://pbs.twimg.com/profile_images/1009541059825635328/r-qkBD7g_bigger.jpg" width="48" height="48" alt="profile_image" style="border-radius: 50%;" />
+                            <span class="card-title"><b>GustavoProfile</b></span>
+                            <span class="card-subtitle mb-2 text-muted">@@gustavoprofile22</span>
+                        </a>
+                        <i class="far fa-caret-square-down ml-2"></i>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <p class="card-text">
+                            It's cheaper than a fancy coffee and won't leave plastic to strangle the environment. So really, you're saving the planet while getting a kick-ass game.
+
+                            Go you! Rogue Legacy - <a href="#" class="card-link">http://bit.ly/2Otom3M  (-80%)</a>
+
+                            <a href="#" class="card-link">#DailyDeal</a>
+                        </p>
+                        <div class="card post-images">
+                            <div class="row no-gutters">
+                                <div class="col">
+                                    <img class="card-img" src="https://pbs.twimg.com/media/DjO5Z8bX4AArKSW.jpg" alt="Card image">
+                                </div>
+                                <div class="col">
+                                    <img class="card-img" src="https://pbs.twimg.com/media/DjPJLS8W4AA3YNQ.jpg" alt="cardimg" />
+                                </div>
+                            </div>                                                        
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4 justify-content-center">
+                    <div class="col-md-5">
+                        <a href="#" class="card-link"><i class="far fa-comment"></i><span> 28</span></a>
+                        <a href="#" class="card-link"><i class="fas fa-retweet"></i><span> 152K</span></a>
+                        <a href="#" class="card-link"><i class="far fa-heart"></i><span> 11K</span></a>
+                    </div>
+                    <div class="col-md-5 text-right">
+                        <p class="text-muted"><i class="far fa-clock"></i> 43 min.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-1">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <a href="#">
+                            <img class="mr-2" src="https://pbs.twimg.com/profile_images/1009541059825635328/r-qkBD7g_bigger.jpg" width="48" height="48" alt="profile_image" style="border-radius: 50%;" />
+                            <span class="card-title"><b>GustavoProfile</b></span>
+                            <span class="card-subtitle mb-2 text-muted">@@gustavoprofile22</span>
+                        </a>
+                        <i class="far fa-caret-square-down ml-2"></i>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <p class="card-text">
+                            It's cheaper than a fancy coffee and won't leave plastic to strangle the environment. So really, you're saving the planet while getting a kick-ass game.
+
+                            Go you! Rogue Legacy - <a href="#" class="card-link">http://bit.ly/2Otom3M  (-80%)</a>
+
+                            <a href="#" class="card-link">#DailyDeal</a>
+                        </p>
+                        <div class="card post-images">
+                            <div class="row no-gutters">
+                                <div class="col-md-8">
+                                    <img class="card-img" src="https://pbs.twimg.com/media/DjO5Z8bX4AArKSW.jpg" alt="Card image">
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col">
+                                            <img class="card-img" src="https://pbs.twimg.com/media/DjPJLS8W4AA3YNQ.jpg" alt="cardimg" />
+                                        </div>
+                                        <div class="w-100"></div>
+                                        <div class="col">
+                                            <img class="card-img" src="http://i48.tinypic.com/wrltuc.jpg" alt="cardbear" />
+                                        </div>
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4 justify-content-center">
+                    <div class="col-md-5">
+                        <a href="#" class="card-link"><i class="far fa-comment"></i><span> 28</span></a>
+                        <a href="#" class="card-link"><i class="fas fa-retweet"></i><span> 152K</span></a>
+                        <a href="#" class="card-link"><i class="far fa-heart"></i><span> 11K</span></a>
+                    </div>
+                    <div class="col-md-5 text-right">
+                        <p class="text-muted"><i class="far fa-clock"></i> 43 min.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-1">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <a href="#">
+                            <img class="mr-2" src="https://pbs.twimg.com/profile_images/1009541059825635328/r-qkBD7g_bigger.jpg" width="48" height="48" alt="profile_image" style="border-radius: 50%;" />
+                            <span class="card-title"><b>GustavoProfile</b></span>
+                            <span class="card-subtitle mb-2 text-muted">@@gustavoprofile22</span>
+                        </a>
+                        <i class="far fa-caret-square-down ml-2"></i>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <p class="card-text">
+                            It's cheaper than a fancy coffee and won't leave plastic to strangle the environment. So really, you're saving the planet while getting a kick-ass game.
+
+                            Go you! Rogue Legacy - <a href="#" class="card-link">http://bit.ly/2Otom3M  (-80%)</a>
+
+                            <a href="#" class="card-link">#DailyDeal</a>
+                        </p>
+                        <div class="card post-images">
+                            <div class="row no-gutters">
+                                <div class="col-md-6">
+                                    <img class="card-img" src="https://pbs.twimg.com/media/DjO5Z8bX4AArKSW.jpg" alt="Card image">
+                                </div>
+                                <div class="col-md-6">
+                                    <img class="card-img" src="https://pbs.twimg.com/media/DjO5Z8bX4AArKSW.jpg" alt="Card image">
+                                </div>
+                                <div class="w-100"></div>
+                                <div class="col-md-6">
+                                    <img class="card-img" src="https://pbs.twimg.com/media/DjPJLS8W4AA3YNQ.jpg" alt="cardimg" />
+                                </div>
+                                <div class="col-md-6">
+                                    <img class="card-img" src="https://pbs.twimg.com/media/DjPJLS8W4AA3YNQ.jpg" alt="cardimg" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4 justify-content-center">
+                    <div class="col-md-5">
+                        <a href="#" class="card-link"><i class="far fa-comment"></i><span> 28</span></a>
+                        <a href="#" class="card-link"><i class="fas fa-retweet"></i><span> 152K</span></a>
+                        <a href="#" class="card-link"><i class="far fa-heart"></i><span> 11K</span></a>
+                    </div>
+                    <div class="col-md-5 text-right">
+                        <p class="text-muted"><i class="far fa-clock"></i> 43 min.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-1">
+            <div class="card-body">
+                <h4 class="card-title">Card title</h4>
+                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+            </div>
+        </div>        
+    </div>        
 </div>

@@ -1,7 +1,107 @@
 ﻿body {
-    padding-top: 80px;
-    /*padding-bottom: 20px;*/
+    padding-top: 50px;
+    background-color: rgb(230, 236, 240);
 }
+
+/* Estilos para la navbar */
+
+.navbar.fixed-top {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.navbar {
+    padding: 0rem 1rem;
+}
+
+.nav-item > a, .profile-dropdown-menu > a {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.00);
+}
+
+.nav-item > a:hover, .profile-dropdown-menu > a:hover, .profile-dropdown-menu > a:focus {
+    border-bottom: 2px solid darkgray;
+    transition: all 0.2s ease-in-out 0s;
+}
+
+.profile-dropdown-menu > a > img {
+    border-radius: 50%;
+}
+
+/*************/
+
+
+/* Estilos para sección del usuario y tendencias */
+
+.profile-section-avatar {
+    border-radius: 50%;
+    margin-top: -55px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.user-names > .card-title {
+    font-size: 1rem;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-names > .card-subtitle {
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.legends {
+    font-size: 0.6rem;
+    font-weight: bold;        
+}
+
+.legends > span {
+    display: block;
+}
+
+.legends > span:last-child {
+    font-size: 0.8rem;
+}
+
+#trendsSection .card-header {
+    padding: 0.3rem 1rem 0.3rem 1rem;
+}
+
+.trends-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0rem;
+}
+
+.trend-name {
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.trend-stats {
+    font-size: 0.7rem;
+    color: gray;
+}
+
+/********/
+
+
+/* Estilos para los posts */
+
+.post-images img {    
+    height: 100%;
+    width: 100%;
+}
+
+.post-actions-menu {
+    display: inline;
+}
+
+/**********/
 
 /* Set padding to keep content from hitting the edges */
 /*.body-content {
