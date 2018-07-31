@@ -18,12 +18,19 @@
 }
 
 .nav-item > a:hover, .profile-dropdown-menu > a:hover, .profile-dropdown-menu > a:focus {
-    border-bottom: 2px solid darkgray;
+    border-bottom: 2px solid #EB6864;
     transition: all 0.2s ease-in-out 0s;
 }
 
 .profile-dropdown-menu > a > img {
     border-radius: 50%;
+}
+
+.minibird-logo, .minibird-logo:focus {
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: 0;
 }
 
 /*************/

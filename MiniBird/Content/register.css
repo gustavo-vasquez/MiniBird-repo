@@ -1,0 +1,30 @@
+﻿.pane-left {
+    background-image: url('../../Content/images/cloud03.jpg');
+    background-position: center;
+    background-size: cover;
+}
+
+.pane-left img {
+    width: 100%;
+    height: 100%;
+}
+
+.mh-100vh {
+    min-height: 100vh;
+}
+
+.mh-10 {
+    min-height: 10%;
+}
+
+.mh-70 {
+    min-height: 70%;
+}
+
+.h-80 {
+    height: 80%;
+}
+
+legend {
+    border-bottom: 2px solid #EB6864;
+}
