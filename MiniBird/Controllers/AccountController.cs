@@ -6,9 +6,11 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static MiniBird.Filters.SessionFilters;
 
 namespace MiniBird.Controllers
-{
+{    
+    [WithAccount]
     public class AccountController : Controller
     {
         static AccountSL Account = new AccountSL();
@@ -76,6 +78,7 @@ namespace MiniBird.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
             Session.Abandon();

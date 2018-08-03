@@ -126,6 +126,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="DTO\CustomDataAnnotations.cs" />
     <Compile Include="DTO\SignInDTO.cs" />
+    <Compile Include="Filters\SessionFilters.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

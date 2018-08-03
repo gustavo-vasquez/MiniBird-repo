@@ -27,6 +27,11 @@ namespace Service_Layer
             return Account.CreateSessionDL(email);
         }
 
+        public SessionInformation CreateSessionFromCookieSL(string hash)
+        {
+            return Account.CreateSessionFromCookieDL(hash);
+        }
+
 
         #region TAREAS AUXILIARES
 

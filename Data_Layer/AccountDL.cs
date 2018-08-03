@@ -79,6 +79,34 @@ namespace Data_Layer
             }
         }
 
+        public SessionInformation CreateSessionFromCookieDL(string hash)
+        {
+            try
+            {
+                const string defaultAvatar = "/Content/images/defaultAvatar.png";
+                const string defaultHeader = "/Content/images/defaultHeader.jpg";
+
+                using (var context = new MiniBirdEntities())
+                {
+                    var person = context.Person.Where(p => p.PersonCryptID == hash).First();
+
+                    return new SessionInformation()
+                    {
+                        PersonID = person.PersonID,
+                        UserName = person.UserName,
+                        Email = person.Email,
+                        NickName = person.NickName,
+                        ProfileAvatar = (person.ProfileAvatar != null) ? ImageToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar,
+                        ProfileHeader = (person.ProfileAvatar != null) ? ImageToBase64(person.ProfileHeader, person.ProfileHeader_MimeType) : defaultHeader
+                    };
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         #region TAREAS AUXILIARES
 
         private bool AccountExists(string userName, string email)
@@ -98,6 +126,7 @@ namespace Data_Layer
         {
             using (var context = new MiniBirdEntities())
             {
+                this.CreateSessionDL("asdasd");
                 return context.Person.Any(p => p.UserName == username);
             }
         }
