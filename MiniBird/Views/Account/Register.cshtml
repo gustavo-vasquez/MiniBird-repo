@@ -1,0 +1,102 @@
+﻿@model MiniBird.DTO.SignInDTO
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bienvenido a MiniBird</title>
+    @Styles.Render("~/Content/themes/bootstrap.journal.min.css")
+    @Styles.Render("~/Content/register.css")
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row mh-100vh">
+            <div class="col-md-6 pane-left">
+                <div class="mh-10"></div>
+                <div class="text-center h-80">
+                    <img src="~/Content/images/minibird-logo.svg" alt="minibird_logo" />
+                </div>
+                <div class="mh-10"></div>
+            </div>
+            <div class="col-md-6">                
+                <div class="mh-10"></div>
+                <div class="container w-75 align-content-center mh-70">
+                    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { id = "registerForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <fieldset>
+                            <legend class="mb-4">Crea tu cuenta en MiniBird</legend>
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.Register.UserName, new { @class = "form-control", placeholder = "Nombre de usuario", autofocus = true })
+                                @Html.ValidationMessageFor(m => m.Register.UserName, null, new { @class = "badge badge-danger" })                                
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.Register.Email, new { @class = "form-control", placeholder = "Correo electrónico" })
+                                @Html.ValidationMessageFor(m => m.Register.Email, null, new { @class = "badge badge-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.PasswordFor(m => m.Register.Password, new { @class = "form-control", placeholder = "Contraseña" })
+                                @Html.ValidationMessageFor(m => m.Register.Password, null, new { @class = "badge badge-danger" })                                
+                            </div>
+                            <div class="form-group">
+                                @Html.PasswordFor(m => m.Register.ConfirmPassword, new { @class = "form-control", placeholder = "Repetir contraseña" })
+                                @Html.ValidationMessageFor(m => m.Register.ConfirmPassword, null, new { @class = "badge badge-danger" })                                
+                            </div>                            
+                            <div class="custom-control custom-checkbox mb-4">
+                                @Html.CheckBoxFor(m => m.Register.TermsAndConditions, new { @class = "custom-control-input" })                                
+                                <label class="custom-control-label" for="Register_TermsAndConditions">Acepto los <a href="#">términos y condiciones</a> @Html.ValidationMessageFor(m => m.Register.TermsAndConditions, null, new { @class = "badge badge-danger" }) </label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Registrarme</button>
+                            <div class="form-group mt-5">
+                                <span>¿Ya tienes cuenta? <a href="#" id="loginLink">Haz clic aquí para iniciar sesión</a></span>
+                            </div>
+                        </fieldset>
+                    }
+
+                    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { id = "loginForm", @class = "d-none " + ViewBag.Login }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <fieldset>
+                            <legend class="mb-4">Entra a tu cuenta</legend>
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.Login.Email, new { @class = "form-control", placeholder = "Correo electrónico" })
+                                @Html.ValidationMessageFor(m => m.Login.Email, null, new { @class = "badge badge-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.PasswordFor(m => m.Login.Password, new { @class = "form-control", placeholder = "Contraseña" })
+                                @Html.ValidationMessageFor(m => m.Login.Password, null, new { @class = "badge badge-danger" })
+                            </div>
+                            <div class="custom-control custom-checkbox mb-4">
+                                @Html.CheckBoxFor(m => m.Login.RememberMe, new { @class = "custom-control-input" })
+                                <label class="custom-control-label" for="Login_RememberMe">Recordarme</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+                            <div class="form-group mt-5">
+                                <a href="#">¿Olvidaste tu contraseña?</a>
+                            </div>
+                        </fieldset>
+                    }
+                </div>
+                <div class="mh-10"></div>                                                     
+            </div>
+        </div>
+    </div>
+    
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-dismissible alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <p class="mb-0">@ViewBag.Message</p>
+        </div>
+    }
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/account/register.js")
+</body>
+</html>

@@ -121,8 +121,11 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ExceptionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="DTO\CustomDataAnnotations.cs" />
+    <Compile Include="DTO\SignInDTO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -136,6 +139,8 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\images\cloud03.jpg" />
+    <Content Include="Content\images\defaultAvatar.png" />
+    <Content Include="Content\images\defaultHeader.jpg" />
     <Content Include="Content\register.css" />
     <Content Include="Content\themes\bootstrap.cerulean.min.css" />
     <Content Include="Content\themes\bootstrap.cosmo.min.css" />
@@ -212,7 +217,7 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
-    <Content Include="Scripts\user\register.js" />
+    <Content Include="Scripts\account\register.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -237,11 +242,11 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\User\Register.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="DTO\" />
+    <Folder Include="Views\Exception\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -252,6 +257,16 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Domain_Layer\Domain_Layer.csproj">
+      <Project>{00a0cde4-62bb-420f-bc06-49c6e84d9c83}</Project>
+      <Name>Domain_Layer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Service_Layer\Service_Layer.csproj">
+      <Project>{7be532f9-d598-41bc-96e7-39377e244eb4}</Project>
+      <Name>Service_Layer</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

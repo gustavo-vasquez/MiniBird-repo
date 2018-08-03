@@ -28,3 +28,11 @@
 legend {
     border-bottom: 2px solid #EB6864;
 }
+
+.alert {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}

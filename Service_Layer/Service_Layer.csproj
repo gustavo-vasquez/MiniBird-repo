@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A9BF9750-3B17-4562-956A-FD8944FD56F2}</ProjectGuid>
+    <ProjectGuid>{7BE532F9-D598-41BC-96E7-39377E244EB4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Service_Layer</RootNamespace>
-    <AssemblyName>Service-Layer</AssemblyName>
+    <AssemblyName>Service_Layer</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,8 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="AccountSL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Data_Layer\Data_Layer.csproj">
+      <Project>{8c148075-a989-4309-a835-4eeb7e2e2daa}</Project>
+      <Name>Data_Layer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain_Layer\Domain_Layer.csproj">
+      <Project>{00a0cde4-62bb-420f-bc06-49c6e84d9c83}</Project>
+      <Name>Domain_Layer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

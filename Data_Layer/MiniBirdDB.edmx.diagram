@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f299b71d02834502bac67589dd3428e7" Name="Diagram1">
+        <EntityTypeShape EntityType="MiniBirdModel.Hashtag" Width="1.5" PointX="6" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="MiniBirdModel.LikePost" Width="1.5" PointX="5.25" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MiniBirdModel.MyList" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MiniBirdModel.NotificationAlert" Width="1.5" PointX="10.5" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MiniBirdModel.Person" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="MiniBirdModel.Post" Width="1.5" PointX="8.25" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MiniBirdModel.PrivateMessage" Width="1.5" PointX="5.25" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MiniBirdModel.RecipientsOfPM" Width="1.5" PointX="7.5" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="MiniBirdModel.RePost" Width="1.5" PointX="13.5" PointY="5.625" IsExpanded="true" />
+        <AssociationConnector Association="MiniBirdModel.FKLikePost_ToPersonT" ManuallyRouted="false" />
+        <AssociationConnector Association="MiniBirdModel.FKLikePost_ToPostT" ManuallyRouted="false" />
+        <AssociationConnector Association="MiniBirdModel.FKNotificationAlert_ToLikePostT" ManuallyRouted="false" />
+        <AssociationConnector Association="MiniBirdModel.FKMyList_ToPersonT" ManuallyRouted="false" />
+        <AssociationConnector Association="MiniBirdModel.FKNotificationAlert_ToPersonT" ManuallyRouted="false" />
+        <AssociationConnector Association="MiniBirdModel.FKNotificationAlert_ToPostT" ManuallyRouted="false" />
+        <AssociationConnector Association="MiniBirdModel.FKNotificationAlert_ToRePostT" ManuallyRouted="false" />
+        <AssociationConnector Association="MiniBirdModel.FKPost_ToPersonT" ManuallyRouted="false" />
+        <AssociationConnector Association="MiniBirdModel.FKPrivateMessage_ToPersonT" ManuallyRouted="false" />
+        <AssociationConnector Association="MiniBirdModel.FKRecipientsOfPM_ToPersonT" ManuallyRouted="false" />
+        <AssociationConnector Association="MiniBirdModel.FKRePost_ToPersonT" ManuallyRouted="false" />
+        <AssociationConnector Association="MiniBirdModel.FKPost_ToPostT" ManuallyRouted="false" />
+        <AssociationConnector Association="MiniBirdModel.FKRePost_ToPostT" ManuallyRouted="false" />
+        <AssociationConnector Association="MiniBirdModel.FKRecipientsOfPM_ToPrivateMessageT" ManuallyRouted="false" />
+        <AssociationConnector Association="MiniBirdModel.Block" ManuallyRouted="false" />
+        <AssociationConnector Association="MiniBirdModel.Follow" ManuallyRouted="false" />
+        <AssociationConnector Association="MiniBirdModel.HashtagsInPost" ManuallyRouted="false" />
+        <AssociationConnector Association="MiniBirdModel.Mute" ManuallyRouted="false" />
+        <AssociationConnector Association="MiniBirdModel.UsersInList" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
