@@ -5,7 +5,7 @@
     //    $(this).removeClass('active');
     //});
 
-    $('.dropdown-menu > a, .dropdown-menu > button').hover(function () {
+    $('.dropdown-menu > a, .dropdown-menu > form > button').hover(function () {
         $(this).toggleClass('active');
     });
 });

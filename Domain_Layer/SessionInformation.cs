@@ -13,6 +13,6 @@ namespace Domain_Layer
         public string Email { get; set; }
         public string NickName { get; set; }
         public string ProfileAvatar { get; set; }        
-        public string ProfileHeader { get; set; }        
+        public string ProfileHeader { get; set; }
     }
 }

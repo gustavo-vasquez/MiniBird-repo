@@ -26,6 +26,10 @@
     border-radius: 50%;
 }
 
+.profile-dropdown-menu button:hover {
+    cursor: pointer;
+}
+
 .minibird-logo, .minibird-logo:focus {
     background: none;
     border: none;

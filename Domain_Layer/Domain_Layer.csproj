@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActiveSession.cs" />
     <Compile Include="Hashtag.cs">
       <DependentUpon>MiniBirdDB.tt</DependentUpon>
     </Compile>

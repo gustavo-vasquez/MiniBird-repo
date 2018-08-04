@@ -10,17 +10,20 @@ using static MiniBird.Filters.SessionFilters;
 
 namespace MiniBird.Controllers
 {    
-    [WithAccount]
+    [Authenticated]
     public class AccountController : Controller
     {
         static AccountSL Account = new AccountSL();
 
         // GET: User
+        //[WithAccount(false)]
+        [Authenticated(false)]
         public ActionResult Register()
-        {            
+        {
             return View();
         }
 
+        [Authenticated(false)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Register(SignInDTO model)
@@ -46,6 +49,7 @@ namespace MiniBird.Controllers
             }
         }
 
+        [Authenticated(false)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(SignInDTO model)
@@ -76,7 +80,7 @@ namespace MiniBird.Controllers
                 return ProcessError(ex);
             }
         }
-
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()

@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Domain_Layer
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -12,7 +14,7 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
+        
         <div class="collapse navbar-collapse" id="navbarLinks">
             <ul class="navbar-nav w-100 justify-content-start">
                 <li class="nav-item">
@@ -39,9 +41,12 @@
                 </form>*@
             </div>                        
             <ul class="navbar-nav w-100 justify-content-end">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#"><i class="far fa-bell"></i> Notificaciones</a>
-                </li>                
+                @if (ActiveSession.IsAuthenticated)
+                {
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#"><i class="far fa-bell"></i> Notificaciones @ActiveSession.GetEmail()</a>
+                    </li>
+                }                
                 <li class="nav-item">                    
                     <div class="dropdown profile-dropdown-menu">
                         <a class="nav-link" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="https://pbs.twimg.com/profile_images/1009541059825635328/r-qkBD7g_bigger.jpg" width="20" height="20" alt="profile_image" /> GustavoProfile</a>
@@ -60,7 +65,7 @@
                             {
                                 @Html.AntiForgeryToken()
                                 <button type="submit" class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</button>
-                            }                            
+                            }
                         </div>
                     </div>
                 </li>                
