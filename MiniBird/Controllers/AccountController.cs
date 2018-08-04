@@ -35,6 +35,7 @@ namespace MiniBird.Controllers
 
                 if(Account.RegisterSL(model.Register.UserName, model.Register.Email, model.Register.Password))
                 {
+                    Session["MiniBirdAccount"] = Account.CreateSessionSL(model.Register.Email);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -43,7 +44,7 @@ namespace MiniBird.Controllers
                     return View(model);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return ProcessError(ex);
             }
@@ -86,6 +87,8 @@ namespace MiniBird.Controllers
         public ActionResult LogOff()
         {
             Session.Abandon();
+            Domain_Layer.ActiveSession.Clear();
+
             if (Request.Cookies.AllKeys.Contains("MBLC"))
             {
                 HttpCookie cookie = Request.Cookies["MBLC"];
@@ -121,6 +124,7 @@ namespace MiniBird.Controllers
 
         #region PETICIONES AJAX
 
+        [Authenticated(false)]
         [HttpGet]
         public JsonResult CheckUserName(string username)
         {

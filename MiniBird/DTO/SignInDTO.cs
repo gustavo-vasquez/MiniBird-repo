@@ -15,10 +15,12 @@ namespace MiniBird.DTO
     public class RegisterDTO
     {
         [Required(ErrorMessage = "Ingresar un nombre de usuario.")]
+        [MaxLength(15, ErrorMessage = "Límite: 15 caracteres.")]
         [RegularExpression("^[a-zA-Z0-9_]*(\\S)$", ErrorMessage = "Permitido: minúsculas, mayúsculas, nº y _")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Ingresar dirección de correo.")]
+        [MaxLength(100, ErrorMessage = "Límite: 100 caracteres.")]
         [RegularExpression(@"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*@((([\-\w]+\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\.){3}[0-9]{1,3}))$", ErrorMessage = "Correo no válido.")]
         public string Email { get; set; }
 

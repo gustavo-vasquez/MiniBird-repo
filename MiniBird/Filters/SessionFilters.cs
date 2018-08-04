@@ -22,9 +22,7 @@ namespace MiniBird.Filters
                 {
                     session = new Service_Layer.AccountSL().CreateSessionFromCookieSL(loginCookie.Value);
                     Domain_Layer.ActiveSession.Fill(session);
-                }                    
-                else
-                    Domain_Layer.ActiveSession.Clear();
+                }
             }
         }        
 

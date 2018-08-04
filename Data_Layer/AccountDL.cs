@@ -18,7 +18,7 @@ namespace Data_Layer
                 {
                     var newPerson = new Person()
                     {
-                        UserName = userName,
+                        UserName = "@" + userName,
                         Email = email,
                         NickName = userName,
                         Password = password,
@@ -126,7 +126,6 @@ namespace Data_Layer
         {
             using (var context = new MiniBirdEntities())
             {
-                this.CreateSessionDL("asdasd");
                 return context.Person.Any(p => p.UserName == username);
             }
         }
