@@ -142,6 +142,8 @@
     <Content Include="Content\images\cloud03.jpg" />
     <Content Include="Content\images\defaultAvatar.png" />
     <Content Include="Content\images\defaultHeader.jpg" />
+    <Content Include="Content\images\example_avatar.jpg" />
+    <Content Include="Content\images\example_header.jpg" />
     <Content Include="Content\register.css" />
     <Content Include="Content\themes\bootstrap.cerulean.min.css" />
     <Content Include="Content\themes\bootstrap.cosmo.min.css" />
@@ -165,9 +167,12 @@
     <Content Include="Content\themes\bootstrap.united.min.css" />
     <Content Include="Content\themes\bootstrap.yeti.min.css" />
     <Content Include="Content\images\minibird-logo.svg" />
+    <Content Include="Content\website\profile_screen.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
+    <Content Include="Scripts\account\jquery.marquee.js" />
+    <Content Include="Scripts\account\profileScreen.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -244,6 +249,7 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\ProfileScreen.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,198 @@
+﻿
+@{
+    ViewBag.Title = "ProfileScreen";
+}
+
+@Styles.Render("~/Content/website/profile_screen.css")
+
+<div class="row">
+    <div class="col">        
+        <img class="profile_screen-header" src="~/Content/images/example_header.jpg" alt="header_background" />          
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col">
+        <div class="profile_screen-trends">
+            <h5>
+                <a class="mr-3" href="#">#LaChingadaTopic</a>
+                <a class="mr-3" href="#">#LaChingadaTopic</a>
+                <a class="mr-3" href="#">#LaChingadaTopic</a>
+                <a class="mr-3" href="#">#LaChingadaTopic</a>
+                <a class="mr-3" href="#">#LaChingadaTopic</a>
+                <a class="mr-3" href="#">#LaChingadaTopic</a>
+                <a class="mr-3" href="#">#LaChingadaTopic</a>
+                <a class="mr-3" href="#">#LaChingadaTopic</a>
+                <a class="mr-3" href="#">#LaChingadaTopic</a>
+                <a class="mr-3" href="#">#LaChingadaTopic</a>
+            </h5>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-4 text-center">
+        <div class="row">
+            <div class="col">
+                <img class="profile_screen-avatar" src="~/Content/images/example_avatar.jpg" alt="avatar" />
+            </div>            
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <h3>gustavoDev22</h3>
+                <h5>@@gustavoDev22</h5>
+                <p class="mt-4"><i class="far fa-comment-dots"></i> Viendo esta pagina de perfil</p>
+                <p><a href="#"><i class="fas fa-link"></i> https://www.google.com.ar</a></p>
+                <p class="text-muted"><i class="fas fa-birthday-cake"></i> Nacio el 31 de diciembre de 2010</p>
+                <p class="text-muted"><i class="far fa-calendar-alt"></i> Se unio en diciembre de 1999</p>
+            </div>
+        </div>        
+    </div>
+    <div class="col-md-8">
+        <div class="row mb-3">
+            <div class="col">
+                <ul id="profileScreen-nav" class="nav nav-pills" data-tab="@ViewBag.Tab">
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ProfileScreen", "Account")">Posts <span class="badge badge-primary badge-pill">655</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ProfileScreen", "Account", new { v = "following" })">Siguiendo <span class="badge badge-primary badge-pill">150</span></a>
+                    </li>                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ProfileScreen", "Account", new { v = "followers" })">Seguidores <span class="badge badge-primary badge-pill">95</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ProfileScreen", "Account", new { v = "likes" })">Me gusta <span class="badge badge-primary badge-pill">22K</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ProfileScreen", "Account", new { v = "lists" })">Listas <span class="badge badge-primary badge-pill">32</span></a>
+                    </li>                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                @switch ((string)ViewBag.Tab)
+                {
+                    case "following":
+
+                        <div class="card mb-1">
+                            <div class="card-body">
+                                <h4 class="card-title">Soy following</h4>
+                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <a href="#" class="card-link">Card link</a>
+                                <a href="#" class="card-link">Another link</a>
+                            </div>
+                        </div>
+                        <div class="card mb-1">
+                            <div class="card-body">
+                                <h4 class="card-title">Soy following</h4>
+                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <a href="#" class="card-link">Card link</a>
+                                <a href="#" class="card-link">Another link</a>
+                            </div>
+                        </div>
+
+                        break;
+                    case "followers":
+
+                        <div class="card mb-1">
+                            <div class="card-body">
+                                <h4 class="card-title">Soy follower</h4>
+                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <a href="#" class="card-link">Card link</a>
+                                <a href="#" class="card-link">Another link</a>
+                            </div>
+                        </div>
+                        <div class="card mb-1">
+                            <div class="card-body">
+                                <h4 class="card-title">Soy follower</h4>
+                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <a href="#" class="card-link">Card link</a>
+                                <a href="#" class="card-link">Another link</a>
+                            </div>
+                        </div>
+
+                        break;
+                    case "likes":
+
+                        <div class="card mb-1">
+                            <div class="card-body">
+                                <h4 class="card-title">Soy like</h4>
+                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <a href="#" class="card-link">Card link</a>
+                                <a href="#" class="card-link">Another link</a>
+                            </div>
+                        </div>
+                        <div class="card mb-1">
+                            <div class="card-body">
+                                <h4 class="card-title">Soy like</h4>
+                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <a href="#" class="card-link">Card link</a>
+                                <a href="#" class="card-link">Another link</a>
+                            </div>
+                        </div>
+
+                        break;
+                    case "lists":
+
+                        <div class="card mb-1">
+                            <div class="card-body">
+                                <h4 class="card-title">Soy list</h4>
+                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <a href="#" class="card-link">Card link</a>
+                                <a href="#" class="card-link">Another link</a>
+                            </div>
+                        </div>
+                        <div class="card mb-1">
+                            <div class="card-body">
+                                <h4 class="card-title">Soy list</h4>
+                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <a href="#" class="card-link">Card link</a>
+                                <a href="#" class="card-link">Another link</a>
+                            </div>
+                        </div>
+
+                        break;
+                    default:
+
+                        <div class="card mb-1">
+                            <div class="card-body">
+                                <h4 class="card-title">Soy un post</h4>
+                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <a href="#" class="card-link">Card link</a>
+                                <a href="#" class="card-link">Another link</a>
+                            </div>
+                        </div>
+                        <div class="card mb-1">
+                            <div class="card-body">
+                                <h4 class="card-title">Soy un post</h4>
+                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <a href="#" class="card-link">Card link</a>
+                                <a href="#" class="card-link">Another link</a>
+                            </div>
+                        </div>
+
+                    break;
+                }                                                                               
+            </div>
+        </div>
+
+        
+    </div>
+</div>
+
+@section scripts {
+                    @Scripts.Render("~/Scripts/account/profileScreen.js")
+        @Scripts.Render("~/Scripts/account/jquery.marquee.js")
+    }

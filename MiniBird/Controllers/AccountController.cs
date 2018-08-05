@@ -99,6 +99,13 @@ namespace MiniBird.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authenticated(false)]
+        public ActionResult ProfileScreen(string v)
+        {
+            ViewBag.Tab = v;
+            return View();
+        }
+
         #region TAREAS AUXILIARES
 
         public void LoginCookie(string email)

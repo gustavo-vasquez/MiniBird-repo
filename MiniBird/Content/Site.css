@@ -13,11 +13,11 @@
     padding: 0rem 1rem;
 }
 
-.nav-item > a, .profile-dropdown-menu > a {
+.draw-borders > .nav-item > a, .profile-dropdown-menu > a {
     border-bottom: 2px solid rgba(255, 255, 255, 0.00);
 }
 
-.nav-item > a:hover, .profile-dropdown-menu > a:hover, .profile-dropdown-menu > a:focus {
+.draw-borders > .nav-item > a:hover, .draw-borders > .nav-item > .profile-dropdown-menu > a:hover, .draw-borders > .nav-item > .profile-dropdown-menu > a:focus {
     border-bottom: 2px solid #EB6864;
     transition: all 0.2s ease-in-out 0s;
 }
@@ -42,9 +42,18 @@
 
 /* Estilos para sección del usuario y tendencias */
 
+.profile-section-header {
+    width: 100%;
+    height: 95px;
+    display: block;
+}
+
 .profile-section-avatar {
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
-    margin-top: -55px;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    margin-top: -65px;
     margin-left: auto;
     margin-right: auto;
     display: block;
@@ -66,16 +75,12 @@
 }
 
 .legends {
-    font-size: 0.6rem;
+    font-size: 0.8rem;
     font-weight: bold;        
 }
 
 .legends > span {
     display: block;
-}
-
-.legends > span:last-child {
-    font-size: 0.8rem;
 }
 
 #trendsSection .card-header {
@@ -89,7 +94,7 @@
 }
 
 .trend-name {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     font-weight: bold;
 }
 
