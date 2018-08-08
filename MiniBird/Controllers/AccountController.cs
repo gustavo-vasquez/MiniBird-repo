@@ -98,12 +98,18 @@ namespace MiniBird.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-
-        [Authenticated(false)]
+        
         public ActionResult ProfileScreen(string v)
         {
             ViewBag.Tab = v;
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult NewPost(NewPostDTO model)
+        {
+            return RedirectToAction("Index", "Home");
         }
 
         #region TAREAS AUXILIARES
@@ -136,7 +142,7 @@ namespace MiniBird.Controllers
         public JsonResult CheckUserName(string username)
         {
             return Json(new { userExists = Account.UserNameExistsSL(username) }, JsonRequestBehavior.AllowGet);
-        }
+        }                
 
         #endregion
 

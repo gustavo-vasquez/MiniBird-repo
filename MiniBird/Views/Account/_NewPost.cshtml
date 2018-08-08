@@ -1,0 +1,80 @@
+﻿@model MiniBird.DTO.NewPostDTO
+
+<!-- Modal -->
+<div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="postModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        @using (Html.BeginForm("NewPost", "Account", FormMethod.Post, new { id = "NewPostForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="postModalTitle">Compartir un nuevo estado</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>                                
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">                         
+                            @Html.ValidationMessageFor(m => m.Comment, null, new { @class = "badge badge-danger mb-1" })
+                            @Html.TextAreaFor(m => m.Comment, new { @class = "form-control", placeholder = "¿Que tienes para decir?", rows = 1 })                            
+                        </div>
+                    </form>
+                    <div class="form-group text-center">                        
+                        <div class="row no-gutters img-thumbnail-row">
+                            <div class="col col-md-3">
+                                <figure>
+                                    @Html.TextBoxFor(m => m.Image1stSlot, new { type = "file", @class = "d-none" })
+                                    <img class="img-upload-newPost" src="~/Content/images/example_header.jpg" />
+                                    <button class="img-remove-newPost" type="button" title="Eliminar">&times;</button>
+                                </figure>
+                            </div>                            
+                            <div class="col col-md-3">
+                                <figure>
+                                    @Html.TextBoxFor(m => m.Image2ndSlot, new { type = "file", @class = "d-none" })
+                                    <img class="img-upload-newPost" src="~/Content/images/example_header.jpg" />
+                                    <button class="img-remove-newPost" type="button" title="Eliminar">&times;</button>
+                                </figure>
+                            </div>
+                            <div class="col col-md-3">
+                                <figure>
+                                    @Html.TextBoxFor(m => m.Image3rdSlot, new { type = "file", @class = "d-none" })
+                                    <img class="img-upload-newPost" src="~/Content/images/example_header.jpg" />
+                                    <button class="img-remove-newPost" type="button" title="Eliminar">&times;</button>
+                                </figure>
+                            </div>
+                            <div class="col col-md-3">
+                                <figure>
+                                    @Html.TextBoxFor(m => m.Image4thSlot, new { type = "file", @class = "d-none" })
+                                    <img class="img-upload-newPost" src="~/Content/images/example_header.jpg" />
+                                    <button class="img-remove-newPost" type="button" title="Eliminar">&times;</button>
+                                </figure>
+                            </div>
+                        </div>                        
+                    </div>
+                    @*<div id="linkGroup" class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-link"></i></span>
+                        </div>
+                        <input type="text" class="form-control" id="linkText" placeholder="Ingresa una dirección web">
+                        <div class="input-group-append">
+                            <button id="addLinkBtn" class="btn btn-primary" type="button" title="Añadir"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>*@                    
+                </div>
+                <div class="modal-footer">
+                    <div class="w-100 justify-content-start">
+                        @Html.TextBoxFor(m => m.UploadImage, new { type = "file", @class = "d-none" })
+                        <button id="newImageBtn" type="button" class="btn btn-secondary" title="Agregar una imágen"><i class="fas fa-image"></i></button>
+                        <button id="newVideoBtn" type="button" class="btn btn-secondary" title="Agregar un video"><i class="fas fa-video"></i></button>
+                        <button id="newLinkBtn" type="button" class="btn btn-secondary" title="Agregar un enlace"><i class="fas fa-link"></i></button>
+                    </div>
+                    <div class="w-100 text-right justify-content-end">
+                        <label class="mr-2 available-chars">280</label>
+                        <button type="submit" class="btn btn-success"><i class="fas fa-feather-alt"></i> Postear</button>
+                    </div>                                        
+                </div>
+            </div>
+        }
+    </div>
+</div>

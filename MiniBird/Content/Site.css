@@ -105,10 +105,50 @@
 
 /********/
 
+/* Modal para crear nuevo post */
+
+.modal-md {
+    max-width: 620px;
+}
+
+.modal-md textarea {
+    max-height: 460px;
+    resize: none;
+}
+
+.img-upload-newPost {
+    width: 140px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.img-remove-newPost {
+    position: absolute !important;
+    top: 3px !important;
+    right: 5px !important;
+    z-index: 3 !important;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    border: none;
+    color: white;
+    font-size: 0.9rem;
+}
+
+.img-remove-newPost:hover {
+    background-color: red;
+    cursor: pointer;
+    border-color: black;
+}
+
+.img-thumbnail-row {
+    border-top: 1px dashed rgba(0,0,0,0.1);    
+    padding-top: 1rem;
+}
+
 
 /* Estilos para los posts */
 
-.post-images img {    
+.post-images img {
     height: 100%;
     width: 100%;
 }
@@ -118,6 +158,11 @@
 }
 
 /**********/
+
+#Comment {
+    overflow: hidden;
+    resize: none;    
+}
 
 /* Set padding to keep content from hitting the edges */
 /*.body-content {

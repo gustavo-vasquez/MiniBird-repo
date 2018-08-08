@@ -124,6 +124,7 @@
     <Compile Include="Controllers\ExceptionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="DTO\NewPostDTO.cs" />
     <Compile Include="DTO\CustomDataAnnotations.cs" />
     <Compile Include="DTO\SignInDTO.cs" />
     <Compile Include="Filters\SessionFilters.cs" />
@@ -172,6 +173,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="Scripts\account\jquery.marquee.js" />
+    <Content Include="Scripts\account\newPost.js" />
     <Content Include="Scripts\account\profileScreen.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -205,6 +207,7 @@
     <Content Include="Scripts\jquery-3.0.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.0.0.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.textarea_autosize.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -250,6 +253,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\ProfileScreen.cshtml" />
+    <Content Include="Views\Account\_NewPost.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

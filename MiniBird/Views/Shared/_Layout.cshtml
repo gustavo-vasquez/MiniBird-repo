@@ -41,6 +41,9 @@
                 </form>*@
             </div>                        
             <ul class="navbar-nav w-100 justify-content-end draw-borders">
+                <li class="nav-item">
+                    <button class="btn btn-success mt-1 mr-2" type="button" data-toggle="modal" data-target="#postModal"><i class="fas fa-feather-alt"></i> Postear</button>
+                </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="#"><i class="far fa-bell"></i> Notificaciones</a>
                 </li>
@@ -76,6 +79,8 @@
         
     <div class="container body-content">
         @RenderBody()
+
+        @Html.Partial("~/Views/Account/_NewPost.cshtml")
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - MiniBird</p>
@@ -83,8 +88,15 @@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/Scripts/site.js")
     @RenderSection("scripts", required: false)
+    @Scripts.Render("~/Scripts/jquery.textarea_autosize.js", "~/Scripts/account/newPost.js")
+    @*@{ 
+        var action = ViewContext.RouteData.Values["action"].ToString();
+        var controller = ViewContext.RouteData.Values["controller"].ToString();
+                        
+    }*@
 </body>
 </html>
