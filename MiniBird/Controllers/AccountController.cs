@@ -1,5 +1,6 @@
 ﻿using MiniBird.DTO;
 using Service_Layer;
+using Domain_Layer;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -142,7 +143,7 @@ namespace MiniBird.Controllers
         public JsonResult CheckUserName(string username)
         {
             return Json(new { userExists = Account.UserNameExistsSL(username) }, JsonRequestBehavior.AllowGet);
-        }                
+        }        
 
         #endregion
 

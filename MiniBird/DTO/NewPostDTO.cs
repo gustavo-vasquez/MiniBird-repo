@@ -15,11 +15,7 @@ namespace MiniBird.DTO
         public string Comment { get; set; }
         public byte[] GifImage { get; set; }
         public byte[] VideoFile { get; set; }
-        public byte[] Image1stSlot { get; set; }
-        public byte[] Image2ndSlot { get; set; }
-        public byte[] Image3rdSlot { get; set; }
-        public byte[] Image4thSlot { get; set; }
-        public byte[] UploadImage { get; set; }
+        public string[] ImagesUploaded { get; set; }
         public int InReplyTo { get; set; }
     }
 }

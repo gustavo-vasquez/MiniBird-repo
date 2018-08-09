@@ -6,6 +6,7 @@
     $('#Comment').magicsize();
     $('#newLinkBtn').on('click', addLinkToPost);
     $('#Comment').on('keyup', calculateChars);
+    eventsforUploadImages();
 });
 
 function addLinkToPost() {
@@ -39,6 +40,69 @@ function calculateChars() {
         label.addClass('text-danger');
     else
         label.removeClass('text-danger');
+}
+
+function eventsforUploadImages() {
+    $('#newImageBtn').on('click', function () {
+        $('#UploadImage').trigger('click');
+    });
+
+    //Check File API support
+    if (window.File && window.FileList && window.FileReader) {
+        var filesInput = document.getElementById("UploadImage");
+
+        var $imgThumbnailsRow = $('#imgThumbnailsRow');
+
+        filesInput.addEventListener("change", function (event) {
+
+            var files = event.target.files; //FileList object
+            var output = document.getElementById("imgThumbnailsRow");
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+
+                //Only pics
+                if (!file.type.match('image'))
+                    continue;
+
+                var picReader = new FileReader();
+                picReader.fileName = file.name;
+
+                picReader.addEventListener("load", function (event) {
+
+                    var picFile = event.target;
+
+                    var div = document.createElement("div");
+                    div.classList.add("col");
+                    div.classList.add("col-md-3");
+                    var figure = document.createElement("figure");
+
+                    figure.innerHTML = "<input type='hidden' name='ImagesUploaded' value='" + picFile.result + "' /><img class='img-upload-newPost' src='" + picFile.result + "'" +
+                            "title='" + picFile.fileName + "'/><button class='img-remove-newPost' type='button' title='Eliminar'>&times;</button>";
+
+                    div.insertBefore(figure, null);
+                    output.insertBefore(div, null);
+
+                    $('.img-remove-newPost').on('click', function () {
+                        $(this).parent("figure").parent("div").remove();
+
+                        if ($imgThumbnailsRow.is(':empty'))
+                            $imgThumbnailsRow.parent("div").addClass('d-none');
+                    });
+                });
+
+                //Read the image
+                picReader.readAsDataURL(file);
+            }
+
+            if ($imgThumbnailsRow.parent("div").hasClass('d-none')) {
+                $imgThumbnailsRow.parent("div").removeClass('d-none');
+            }
+        });
+    }
+    else {
+        console.log("Your browser does not support File API");
+    }
 }
 
 (function ($) {

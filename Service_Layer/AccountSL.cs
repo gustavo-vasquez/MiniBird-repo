@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Service_Layer
 {
@@ -43,7 +44,12 @@ namespace Service_Layer
         public string EncryptCookieValueSL(string email)
         {
             return Account.EncryptCookieValueDL(email);
-        }        
+        }
+
+        public string TemporaryPostImageSL(HttpPostedFile tempImage, HttpServerUtilityBase localServer, int personID)
+        {
+            return Account.TemporaryPostImageDL(tempImage, localServer, personID);
+        }
 
         #endregion
     }

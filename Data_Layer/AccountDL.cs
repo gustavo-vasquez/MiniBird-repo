@@ -1,10 +1,13 @@
 ﻿using Domain_Layer;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Data_Layer
 {
@@ -171,6 +174,62 @@ namespace Data_Layer
                 }                                
 
                 return hash.ToString();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public string TemporaryPostImageDL(HttpPostedFile tempImage, HttpServerUtilityBase localServer, int personID)
+        {
+            try
+            {
+                if (tempImage == null)
+                    throw new ArgumentNullException("Debe elegir una imágen.");
+
+                string imgDir;
+                using (var context = new MiniBirdEntities())
+                {
+                    imgDir = "/Content/images/temporary" + context.Person.Where(p => p.PersonID == personID).Single().UserName;
+                }
+
+                Directory.CreateDirectory(localServer.MapPath(imgDir));
+                string imgFullPath = localServer.MapPath(imgDir) + "/" + tempImage.FileName;
+
+                // Get file data
+                byte[] data = new byte[] { };
+                using (var binaryReader = new BinaryReader(tempImage.InputStream))
+                {
+                    data = binaryReader.ReadBytes(tempImage.ContentLength);
+                }
+
+                // Guardar imagen en el servidor
+                using (FileStream image = File.Create(imgFullPath, data.Length))
+                {
+                    image.Write(data, 0, data.Length);
+                }
+
+                // Verifica si la imágen cumple las condiciones de validación
+                const int _maxSize = 2 * 1024 * 1024;
+                const int _maxWidth = 1000;
+                const int _maxHeight = 1000;
+                List<string> _fileTypes = new List<string>() { "jpg", "jpeg", "gif", "png" };
+                string fileExt = Path.GetExtension(tempImage.FileName);
+
+                if (new FileInfo(imgFullPath).Length > _maxSize)
+                    throw new FormatException("El avatar no debe superar los 2mb.");
+
+                if (!_fileTypes.Contains(fileExt.Substring(1), StringComparer.OrdinalIgnoreCase))
+                    throw new FormatException("Para el avatar solo se admiten imágenes JPG, JPEG, GIF Y PNG.");
+
+                using (Image img = Image.FromFile(imgFullPath))
+                {
+                    if (img.Width > _maxWidth || img.Height > _maxHeight)
+                        throw new FormatException("El avatar admite hasta una resolución de 1000x1000.");
+                }
+
+                return imgDir + "/" + tempImage.FileName;
             }
             catch
             {
