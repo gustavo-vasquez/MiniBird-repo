@@ -16,6 +16,6 @@ namespace MiniBird.DTO
         public byte[] GifImage { get; set; }
         public byte[] VideoFile { get; set; }
         public string[] ImagesUploaded { get; set; }
-        public int InReplyTo { get; set; }
+        public int? InReplyTo { get; set; }
     }
 }

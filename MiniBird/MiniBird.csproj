@@ -253,6 +253,10 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\ProfileScreen.cshtml" />
     <Content Include="Views\Account\_NewPost.cshtml" />
+    <Content Include="Views\Account\Timeline.cshtml" />
+    <Content Include="Views\Account\_TopTrendings.cshtml" />
+    <Content Include="Views\Account\_ProfileSection.cshtml" />
+    <Content Include="Views\Account\_PostSection.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

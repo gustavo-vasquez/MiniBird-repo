@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActiveSession.cs" />
+    <Compile Include="DTO\TimelineDTO.cs" />
     <Compile Include="Hashtag.cs">
       <DependentUpon>MiniBirdDB.tt</DependentUpon>
     </Compile>

@@ -106,10 +106,31 @@ namespace MiniBird.Controllers
             return View();
         }
 
+        public ActionResult Timeline()
+        {
+            try
+            {                
+                return View();
+            }
+            catch(Exception ex)
+            {
+                return ProcessError(ex);
+            }            
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult NewPost(NewPostDTO model)
         {
+            if (!ModelState.IsValid)
+                return Content("Fallaron las validaciones.");
+
+            if (Account.CreateNewPostSL(model.Comment, model.GifImage, model.VideoFile, model.ImagesUploaded, ActiveSession.GetPersonID(), model.InReplyTo))
+            {
+                TempData["message"] = "El post se ha creado correctamente.";
+                return RedirectToAction("Timeline", "Account");
+            }
+
             return RedirectToAction("Index", "Home");
         }
 

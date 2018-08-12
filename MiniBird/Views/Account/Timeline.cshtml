@@ -1,0 +1,35 @@
+﻿@model MiniBird.DTO.TimelineDTO
+
+@{
+    ViewBag.Title = "Timeline";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="sticky-top">
+            <div id="profileSection" class="card mb-2">
+                @Html.Partial("~/Views/Account/_ProfileSection.cshtml", Model.ProfileSection)
+            </div>
+            <div id="trendsSection" class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-9 col-md-9">
+                            <b>Tendencias</b>
+                        </div>
+                        <div class="col-3 col-md-3 text-right">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">                    
+                    @(Model.TopTrendingsSection != null) ? @Html.Partial("~/Views/Account/_TopTrendings.cshtml", Model.TopTrendingsSection) : <p>No hay tendencias en este momento <i class="far fa-frown-open"></i></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        @Html.Partial("~/Views/Account/_PostSection.cshtml", Model.PostSection)
+    </div>
+</div>
+

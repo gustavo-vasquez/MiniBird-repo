@@ -18,7 +18,7 @@
         <div class="collapse navbar-collapse" id="navbarLinks">
             <ul class="navbar-nav w-100 justify-content-start draw-borders">
                 <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Index", "Home")"><i class="fas fa-home"></i> Inicio</a>
+                    <a class="nav-link" href="@Url.Action("Timeline", "Account")"><i class="fas fa-home"></i> Inicio</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#"><i class="fas fa-clipboard-list"></i> Listas</a>
@@ -78,13 +78,21 @@
     </nav>
         
     <div class="container body-content">
+        @if (TempData["message"] != null)
+        {
+            <div class="alert alert-dismissible alert-success text-center">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <p class="mb-0">@TempData["message"]</p>
+            </div>
+        }
+
         @RenderBody()
 
-        @Html.Partial("~/Views/Account/_NewPost.cshtml")
+        @Html.Partial("~/Views/Account/_NewPost.cshtml")        
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - MiniBird</p>
-        </footer>
+        </footer>        
     </div>
 
     @Scripts.Render("~/bundles/jquery")

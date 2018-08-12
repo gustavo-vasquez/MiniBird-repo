@@ -18,7 +18,7 @@ function addLinkToPost() {
             $Comment = $('#Comment');
             $LinkToAdd = $('#linkText').val();
 
-            if ($LinkToAdd.startsWith("http://www.") || $LinkToAdd.startsWith("https://www.")) {
+            if ($LinkToAdd.startsWith("http://") || $LinkToAdd.startsWith("https://")) {
                 if ($Comment.val().length > 0)
                     $Comment.val($Comment.val() + ' ' + $LinkToAdd + ' ');
                 else

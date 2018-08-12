@@ -21,7 +21,7 @@ namespace MiniBird.Filters
                 else if (loginCookie != null)
                 {
                     filterContext.HttpContext.Session["MiniBirdAccount"] = new Service_Layer.AccountSL().CreateSessionFromCookieSL(loginCookie.Value);
-                    Domain_Layer.ActiveSession.Fill(session);
+                    Domain_Layer.ActiveSession.Fill(filterContext.HttpContext.Session["MiniBirdAccount"]);
                 }
             }
         }        

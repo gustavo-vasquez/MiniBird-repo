@@ -33,6 +33,11 @@ namespace Service_Layer
             return Account.CreateSessionFromCookieDL(hash);
         }
 
+        public bool CreateNewPostSL(string comment, byte[] gifImage, byte[] videoFile, string[] imagesUploaded, int personID, int? inReplyTo)
+        {            
+            return Account.CreateNewPostDL(comment, gifImage, videoFile, imagesUploaded, personID, inReplyTo);
+        }
+
 
         #region TAREAS AUXILIARES
 
