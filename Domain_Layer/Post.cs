@@ -35,6 +35,10 @@ namespace Domain_Layer
         public System.DateTime PublicationDate { get; set; }
         public Nullable<int> InReplyTo { get; set; }
         public int ID_Person { get; set; }
+        public string ImageFirstSlot_MimeType { get; set; }
+        public string ImageSecondSlot_MimeType { get; set; }
+        public string ImageThirdSlot_MimeType { get; set; }
+        public string ImageFourthSlot_MimeType { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LikePost> LikePost { get; set; }

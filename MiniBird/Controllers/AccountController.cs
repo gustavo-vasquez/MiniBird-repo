@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using static MiniBird.Filters.SessionFilters;
+using Domain_Layer.DTO;
 
 namespace MiniBird.Controllers
 {    
@@ -102,15 +103,17 @@ namespace MiniBird.Controllers
         
         public ActionResult ProfileScreen(string v)
         {
+            var model = Account.ProfileScreenCollectionDataSL(ActiveSession.GetPersonID());
             ViewBag.Tab = v;
-            return View();
+            return View(model);
         }
 
         public ActionResult Timeline()
         {
             try
-            {                
-                return View();
+            {
+                var model = Account.TimelineCollectionDataSL(ActiveSession.GetPersonID());
+                return View(model);
             }
             catch(Exception ex)
             {
@@ -127,7 +130,7 @@ namespace MiniBird.Controllers
 
             if (Account.CreateNewPostSL(model.Comment, model.GifImage, model.VideoFile, model.ImagesUploaded, ActiveSession.GetPersonID(), model.InReplyTo))
             {
-                TempData["message"] = "El post se ha creado correctamente.";
+                TempData["message"] = "El post se ha publicado.";
                 return RedirectToAction("Timeline", "Account");
             }
 
@@ -152,7 +155,7 @@ namespace MiniBird.Controllers
             {
                 throw ex;
             }
-        }
+        }        
 
         #endregion
 
@@ -164,7 +167,45 @@ namespace MiniBird.Controllers
         public JsonResult CheckUserName(string username)
         {
             return Json(new { userExists = Account.UserNameExistsSL(username) }, JsonRequestBehavior.AllowGet);
-        }        
+        }
+
+        [HttpPost]
+        public string ChangeHeader()
+        {
+            if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
+            {
+                var headerFile = System.Web.HttpContext.Current.Request.Files["ImageFile"];
+                return Account.ChangeHeaderSL(headerFile, ActiveSession.GetPersonID());
+            }
+
+            return "";
+        }
+
+        [HttpPost]
+        public string ChangeAvatar()
+        {
+            if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
+            {
+                var avatarFile = System.Web.HttpContext.Current.Request.Files["ImageFile"];
+                return Account.ChangeAvatarSL(avatarFile, ActiveSession.GetPersonID());
+            }
+
+            return "";
+        }
+
+        [HttpGet]
+        public PartialViewResult EditDetailsForm()
+        {
+            var model = Account.ChangeProfileDetailsSL(ActiveSession.GetPersonID());
+            return PartialView("_EditProfileDetails", model);
+        }
+
+        [HttpPost]
+        public JsonResult EditDetailsForm(ProfileDetailsDTO model)
+        {
+            Account.ChangeProfileDetailsSL(model, ActiveSession.GetPersonID());
+            return Json(new { personalDescription = model.PersonalDescription, websiteURL = model.WebSiteURL, birthDate = model.Birthdate });
+        }
 
         #endregion
 

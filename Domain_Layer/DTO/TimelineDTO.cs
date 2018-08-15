@@ -9,8 +9,15 @@ namespace Domain_Layer.DTO
     public class TimelineDTO
     {
         public ProfileSectionDTO ProfileSection { get; set; }
-        public TopTrendingsDTO TopTrendingsSection { get; set; }
-        public PostSectionDTO PostSection { get; set; }
+        public List<TopTrendingsDTO> TopTrendingsSection { get; set; }
+        public List<PostSectionDTO> PostSection { get; set; }
+
+        public TimelineDTO()
+        {
+            this.ProfileSection = new ProfileSectionDTO();
+            this.TopTrendingsSection = new List<TopTrendingsDTO>();
+            this.PostSection = new List<PostSectionDTO>();
+        }
     }
 
     public class ProfileSectionDTO

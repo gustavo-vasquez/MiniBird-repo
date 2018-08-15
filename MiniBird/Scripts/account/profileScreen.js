@@ -29,5 +29,66 @@
             break;
         default: $profileScreenNav.children('li:first').children('a').addClass('active selected');
             break;
-    }
+    }    
+
+    document.getElementById("headerFile").onchange = function () {
+        var data = new FormData();
+        var files = $("#headerFile").get(0).files;
+        if (files.length > 0) {
+            data.append("ImageFile", files[0]);
+
+            $.ajax({
+                url: "/Account/ChangeHeader",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+                    //code after success
+                    $('.profile_screen-header').attr('src', response);
+                },
+                error: function (response) {
+                    console.log("Ocurrió un error.");
+                }
+            });
+        }
+    };
+
+    document.getElementById("avatarFile").onchange = function () {
+        var data = new FormData();
+        var files = $("#avatarFile").get(0).files;
+        if (files.length > 0) {
+            data.append("ImageFile", files[0]);
+
+            $.ajax({
+                url: "/Account/ChangeAvatar",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (response) {
+                    //code after success
+                    $('.profile_screen-avatar').attr('src', response);
+                },
+                error: function (response) {
+                    console.log("Ocurrió un error.");
+                }
+            });
+        }
+    };
+
+    $('#editDetails').on('click', function () {
+        $.ajax({
+            url: "/Account/EditDetailsForm",
+            method: "GET",
+            success: function (response) {
+                $('.profile-details').html(response);
+                $.validator.unobtrusive.parse($('#editDetailsForm'));                
+
+                function changeMade(data) {
+                    console.log(data.personalDescription);
+                }
+            }
+        });
+    });
 });

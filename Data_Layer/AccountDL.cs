@@ -113,8 +113,8 @@ namespace Data_Layer
 
         public bool CreateNewPostDL(string comment, byte[] gifImage, byte[] videoFile, string[] imagesUploaded, int personID, int? inReplyTo)
         {
-            //try
-            //{
+            try
+            {
                 using (var context = new MiniBirdEntities())
                 {
                     if(context.Person.Any(p => p.PersonID == personID))
@@ -127,13 +127,21 @@ namespace Data_Layer
                             {
                                 switch(i)
                                 {
-                                    case 0: post.ImageFirstSlot = imgBase64ToByteArray(imagesUploaded[0]);
+                                    case 0:
+                                        post.ImageFirstSlot = imgBase64ToByteArray(imagesUploaded[i]);
+                                        post.ImageFirstSlot_MimeType = ExtractMimeType(imagesUploaded[i]);
                                         break;
-                                    case 1: post.ImageSecondSlot = imgBase64ToByteArray(imagesUploaded[1]);
+                                    case 1:
+                                        post.ImageSecondSlot = imgBase64ToByteArray(imagesUploaded[i]);
+                                        post.ImageSecondSlot_MimeType = ExtractMimeType(imagesUploaded[i]);
                                         break;
-                                    case 2: post.ImageThirdSlot = imgBase64ToByteArray(imagesUploaded[2]);
+                                    case 2:
+                                        post.ImageThirdSlot = imgBase64ToByteArray(imagesUploaded[i]);
+                                        post.ImageThirdSlot_MimeType = ExtractMimeType(imagesUploaded[i]);
                                         break;
-                                    case 3: post.ImageFourthSlot = imgBase64ToByteArray(imagesUploaded[3]);
+                                    case 3:
+                                        post.ImageFourthSlot = imgBase64ToByteArray(imagesUploaded[i]);
+                                        post.ImageFourthSlot_MimeType = ExtractMimeType(imagesUploaded[i]);
                                         break;
                                 }
                             }
@@ -150,11 +158,78 @@ namespace Data_Layer
 
                     return false;
                 }
-            //}
-            //catch
-            //{
-            //    return false;
-            //}
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public ProfileScreenDTO ProfileScreenCollectionDataDL(int personID)
+        {
+            try
+            {
+                using(var context = new MiniBirdEntities())
+                {
+                    var person = context.Person.Where(p => p.PersonID == personID).First();
+                    var profileScreenDTO = new ProfileScreenDTO();
+                    profileScreenDTO.ProfileInformation.UserName = person.UserName;
+                    profileScreenDTO.ProfileInformation.NickName = person.NickName;
+                    profileScreenDTO.ProfileInformation.PersonalDescription = person.PersonalDescription;
+                    profileScreenDTO.ProfileInformation.WebSiteURL = person.WebSiteURL;
+                    profileScreenDTO.ProfileInformation.Birthdate = person.Birthdate;
+                    profileScreenDTO.ProfileInformation.RegistrationDate = person.RegistrationDate;
+                    profileScreenDTO.ProfileInformation.ProfileAvatar = ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType);
+                    profileScreenDTO.ProfileInformation.ProfileHeader = ByteArrayToBase64(person.ProfileHeader, person.ProfileHeader_MimeType);
+
+                    return profileScreenDTO;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public ProfileDetailsDTO ChangeProfileDetailsDL(int personID)
+        {
+            try
+            {
+                using (var context = new MiniBirdEntities())
+                {
+                    var person = context.Person.Where(p => p.PersonID == personID).First();
+                    var profileDetailsDTO = new ProfileDetailsDTO();
+                    profileDetailsDTO.PersonalDescription = person.PersonalDescription;
+                    profileDetailsDTO.WebSiteURL = person.WebSiteURL;
+                    profileDetailsDTO.Birthdate = person.Birthdate;
+                    context.SaveChanges();
+
+                    return profileDetailsDTO;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void ChangeProfileDetailsDL(ProfileDetailsDTO data, int personID)
+        {
+            try
+            {
+                using(var context = new MiniBirdEntities())
+                {
+                    var person = context.Person.Where(p => p.PersonID == personID).First();
+                    person.PersonalDescription = data.PersonalDescription;
+                    person.WebSiteURL = data.WebSiteURL;
+                    person.Birthdate = data.Birthdate;
+                    context.SaveChanges();
+                }
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public TimelineDTO TimelineCollectionDataDL(int personID)
@@ -164,14 +239,32 @@ namespace Data_Layer
                 using(var context = new MiniBirdEntities())
                 {
                     var person = context.Person.Where(p => p.PersonID == personID).First();
-                    var post = context.Post.Where(ps => ps.ID_Person == personID).ToList();                    
+                    var posts = context.Post.Where(ps => ps.ID_Person == personID && ps.InReplyTo == null).ToList();
 
                     var timelineDTO = new TimelineDTO();
                     timelineDTO.ProfileSection.UserName = person.UserName;
                     timelineDTO.ProfileSection.NickName = person.NickName;
                     timelineDTO.ProfileSection.ProfileHeader = (person.ProfileHeader != null) ? ByteArrayToBase64(person.ProfileHeader, person.ProfileHeader_MimeType) : defaultHeader;
                     timelineDTO.ProfileSection.ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar;
-                    timelineDTO.ProfileSection.PostCount = post.Count();
+                    timelineDTO.ProfileSection.PostCount = posts.Count();
+                    timelineDTO.ProfileSection.FollowerCount = person.Person11.ToList().Count;
+                    timelineDTO.ProfileSection.FollowingCount = person.Person3.ToList().Count;
+                    
+                    foreach(var post in posts)
+                    {
+                        timelineDTO.PostSection.Add(new PostSectionDTO()
+                        {
+                            PostID = post.PostID,
+                            Comment = post.Comment,
+                            GIFImage = post.GIFImage,
+                            VideoFile = post.VideoFile,                            
+                            ImageFirstSlot = ByteArrayToBase64(post.ImageFirstSlot, post.ImageFirstSlot_MimeType),
+                            ImageSecondSlot = ByteArrayToBase64(post.ImageSecondSlot, post.ImageSecondSlot_MimeType),
+                            ImageThirdSlot = ByteArrayToBase64(post.ImageThirdSlot, post.ImageThirdSlot_MimeType),
+                            ImageFourthSlot = ByteArrayToBase64(post.ImageFourthSlot, post.ImageFourthSlot_MimeType),
+                            PublicationDate = post.PublicationDate
+                        });
+                    }
 
                     return timelineDTO;
                 }                
@@ -179,6 +272,34 @@ namespace Data_Layer
             catch
             {
                 throw;
+            }
+        }
+
+        public string ChangeHeaderDL(HttpPostedFile img, int personID)
+        {            
+            using (var context = new MiniBirdEntities())
+            {
+                var person = context.Person.Where(p => p.PersonID == personID).First();
+                var newHeader = PostedFileToByteArray(img);
+                person.ProfileHeader = newHeader;
+                person.ProfileHeader_MimeType = img.ContentType;
+                context.SaveChanges();
+
+                return ByteArrayToBase64(newHeader, img.ContentType);
+            }
+        }
+
+        public string ChangeAvatarDL(HttpPostedFile img, int personID)
+        {
+            using (var context = new MiniBirdEntities())
+            {
+                var person = context.Person.Where(p => p.PersonID == personID).First();
+                var newAvatar = PostedFileToByteArray(img);
+                person.ProfileAvatar = newAvatar;
+                person.ProfileAvatar_MimeType = img.ContentType;
+                context.SaveChanges();
+
+                return ByteArrayToBase64(newAvatar, img.ContentType);
             }
         }
 
@@ -194,7 +315,10 @@ namespace Data_Layer
 
         private string ByteArrayToBase64(byte[] profileAvatar, string mimeType)
         {
-            return String.Concat("data:", mimeType, ";base64,", Convert.ToBase64String(profileAvatar));
+            if(profileAvatar != null)
+                return String.Concat("data:", mimeType, ";base64,", Convert.ToBase64String(profileAvatar));
+
+            return null;
         }        
 
         public bool UserNameExistsDL(string username)
@@ -262,6 +386,20 @@ namespace Data_Layer
             return Convert.FromBase64String(imgBase64);
         }
 
+        public string ExtractMimeType(string imgBase64)
+        {
+            int end = imgBase64.IndexOf(';');
+            return imgBase64.Substring(5, end - 5);
+        }
+
+        private byte[] PostedFileToByteArray(HttpPostedFile img)
+        {
+            MemoryStream ms = new MemoryStream();
+            img.InputStream.CopyTo(ms);
+
+            return ms.ToArray();
+        }
+
         public string TemporaryPostImageDL(HttpPostedFile tempImage, HttpServerUtilityBase localServer, int personID)
         {
             try
@@ -319,5 +457,91 @@ namespace Data_Layer
         }
 
         #endregion
+
+        //List<string> emailsperson1list = new List<string>();
+        //List<string> emailsperson2list = new List<string>();
+
+        //var person1list = person.Person1.ToList();
+
+        //foreach (var p in person1list)
+        //{
+        //    emailsperson1list.Add(p.Email);
+        //}
+
+        //var person2list = person.Person2.ToList();
+
+        //foreach (var p2 in person2list)
+        //{
+        //    emailsperson2list.Add(p2.Email);
+        //}
+
+        //List<int> blockedids = new List<int>();
+        //var blocked = person.Person1.Union(person.Person2);
+        //var blockedlist = blocked.ToList();
+
+        //foreach (var b in blockedlist)
+        //{
+        //    blockedids.Add(b.PersonID);
+        //}
+
+        //var blocked2 = person.Person2.Union(person.Person1);
+
+        //List<string> emailsperson11list = new List<string>();
+        //List<string> emailsperson3list = new List<string>();
+
+        //var person11list = person.Person11.ToList();
+
+        //foreach (var p11 in person11list)
+        //{
+        //    emailsperson11list.Add(p11.Email);
+        //}
+
+        //var person3list = person.Person3.ToList();
+
+        //foreach (var p3 in person3list)
+        //{
+        //    emailsperson3list.Add(p3.Email);
+        //}
+
+        //List<int> followids = new List<int>();
+        //var follow = person.Person11.Union(person.Person3);
+        //var followlist = follow.ToList();
+
+        //foreach (var f in followlist)
+        //{
+        //    followids.Add(f.PersonID);
+        //}
+
+        //var follow = person.Person11.Union(person.Person3);
+        //var follow2 = person.Person3.Union(person.Person11);
+
+        //List<string> emailsperson12list = new List<string>();
+        //List<string> emailsperson4list = new List<string>();
+
+        //var person12list = person.Person12.ToList();
+
+        //foreach (var p12 in person12list)
+        //{
+        //    emailsperson12list.Add(p12.Email);
+        //}
+
+        //var person4list = person.Person4.ToList();
+
+        //foreach (var p4 in person4list)
+        //{
+        //    emailsperson4list.Add(p4.Email);
+        //}
+
+        //List<int> mutedids = new List<int>();                    
+        //var muted = person.Person12.Union(person.Person4);
+        //var mutedlist = muted.ToList();
+
+        //foreach (var m in mutedlist)
+        //{
+        //    mutedids.Add(m.PersonID);
+        //}
+
+        //var muted = person.Person12.Union(person.Person4);
+        //var muted2 = person.Person4.Union(person.Person12);
     }
 }

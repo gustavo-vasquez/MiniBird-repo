@@ -88,7 +88,7 @@
 
         @RenderBody()
 
-        @Html.Partial("~/Views/Account/_NewPost.cshtml")        
+        @Html.Partial("~/Views/Account/_NewPost.cshtml", new MiniBird.DTO.NewPostDTO())
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - MiniBird</p>

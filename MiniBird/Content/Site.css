@@ -152,9 +152,44 @@
 
 /* Estilos para los posts */
 
-.post-images img {
-    height: 100%;
+.post-profile-img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.post-images img {    
     width: 100%;
+    object-fit: cover;
+}
+
+.one-thumbnail img {
+    height: 300px;
+}
+
+.two-thumbnails img {
+    height: 260px;
+}
+
+.three-thumbnails img {
+    height: 260px;
+}
+
+.mini-thumbnail {
+    height: 130px !important;
+}
+
+.four-thumbnails img {
+    height: 200px;
+}
+
+.img-two-mini {
+    height: 130px !important;
+}
+
+.img-four-mini {
+    height: 200px !important;
 }
 
 .post-actions-menu {

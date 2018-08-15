@@ -109,6 +109,10 @@
           <Property Name="PublicationDate" Type="datetime" Nullable="false" />
           <Property Name="InReplyTo" Type="int" />
           <Property Name="ID_Person" Type="int" Nullable="false" />
+          <Property Name="ImageFirstSlot_MimeType" Type="nvarchar" MaxLength="15" />
+          <Property Name="ImageSecondSlot_MimeType" Type="nvarchar" MaxLength="15" />
+          <Property Name="ImageThirdSlot_MimeType" Type="nvarchar" MaxLength="15" />
+          <Property Name="ImageFourthSlot_MimeType" Type="nvarchar" MaxLength="15" />
         </EntityType>
         <EntityType Name="PrivateMessage">
           <Key>
@@ -652,6 +656,10 @@
           <NavigationProperty Name="Post2" Relationship="Self.FKPost_ToPostT" FromRole="Post1" ToRole="Post" />
           <NavigationProperty Name="RePost" Relationship="Self.FKRePost_ToPostT" FromRole="Post" ToRole="RePost" />
           <NavigationProperty Name="Hashtag" Relationship="Self.HashtagsInPost" FromRole="Post" ToRole="Hashtag" />
+          <Property Name="ImageFirstSlot_MimeType" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="ImageSecondSlot_MimeType" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="ImageThirdSlot_MimeType" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="ImageFourthSlot_MimeType" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="PrivateMessage">
           <Key>
@@ -1033,6 +1041,10 @@
           <EntitySetMapping Name="Post">
             <EntityTypeMapping TypeName="MiniBirdModel.Post">
               <MappingFragment StoreEntitySet="Post">
+                <ScalarProperty Name="ImageFourthSlot_MimeType" ColumnName="ImageFourthSlot_MimeType" />
+                <ScalarProperty Name="ImageThirdSlot_MimeType" ColumnName="ImageThirdSlot_MimeType" />
+                <ScalarProperty Name="ImageSecondSlot_MimeType" ColumnName="ImageSecondSlot_MimeType" />
+                <ScalarProperty Name="ImageFirstSlot_MimeType" ColumnName="ImageFirstSlot_MimeType" />
                 <ScalarProperty Name="PostID" ColumnName="PostID" />
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="GIFImage" ColumnName="GIFImage" />

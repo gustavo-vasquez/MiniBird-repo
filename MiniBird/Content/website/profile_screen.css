@@ -17,6 +17,17 @@
     object-fit: cover;
 }
 
+.forHeader {
+    position: absolute;
+    top: 5px;
+    left: 20px;
+}
+
+.forAvatar {
+    position: absolute;
+    left: 20px;
+}
+
 /*.profile_screen-trends > h5 > a {
     margin-right: 1rem !important;
 }*/

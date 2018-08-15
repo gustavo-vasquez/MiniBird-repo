@@ -1,5 +1,6 @@
 ﻿using Data_Layer;
 using Domain_Layer;
+using Domain_Layer.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,35 @@ namespace Service_Layer
             return Account.CreateNewPostDL(comment, gifImage, videoFile, imagesUploaded, personID, inReplyTo);
         }
 
+        public ProfileScreenDTO ProfileScreenCollectionDataSL(int personID)
+        {
+            return Account.ProfileScreenCollectionDataDL(personID);
+        }
+
+        public ProfileDetailsDTO ChangeProfileDetailsSL(int personID)
+        {
+            return Account.ChangeProfileDetailsDL(personID);
+        }
+
+        public void ChangeProfileDetailsSL(ProfileDetailsDTO data, int personID)
+        {
+            Account.ChangeProfileDetailsDL(data, personID);
+        }
+
+        public TimelineDTO TimelineCollectionDataSL(int personID)
+        {
+            return Account.TimelineCollectionDataDL(personID);
+        }
+
+        public string ChangeHeaderSL(HttpPostedFile img, int personID)
+        {
+            return Account.ChangeHeaderDL(img, personID);
+        }
+
+        public string ChangeAvatarSL(HttpPostedFile img, int personID)
+        {
+            return Account.ChangeAvatarDL(img, personID);
+        }
 
         #region TAREAS AUXILIARES
 

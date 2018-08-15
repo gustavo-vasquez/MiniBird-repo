@@ -1,4 +1,4 @@
-﻿@model MiniBird.DTO.TimelineDTO
+﻿@model Domain_Layer.DTO.TimelineDTO
 
 @{
     ViewBag.Title = "Timeline";
@@ -21,8 +21,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">                    
-                    @(Model.TopTrendingsSection != null) ? @Html.Partial("~/Views/Account/_TopTrendings.cshtml", Model.TopTrendingsSection) : <p>No hay tendencias en este momento <i class="far fa-frown-open"></i></p>
+                <div class="card-body">
+                    @if (Model.TopTrendingsSection.Count > 0)
+                    {
+                        @Html.Partial("~/Views/Account/_TopTrendings.cshtml");
+                    }
+                    else
+                    {
+                        <p> No hay tendencias en este momento <i class="far fa-frown-open"></i></p>
+                    }
                 </div>
             </div>
         </div>

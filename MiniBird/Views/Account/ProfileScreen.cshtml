@@ -1,13 +1,16 @@
-﻿
+﻿@model Domain_Layer.DTO.ProfileScreenDTO
+
 @{
-    ViewBag.Title = "ProfileScreen";
+    ViewBag.Title = "Mi perfil";
 }
 
 @Styles.Render("~/Content/website/profile_screen.css")
 
 <div class="row">
-    <div class="col">        
-        <img class="profile_screen-header" src="~/Content/images/example_header.jpg" alt="header_background" />          
+    <div class="col">
+        <input type="file" accept="image/*" id="headerFile" class="d-none" />
+        <img class="profile_screen-header" src="@Model.ProfileInformation.ProfileHeader" alt="header_background" />
+        <label for="headerFile" class="btn btn-sm btn-primary forHeader" title="Cambiar la imágen de cabecera"><i class="far fa-edit"></i></label>
     </div>
 </div>
 <hr />
@@ -15,16 +18,23 @@
     <div class="col">
         <div class="profile_screen-trends">
             <h5>
-                <a class="mr-3" href="#">#LaChingadaTopic</a>
-                <a class="mr-3" href="#">#LaChingadaTopic</a>
-                <a class="mr-3" href="#">#LaChingadaTopic</a>
-                <a class="mr-3" href="#">#LaChingadaTopic</a>
-                <a class="mr-3" href="#">#LaChingadaTopic</a>
-                <a class="mr-3" href="#">#LaChingadaTopic</a>
-                <a class="mr-3" href="#">#LaChingadaTopic</a>
-                <a class="mr-3" href="#">#LaChingadaTopic</a>
-                <a class="mr-3" href="#">#LaChingadaTopic</a>
-                <a class="mr-3" href="#">#LaChingadaTopic</a>
+                @if (Model.TopTrendings.Count > 0)
+                {
+                    <a class="mr-3" href="#">#LaChingadaTopic</a>
+                    <a class="mr-3" href="#">#LaChingadaTopic</a>
+                    <a class="mr-3" href="#">#LaChingadaTopic</a>
+                    <a class="mr-3" href="#">#LaChingadaTopic</a>
+                    <a class="mr-3" href="#">#LaChingadaTopic</a>
+                    <a class="mr-3" href="#">#LaChingadaTopic</a>
+                    <a class="mr-3" href="#">#LaChingadaTopic</a>
+                    <a class="mr-3" href="#">#LaChingadaTopic</a>
+                    <a class="mr-3" href="#">#LaChingadaTopic</a>
+                    <a class="mr-3" href="#">#LaChingadaTopic</a>
+                }
+                else
+                {
+                    <span>No hay tendencias en este momento <i class="far fa-frown-open"></i></span>
+                }
             </h5>
         </div>
     </div>
@@ -34,34 +44,41 @@
     <div class="col-md-4 text-center">
         <div class="row">
             <div class="col">
-                <img class="profile_screen-avatar" src="~/Content/images/example_avatar.jpg" alt="avatar" />
+                <input type="file" accept="image/*" id="avatarFile" class="d-none" />
+                <img class="profile_screen-avatar" src="@Model.ProfileInformation.ProfileAvatar" alt="avatar" />
+                <label for="avatarFile" class="btn btn-sm btn-outline-primary forAvatar" title="Cambiar la imágen de perfil"><i class="far fa-edit"></i></label>
             </div>            
         </div>
         <div class="row mt-3">
             <div class="col">
-                <h3>gustavoDev22</h3>
-                <h5>@@gustavoDev22</h5>
-                <p class="mt-4"><i class="far fa-comment-dots"></i> Viendo esta pagina de perfil</p>
-                <p><a href="#"><i class="fas fa-link"></i> https://www.google.com.ar</a></p>
-                <p class="text-muted"><i class="fas fa-birthday-cake"></i> Nacio el 31 de diciembre de 2010</p>
-                <p class="text-muted"><i class="far fa-calendar-alt"></i> Se unio en diciembre de 1999</p>
+                <h3>@Model.ProfileInformation.NickName</h3>
+                <h5>@Model.ProfileInformation.UserName</h5>                
             </div>
-        </div>        
+        </div>
+        <div class="row mt-3">
+            <div id="lala" class="col profile-details">
+                <p class="mt-2"><i class="far fa-comment-dots"></i> @Model.ProfileInformation.PersonalDescription</p>
+                <p><a href="@Model.ProfileInformation.WebSiteURL"><i class="fas fa-link"></i> @Model.ProfileInformation.WebSiteURL</a></p>
+                <p class="text-muted"><i class="fas fa-birthday-cake"></i> Nació el 31 de diciembre de 2010</p>
+                <p class="text-muted"><i class="far fa-calendar-alt"></i> Se unió en diciembre de 1999</p>
+                <button id="editDetails" type="button" class="btn btn-sm btn-outline-primary">Editar</button>
+            </div>
+        </div>
     </div>
     <div class="col-md-8">
         <div class="row mb-3">
             <div class="col">
                 <ul id="profileScreen-nav" class="nav nav-pills" data-tab="@ViewBag.Tab">
-                    <li class="nav-item">
+                    <li class="nav-item mr-1">
                         <a class="nav-link" href="@Url.Action("ProfileScreen", "Account")">Posts <span class="badge badge-primary badge-pill">655</span></a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item mr-1">
                         <a class="nav-link" href="@Url.Action("ProfileScreen", "Account", new { v = "following" })">Siguiendo <span class="badge badge-primary badge-pill">150</span></a>
                     </li>                    
-                    <li class="nav-item">
+                    <li class="nav-item mr-1">
                         <a class="nav-link" href="@Url.Action("ProfileScreen", "Account", new { v = "followers" })">Seguidores <span class="badge badge-primary badge-pill">95</span></a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item mr-1">
                         <a class="nav-link" href="@Url.Action("ProfileScreen", "Account", new { v = "likes" })">Me gusta <span class="badge badge-primary badge-pill">22K</span></a>
                     </li>
                     <li class="nav-item">

@@ -1,4 +1,6 @@
-﻿<img class="card-img-top profile-section-header" src="/Content/images/example_header.jpg" alt="header_image">
+﻿@model Domain_Layer.DTO.ProfileSectionDTO
+
+<img class="card-img-top profile-section-header" src="/Content/images/example_header.jpg" alt="header_image">
 <div class="card-body">
     <div class="row">
         <div class="col">
@@ -11,19 +13,19 @@
         <div class="col-4 col-md-4">
             <a href="#" class="legends">
                 <span>Posts</span>
-                <span>2000</span>
+                <span>@Model.PostCount</span>
             </a>
         </div>
         <div class="col-4 col-md-4">
             <a href="#" class="legends">
                 <span>Siguiendo</span>
-                <span>60</span>
+                <span>@Model.FollowingCount</span>
             </a>
         </div>
         <div class="col-4 col-md-4">
             <a href="#" class="legends">
                 <span>Seguidores</span>
-                <span>38</span>
+                <span>@Model.FollowerCount</span>
             </a>
         </div>
     </div>
