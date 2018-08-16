@@ -42,10 +42,10 @@
                         {
                             <div class="card post-images two-thumbnails">
                                 <div class="row no-gutters">
-                                    <div class="col">
+                                    <div class="col tpr">
                                         <img class="card-img" src="@post.ImageFirstSlot" alt="posted_image">
                                     </div>
-                                    <div class="col">
+                                    <div class="col tpl">
                                         <img class="card-img" src="@post.ImageSecondSlot" alt="posted_image" />
                                     </div>
                                 </div>
@@ -55,11 +55,11 @@
                         {
                             <div class="card post-images three-thumbnails">
                                 <div class="row no-gutters">
-                                    <div class="col-md-8">
+                                    <div class="col-md-8 tpr">
                                         <img class="card-img" src="@post.ImageFirstSlot" alt="posted_image">
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="row">
+                                    <div class="col-md-4 tpl">
+                                        <div class="row tpb">
                                             <div class="col">
                                                 <img class="card-img mini-thumbnail" src="@post.ImageSecondSlot" alt="posted_image" />
                                             </div>
@@ -77,17 +77,17 @@
                         {
                             <div class="card post-images four-thumbnails">
                                 <div class="row no-gutters">
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 tpr">
                                         <img class="card-img" src="@post.ImageFirstSlot" alt="posted_image">
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 tpl">
                                         <img class="card-img" src="@post.ImageSecondSlot" alt="posted_image">
                                     </div>
-                                    <div class="w-100"></div>
-                                    <div class="col-md-6">
+                                    <div class="w-100 tpb"></div>
+                                    <div class="col-md-6 tpr">
                                         <img class="card-img" src="@post.ImageThirdSlot" alt="posted_image" />
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 tpl">
                                         <img class="card-img" src="@post.ImageFourthSlot" alt="posted_image" />
                                     </div>
                                 </div>
@@ -97,13 +97,13 @@
                     </div>
                 </div>
                 <div class="row mt-4 justify-content-center">
-                    <div class="col-md-5">
-                        <a href="#" class="card-link"><i class="far fa-comment"></i><span> 28</span></a>
-                        <a href="#" class="card-link"><i class="fas fa-retweet"></i><span> 152K</span></a>
-                        <a href="#" class="card-link"><i class="far fa-heart"></i><span> 11K</span></a>
+                    <div class="col-md-5 interact-buttons">
+                        <button class="leave-comment"><i class="far fa-comment"></i><span> 28</span></button>
+                        <button class="repost"><i class="fas fa-retweet"></i><span> 152K</span></button>
+                        <button class="card-link like"><i class="far fa-heart"></i><span> 11K</span></button>
                     </div>
-                    <div class="col-md-5 text-right">
-                        <p class="text-muted"><i class="far fa-clock"></i> 43 min.</p>
+                    <div class="col-md-5 text-right text-muted">
+                        <p class="text-lowercase"><i class="far fa-clock"></i> @post.PublicationDate.ToString("dd/MM/yyyy hh:mm tt", new System.Globalization.CultureInfo("en-US"))</p>
                     </div>
                 </div>
             </div>

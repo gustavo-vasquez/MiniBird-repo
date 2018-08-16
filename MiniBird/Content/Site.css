@@ -159,6 +159,10 @@
     border-radius: 50%;
 }
 
+.post-images {
+    border: none !important;
+}
+
 .post-images img {    
     width: 100%;
     object-fit: cover;
@@ -194,6 +198,36 @@
 
 .post-actions-menu {
     display: inline;
+}
+
+.interact-buttons button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.leave-comment:hover {
+    color: #0071fd;
+}
+
+.repost:hover {
+    color: #25c707;
+}
+
+.like:hover {
+    color: red;
+}
+
+.tpr {
+    padding-right: 0.5px !important;
+}
+
+.tpl {
+    padding-left: 0.5px !important;
+}
+
+.tpb {
+    padding-bottom: 1px;
 }
 
 /**********/
