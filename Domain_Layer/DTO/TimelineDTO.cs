@@ -50,5 +50,9 @@ namespace Domain_Layer.DTO
         public DateTime PublicationDate { get; set; }
         public int InReplyTo { get; set; }
         public int ID_Person { get; set; }
+        public int CreatedBy { get; set; }
+        public string NickName { get; set; }
+        public string UserName { get; set; }
+        public string ProfileAvatar { get; set; }
     }
 }

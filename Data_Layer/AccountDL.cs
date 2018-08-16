@@ -179,8 +179,8 @@ namespace Data_Layer
                     profileScreenDTO.ProfileInformation.WebSiteURL = person.WebSiteURL;
                     profileScreenDTO.ProfileInformation.Birthdate = person.Birthdate;
                     profileScreenDTO.ProfileInformation.RegistrationDate = person.RegistrationDate;
-                    profileScreenDTO.ProfileInformation.ProfileAvatar = ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType);
-                    profileScreenDTO.ProfileInformation.ProfileHeader = ByteArrayToBase64(person.ProfileHeader, person.ProfileHeader_MimeType);
+                    profileScreenDTO.ProfileInformation.ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar;
+                    profileScreenDTO.ProfileInformation.ProfileHeader = (person.ProfileHeader != null) ? ByteArrayToBase64(person.ProfileHeader, person.ProfileHeader_MimeType) : defaultHeader;
 
                     return profileScreenDTO;
                 }
@@ -241,6 +241,13 @@ namespace Data_Layer
                     var person = context.Person.Where(p => p.PersonID == personID).First();
                     var posts = context.Post.Where(ps => ps.ID_Person == personID && ps.InReplyTo == null).ToList();
 
+                    foreach(var p in person.Person3)
+                    {
+                        var postsOfFollowing = context.Post.Where(ps => ps.ID_Person == p.PersonID && ps.InReplyTo == null).ToList();
+                        if (postsOfFollowing.Count > 0)
+                            posts.AddRange(postsOfFollowing);
+                    }
+
                     var timelineDTO = new TimelineDTO();
                     timelineDTO.ProfileSection.UserName = person.UserName;
                     timelineDTO.ProfileSection.NickName = person.NickName;
@@ -252,6 +259,8 @@ namespace Data_Layer
                     
                     foreach(var post in posts)
                     {
+                        var createdBy = context.Person.Where(p => p.PersonID == post.ID_Person).First();
+
                         timelineDTO.PostSection.Add(new PostSectionDTO()
                         {
                             PostID = post.PostID,
@@ -262,7 +271,11 @@ namespace Data_Layer
                             ImageSecondSlot = ByteArrayToBase64(post.ImageSecondSlot, post.ImageSecondSlot_MimeType),
                             ImageThirdSlot = ByteArrayToBase64(post.ImageThirdSlot, post.ImageThirdSlot_MimeType),
                             ImageFourthSlot = ByteArrayToBase64(post.ImageFourthSlot, post.ImageFourthSlot_MimeType),
-                            PublicationDate = post.PublicationDate
+                            PublicationDate = post.PublicationDate,
+                            CreatedBy = createdBy.PersonID,
+                            NickName = createdBy.NickName,
+                            UserName = createdBy.UserName,
+                            ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar
                         });
                     }
 

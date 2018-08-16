@@ -69,7 +69,7 @@ namespace MiniBird.Controllers
                     if(model.Login.RememberMe)                    
                         LoginCookie(model.Login.Email);
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Timeline", "Account");
                 }
                 else
                 {
