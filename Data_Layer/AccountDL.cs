@@ -165,13 +165,14 @@ namespace Data_Layer
             }
         }
 
-        public ProfileScreenDTO ProfileScreenCollectionDataDL(int personID)
+        public ProfileScreenDTO ProfileScreenCollectionDataDL(int personID, string v)
         {
             try
             {
                 using(var context = new MiniBirdEntities())
                 {
-                    var person = context.Person.Where(p => p.PersonID == personID).First();
+                    var person = context.Person.Where(p => p.PersonID == personID).First();                    
+
                     var profileScreenDTO = new ProfileScreenDTO();
                     profileScreenDTO.ProfileInformation.UserName = person.UserName;
                     profileScreenDTO.ProfileInformation.NickName = person.NickName;
@@ -181,6 +182,41 @@ namespace Data_Layer
                     profileScreenDTO.ProfileInformation.RegistrationDate = person.RegistrationDate;
                     profileScreenDTO.ProfileInformation.ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar;
                     profileScreenDTO.ProfileInformation.ProfileHeader = (person.ProfileHeader != null) ? ByteArrayToBase64(person.ProfileHeader, person.ProfileHeader_MimeType) : defaultHeader;
+
+                    switch(v)
+                    {
+                        case "following":
+                            break;
+                        case "followers":
+                            break;
+                        case "likes":
+                            break;
+                        case "lists":
+                            break;
+                        default:
+                            var myPosts = context.Post.Where(mp => mp.ID_Person == personID && mp.InReplyTo == null).ToList();
+
+                            foreach (var post in myPosts)
+                            {
+                                profileScreenDTO.PostsSection.Add(new PostSectionDTO()
+                                {
+                                    PostID = post.PostID,
+                                    Comment = post.Comment,
+                                    GIFImage = post.GIFImage,
+                                    VideoFile = post.VideoFile,
+                                    ImageFirstSlot = ByteArrayToBase64(post.ImageFirstSlot, post.ImageFirstSlot_MimeType),
+                                    ImageSecondSlot = ByteArrayToBase64(post.ImageSecondSlot, post.ImageSecondSlot_MimeType),
+                                    ImageThirdSlot = ByteArrayToBase64(post.ImageThirdSlot, post.ImageThirdSlot_MimeType),
+                                    ImageFourthSlot = ByteArrayToBase64(post.ImageFourthSlot, post.ImageFourthSlot_MimeType),
+                                    PublicationDate = post.PublicationDate,
+                                    CreatedBy = person.PersonID,
+                                    NickName = person.NickName,
+                                    UserName = person.UserName,
+                                    ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar
+                                });
+                            }
+                            break;
+                    }
 
                     return profileScreenDTO;
                 }

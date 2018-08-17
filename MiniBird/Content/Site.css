@@ -166,6 +166,7 @@
 .post-images img {    
     width: 100%;
     object-fit: cover;
+    border-radius: calc(0.9rem - 1px);
 }
 
 .one-thumbnail img {

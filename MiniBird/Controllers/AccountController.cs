@@ -103,7 +103,7 @@ namespace MiniBird.Controllers
         
         public ActionResult ProfileScreen(string v)
         {
-            var model = Account.ProfileScreenCollectionDataSL(ActiveSession.GetPersonID());
+            var model = Account.ProfileScreenCollectionDataSL(ActiveSession.GetPersonID(), v);
             ViewBag.Tab = v;
             return View(model);
         }

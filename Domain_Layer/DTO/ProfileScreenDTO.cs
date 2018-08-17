@@ -11,11 +11,13 @@ namespace Domain_Layer.DTO
     {
         public ProfileInformationDTO ProfileInformation { get; set; }
         public List<TopTrendingsDTO> TopTrendings { get; set; }
+        public List<PostSectionDTO> PostsSection { get; set; }
 
         public ProfileScreenDTO()
         {
             this.ProfileInformation = new ProfileInformationDTO();
             this.TopTrendings = new List<TopTrendingsDTO>();
+            this.PostsSection = new List<PostSectionDTO>();
         }
     }
 

@@ -39,9 +39,9 @@ namespace Service_Layer
             return Account.CreateNewPostDL(comment, gifImage, videoFile, imagesUploaded, personID, inReplyTo);
         }
 
-        public ProfileScreenDTO ProfileScreenCollectionDataSL(int personID)
+        public ProfileScreenDTO ProfileScreenCollectionDataSL(int personID, string v)
         {
-            return Account.ProfileScreenCollectionDataDL(personID);
+            return Account.ProfileScreenCollectionDataDL(personID, v);
         }
 
         public ProfileDetailsDTO ChangeProfileDetailsSL(int personID)
