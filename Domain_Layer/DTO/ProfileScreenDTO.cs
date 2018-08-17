@@ -12,12 +12,14 @@ namespace Domain_Layer.DTO
         public ProfileInformationDTO ProfileInformation { get; set; }
         public List<TopTrendingsDTO> TopTrendings { get; set; }
         public List<PostSectionDTO> PostsSection { get; set; }
+        public StatisticsBar StatisticsBar { get; set; }
 
         public ProfileScreenDTO()
         {
             this.ProfileInformation = new ProfileInformationDTO();
             this.TopTrendings = new List<TopTrendingsDTO>();
             this.PostsSection = new List<PostSectionDTO>();
+            this.StatisticsBar = new StatisticsBar();
         }
     }
 
@@ -39,5 +41,14 @@ namespace Domain_Layer.DTO
         public string PersonalDescription { get; set; }
         public string WebSiteURL { get; set; }
         public DateTime? Birthdate { get; set; }
+    }
+
+    public class StatisticsBar
+    {
+        public int PostsCount { get; set; }
+        public int FollowingCount { get; set; }
+        public int FollowersCount { get; set; }
+        public int LikesCount { get; set; }
+        public int ListsCount { get; set; }
     }
 }

@@ -182,6 +182,11 @@ namespace Data_Layer
                     profileScreenDTO.ProfileInformation.RegistrationDate = person.RegistrationDate;
                     profileScreenDTO.ProfileInformation.ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar;
                     profileScreenDTO.ProfileInformation.ProfileHeader = (person.ProfileHeader != null) ? ByteArrayToBase64(person.ProfileHeader, person.ProfileHeader_MimeType) : defaultHeader;
+                    profileScreenDTO.StatisticsBar.PostsCount = context.Post.Where(ps => ps.ID_Person == person.PersonID).Count();
+                    profileScreenDTO.StatisticsBar.FollowingCount = person.Person3.Count;
+                    profileScreenDTO.StatisticsBar.FollowersCount = person.Person11.Count;
+                    profileScreenDTO.StatisticsBar.LikesCount = context.LikePost.Where(lp => lp.ID_PersonThatLikesPost == person.PersonID).Count();
+                    profileScreenDTO.StatisticsBar.ListsCount = context.MyList.Where(ml => ml.ID_Person == person.PersonID).Count();
 
                     switch(v)
                     {
@@ -290,8 +295,8 @@ namespace Data_Layer
                     timelineDTO.ProfileSection.ProfileHeader = (person.ProfileHeader != null) ? ByteArrayToBase64(person.ProfileHeader, person.ProfileHeader_MimeType) : defaultHeader;
                     timelineDTO.ProfileSection.ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar;
                     timelineDTO.ProfileSection.PostCount = posts.Count();
-                    timelineDTO.ProfileSection.FollowerCount = person.Person11.ToList().Count;
-                    timelineDTO.ProfileSection.FollowingCount = person.Person3.ToList().Count;
+                    timelineDTO.ProfileSection.FollowerCount = person.Person11.Count;
+                    timelineDTO.ProfileSection.FollowingCount = person.Person3.Count;
                     
                     foreach(var post in posts)
                     {

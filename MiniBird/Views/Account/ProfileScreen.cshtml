@@ -70,19 +70,19 @@
             <div class="col">
                 <ul id="profileScreen-nav" class="nav nav-pills" data-tab="@ViewBag.Tab">
                     <li class="nav-item mr-1">
-                        <a class="nav-link" href="@Url.Action("ProfileScreen", "Account")">Posts <span class="badge badge-primary badge-pill">655</span></a>
+                        <a class="nav-link" href="@Url.Action("ProfileScreen", "Account")">Posts <span class="badge badge-primary badge-pill">@Model.StatisticsBar.PostsCount</span></a>
                     </li>
                     <li class="nav-item mr-1">
-                        <a class="nav-link" href="@Url.Action("ProfileScreen", "Account", new { v = "following" })">Siguiendo <span class="badge badge-primary badge-pill">150</span></a>
+                        <a class="nav-link" href="@Url.Action("ProfileScreen", "Account", new { v = "following" })">Siguiendo <span class="badge badge-primary badge-pill">@Model.StatisticsBar.FollowingCount</span></a>
                     </li>                    
                     <li class="nav-item mr-1">
-                        <a class="nav-link" href="@Url.Action("ProfileScreen", "Account", new { v = "followers" })">Seguidores <span class="badge badge-primary badge-pill">95</span></a>
+                        <a class="nav-link" href="@Url.Action("ProfileScreen", "Account", new { v = "followers" })">Seguidores <span class="badge badge-primary badge-pill">@Model.StatisticsBar.FollowersCount</span></a>
                     </li>
                     <li class="nav-item mr-1">
-                        <a class="nav-link" href="@Url.Action("ProfileScreen", "Account", new { v = "likes" })">Me gusta <span class="badge badge-primary badge-pill">22K</span></a>
+                        <a class="nav-link" href="@Url.Action("ProfileScreen", "Account", new { v = "likes" })">Me gusta <span class="badge badge-primary badge-pill">@Model.StatisticsBar.LikesCount</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("ProfileScreen", "Account", new { v = "lists" })">Listas <span class="badge badge-primary badge-pill">32</span></a>
+                        <a class="nav-link" href="@Url.Action("ProfileScreen", "Account", new { v = "lists" })">Listas <span class="badge badge-primary badge-pill">@Model.StatisticsBar.ListsCount</span></a>
                     </li>                    
                 </ul>
             </div>
