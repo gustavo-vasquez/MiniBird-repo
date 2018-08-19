@@ -258,6 +258,7 @@
     <Content Include="Views\Account\_ProfileSection.cshtml" />
     <Content Include="Views\Account\_PostSection.cshtml" />
     <Content Include="Views\Account\_EditProfileDetails.cshtml" />
+    <Content Include="Views\Account\_ImagePreview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

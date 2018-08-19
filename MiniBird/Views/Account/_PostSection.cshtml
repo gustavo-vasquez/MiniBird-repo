@@ -4,8 +4,8 @@
 @if (Model.Count() > 0)
 {
     foreach (var post in Model)
-    {
-        <div class="card mb-1">
+    {        
+        <div id="divPost" class="card mb-1">
             <div class="card-body">
                 <div class="row">
                     <div class="col">
@@ -34,7 +34,7 @@
 
                         @if (post.ImageFirstSlot != null && post.ImageSecondSlot == null && post.ImageThirdSlot == null && post.ImageFourthSlot == null)
                         {
-                            <div class="card post-images one-thumbnail">
+                            <div class="card post-images one-thumbnail ovh">
                                 <img src="@post.ImageFirstSlot" alt="posted_image">
                             </div>
                         }
@@ -43,10 +43,14 @@
                             <div class="card post-images two-thumbnails">
                                 <div class="row no-gutters">
                                     <div class="col tpr">
-                                        <img src="@post.ImageFirstSlot" alt="posted_image">
+                                        <div class="ovh">
+                                            <img src="@post.ImageFirstSlot" alt="posted_image">
+                                        </div>
                                     </div>
                                     <div class="col tpl">
-                                        <img src="@post.ImageSecondSlot" alt="posted_image" />
+                                        <div class="ovh">
+                                            <img src="@post.ImageSecondSlot" alt="posted_image" />
+                                        </div>                                        
                                     </div>
                                 </div>
                             </div>
@@ -56,17 +60,23 @@
                             <div class="card post-images three-thumbnails">
                                 <div class="row no-gutters">
                                     <div class="col-md-8 tpr">
-                                        <img src="@post.ImageFirstSlot" alt="posted_image">
+                                        <div class="ovh">
+                                            <img src="@post.ImageFirstSlot" alt="posted_image">
+                                        </div>                                        
                                     </div>
                                     <div class="col-md-4 tpl">
                                         <div class="row tpb">
                                             <div class="col">
-                                                <img class="mini-thumbnail" src="@post.ImageSecondSlot" alt="posted_image" />
+                                                <div class="ovh">
+                                                    <img class="mini-thumbnail" src="@post.ImageSecondSlot" alt="posted_image" />
+                                                </div>                                                
                                             </div>
                                         </div>
                                         <div class="row">                                           
                                             <div class="col">
-                                                <img class="mini-thumbnail" src="@post.ImageThirdSlot" alt="posted_image" />
+                                                <div class="ovh">
+                                                    <img class="mini-thumbnail" src="@post.ImageThirdSlot" alt="posted_image" />
+                                                </div>                                                
                                             </div>
                                         </div>
                                     </div>
@@ -78,17 +88,25 @@
                             <div class="card post-images four-thumbnails">
                                 <div class="row no-gutters">
                                     <div class="col-md-6 tpr">
-                                        <img src="@post.ImageFirstSlot" alt="posted_image">
+                                        <div class="ovh">
+                                            <img src="@post.ImageFirstSlot" alt="posted_image">
+                                        </div>
                                     </div>
                                     <div class="col-md-6 tpl">
-                                        <img src="@post.ImageSecondSlot" alt="posted_image">
+                                        <div class="ovh">
+                                            <img src="@post.ImageSecondSlot" alt="posted_image">
+                                        </div>                                        
                                     </div>
                                     <div class="w-100 tpb"></div>
                                     <div class="col-md-6 tpr">
-                                        <img src="@post.ImageThirdSlot" alt="posted_image" />
+                                        <div class="ovh">
+                                            <img src="@post.ImageThirdSlot" alt="posted_image" />
+                                        </div>                                        
                                     </div>
                                     <div class="col-md-6 tpl">
-                                        <img src="@post.ImageFourthSlot" alt="posted_image" />
+                                        <div class="ovh">
+                                            <img src="@post.ImageFourthSlot" alt="posted_image" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>

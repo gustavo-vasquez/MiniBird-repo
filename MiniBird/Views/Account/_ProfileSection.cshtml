@@ -1,12 +1,12 @@
 ﻿@model Domain_Layer.DTO.ProfileSectionDTO
 
-<img class="card-img-top profile-section-header" src="/Content/images/example_header.jpg" alt="header_image">
+<img class="card-img-top profile-section-header" src="@Model.ProfileHeader" alt="header_image">
 <div class="card-body">
     <div class="row">
         <div class="col">
-            <img class="profile-section-avatar" src="/Content/images/example_avatar.jpg" alt="avatar_image" />
-            <h5 class="text-center">GustavoProfile</h5>
-            <a class="text-center text-muted" href="@Url.Action("ProfileScreen", "Account")"><h6>@@gustavoprofile22</h6></a>
+            <img class="profile-section-avatar" src="@Model.ProfileAvatar" alt="avatar_image" />
+            <h5 class="text-center">@Model.NickName</h5>
+            <a class="text-center text-muted" href="@Url.Action("ProfileScreen", "Account")"><h6>@Model.UserName</h6></a>
         </div>
     </div>
     <div class="row mt-3">

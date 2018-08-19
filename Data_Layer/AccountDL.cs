@@ -199,7 +199,7 @@ namespace Data_Layer
                         case "lists":
                             break;
                         default:
-                            var myPosts = context.Post.Where(mp => mp.ID_Person == personID && mp.InReplyTo == null).ToList();
+                            var myPosts = context.Post.Where(mp => mp.ID_Person == personID && mp.InReplyTo == null).OrderByDescending(mp => mp.PublicationDate);
 
                             foreach (var post in myPosts)
                             {
@@ -297,8 +297,10 @@ namespace Data_Layer
                     timelineDTO.ProfileSection.PostCount = posts.Count();
                     timelineDTO.ProfileSection.FollowerCount = person.Person11.Count;
                     timelineDTO.ProfileSection.FollowingCount = person.Person3.Count;
-                    
-                    foreach(var post in posts)
+
+                    posts = posts.OrderByDescending(ps => ps.PublicationDate).ToList();
+
+                    foreach (var post in posts)
                     {
                         var createdBy = context.Person.Where(p => p.PersonID == post.ID_Person).First();
 

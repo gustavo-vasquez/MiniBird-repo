@@ -1,6 +1,6 @@
 ﻿body {
     padding-top: 50px;
-    background-color: rgb(230, 236, 240);
+    background-color: rgb(240, 237, 236);
 }
 
 /* Estilos para la navbar */
@@ -152,6 +152,10 @@
 
 /* Estilos para los posts */
 
+.card:hover {
+    background-color: rgb(255,252,244);
+}
+
 .post-profile-img {
     width: 48px;
     height: 48px;
@@ -166,6 +170,70 @@
 .post-images img {    
     width: 100%;
     object-fit: cover;
+    border-radius: calc(0.9rem - 1px);
+}
+
+.post-images img:hover {
+    -ms-transform: scale(1.05); /* IE 9 */
+    -webkit-transform: scale(1.05); /* Safari 3-8 */
+    transform: scale(1.05);
+    transition: transform .2s;    
+}
+
+.img-preview-overlay {
+    background: rgba(0,0,0,.6);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;    
+}
+
+.dummy {
+    padding-top: 100%; /* forces 1:1 aspect ratio */
+}
+
+.img-preview-container {
+    position: absolute;
+    top: 6%;
+    bottom: 6%;
+    left: 0;
+    right: 0;    
+    text-align:center; /* Align center inline elements */
+    font: 0/0 a;
+}
+
+.centerer {
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+}
+
+.img-preview {
+    vertical-align: middle;
+    display: inline-block;
+    max-height: 100%;  /* <-- Set maximum height to 100% of its parent */
+    max-width: 100%;   /* <-- Set maximum width to 100% of its parent */
+}
+
+.close-img-preview {
+    position: absolute;
+    top: 1%;
+    right: 1%;
+    border: none;
+    background: none;
+    color: lightgray;
+    font-size: 2rem;
+}
+
+.close-img-preview:hover {
+    color: white;
+    cursor: pointer;
+}
+
+.ovh {
+    overflow: hidden;
     border-radius: calc(0.9rem - 1px);
 }
 

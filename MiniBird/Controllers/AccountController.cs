@@ -207,6 +207,11 @@ namespace MiniBird.Controllers
             return Json(new { personalDescription = model.PersonalDescription, websiteURL = model.WebSiteURL, birthDate = model.Birthdate });
         }
 
+        public PartialViewResult ImagePreview()
+        {
+            return PartialView("_ImagePreview");
+        }
+
         #endregion
 
 
