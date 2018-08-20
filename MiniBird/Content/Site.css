@@ -196,8 +196,8 @@
 
 .img-preview-container {
     position: absolute;
-    top: 6%;
-    bottom: 6%;
+    top: 48px;
+    bottom: 48px;
     left: 0;
     right: 0;    
     text-align:center; /* Align center inline elements */
@@ -215,6 +215,15 @@
     display: inline-block;
     max-height: 100%;  /* <-- Set maximum height to 100% of its parent */
     max-width: 100%;   /* <-- Set maximum width to 100% of its parent */
+}
+
+.prev-img-preview, .next-img-preview {
+    position: absolute;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: white;
+    text-shadow: 0px 0px 10px rgba(50, 50, 50, 1);    
 }
 
 .close-img-preview {
