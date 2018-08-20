@@ -8,42 +8,13 @@
     });
 
     $('.post-images img').on('click', function () {
-        var $src = $(this).attr('src');
+        var src = $(this).attr('src');
+        var images = $(this).closest('.post-images').find('img');
+        var srcArray = images.map(function () {
+            return this.src;
+        }).get();
 
-        $.ajax({
-            url: "/Account/ImagePreview",
-            method: "GET",
-            success: function (response) {
-                $('body').append(response);
-                $('.img-preview').attr('src', $src);
-
-                var leftPos = $('.img-preview').offset().left;
-                var topPos = $('.img-preview-container').height() / 2;
-                $('.prev-img-preview').css({ "left": leftPos + "px", "top": topPos + "px" });
-                $('.next-img-preview').css({ "right": leftPos + "px", "top": topPos + "px" });
-
-                $('.img-preview').hover(function () {                    
-                    $('.prev-img-preview, .next-img-preview').removeClass('d-none');
-                }, function (event) {
-                    if ($('.prev-img-preview').is(':hover') || $('.next-img-preview').is(':hover')) {
-                        $('.prev-img-preview, .next-img-preview').on('mouseleave', function () {
-                            $('.prev-img-preview, .next-img-preview').addClass('d-none');
-                        });
-                    }                        
-                    else
-                        $('.prev-img-preview, .next-img-preview').addClass('d-none');
-                });
-
-                $('.img-preview-overlay').on('click', function (event) {
-                    if (event.target.classList[0] == "img-preview")
-                        return;
-                    $('.img-preview-overlay').remove();                    
-                });
-            },
-            error: function () {
-                alert("¡Ups ocurrió un error!");
-            }
-        });
+        loadImagePreview(srcArray, src);
     });
 });
 
@@ -52,4 +23,70 @@ function goTop() {
         scrollTop: 0
     }, 800);
     return false;
+}
+
+function loadImagePreview(srcArray, src) {
+    var index = srcArray.indexOf(src);
+
+    $.ajax({
+        url: "/Account/ImagePreview",
+        method: "GET",
+        success: function (response) {
+            $('body').append(response);
+            var $imgPreview = $('.img-preview');
+            $imgPreview.attr('src', src);
+
+            var leftPos = $imgPreview.offset().left;
+            var topPos = $('.img-preview-container').height() / 2;
+            var $prevNextCombination = $('.prev-img-preview, .next-img-preview');
+
+            $('.prev-img-preview').css({ "left": leftPos + "px", "top": topPos + "px" });
+            $('.next-img-preview').css({ "right": leftPos + "px", "top": topPos + "px" });
+
+            $imgPreview.on('mouseenter', function () {
+                $prevNextCombination.removeClass('d-none');
+            }).on('mouseleave', function () {
+                if ($('.prev-img-preview').is(':hover') || $('.next-img-preview').is(':hover')) {
+                    $prevNextCombination.on('mouseleave', function () {
+                        $prevNextCombination.addClass('d-none');
+                    });
+                }
+                else
+                    $prevNextCombination.addClass('d-none');
+            });
+
+            if (index <= 0)
+                $('.prev-img-preview').hide();
+
+            if (index >= srcArray.length - 1)
+                $('.next-img-preview').hide();
+
+            $('.img-preview-overlay').on('click', function (event) {
+                if (event.target.classList[0] == "img-preview")
+                    return;
+                $('.img-preview-overlay').remove();
+            });
+
+            $('.prev-img-preview').on('click', function () {
+                var prevIndex = index - 1;
+
+                if (prevIndex >= 0) {
+                    $('.img-preview-overlay').remove();                    
+                    loadImagePreview(srcArray, srcArray[prevIndex]);
+                }
+            });
+
+            $('.next-img-preview').on('click', function () {
+                var nextIndex = index + 1;
+
+                if (nextIndex <= (srcArray.length - 1)) {
+                    $('.img-preview-overlay').remove();
+                    loadImagePreview(srcArray, srcArray[nextIndex]);
+                }
+            });
+        },
+        error: function () {
+            alert("¡Ups ocurrió un error!");
+        }
+    });
 }
