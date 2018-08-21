@@ -212,6 +212,20 @@ namespace MiniBird.Controllers
             return PartialView("_ImagePreview");
         }
 
+        [HttpPost]
+        public PartialViewResult SendRepost(int postID)
+        {
+            Account.SendRepostSL(postID, ActiveSession.GetPersonID());
+            return PartialView("_InteractButtons", Account.GetInteractsCountSL(postID));
+        }
+
+        [HttpPost]
+        public PartialViewResult GiveALike(int postID)
+        {
+            Account.GiveALikeSL(postID, ActiveSession.GetPersonID());
+            return PartialView("_InteractButtons", Account.GetInteractsCountSL(postID));
+        }
+
         #endregion
 
 

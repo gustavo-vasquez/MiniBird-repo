@@ -1,0 +1,21 @@
+﻿@model Domain_Layer.DTO.InteractButtonsDTO
+
+<button class="leave-comment" title="Responder"><i class="far fa-comment"></i><span> @Model.ReplysCount</span></button>
+
+@if (Model.RepostsCount > 0)
+{
+    <button class="repost reposted" title="Deshacer repost"><i class="fas fa-retweet"></i> @Model.RepostsCount</button>
+}
+else
+{
+    <button class="repost" title="Repostear"><i class="fas fa-retweet"></i> @Model.RepostsCount</button>
+}
+
+@if(Model.LikesCount > 0)
+{
+    <button class="like liked" title="Deshacer me gusta"><i class="fas fa-heart"></i> @Model.LikesCount</button>
+}
+else
+{
+    <button class="like" title="Me gusta"><i class="far fa-heart"></i> @Model.LikesCount</button>
+}

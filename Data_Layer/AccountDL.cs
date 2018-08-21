@@ -309,7 +309,7 @@ namespace Data_Layer
                             PostID = post.PostID,
                             Comment = post.Comment,
                             GIFImage = post.GIFImage,
-                            VideoFile = post.VideoFile,                            
+                            VideoFile = post.VideoFile,
                             ImageFirstSlot = ByteArrayToBase64(post.ImageFirstSlot, post.ImageFirstSlot_MimeType),
                             ImageSecondSlot = ByteArrayToBase64(post.ImageSecondSlot, post.ImageSecondSlot_MimeType),
                             ImageThirdSlot = ByteArrayToBase64(post.ImageThirdSlot, post.ImageThirdSlot_MimeType),
@@ -318,9 +318,10 @@ namespace Data_Layer
                             CreatedBy = createdBy.PersonID,
                             NickName = createdBy.NickName,
                             UserName = createdBy.UserName,
-                            ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar
+                            ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
+                            InteractButtons = GetInteractsCountDL(post.PostID)
                         });
-                    }
+                    }                    
 
                     return timelineDTO;
                 }                
@@ -356,6 +357,53 @@ namespace Data_Layer
                 context.SaveChanges();
 
                 return ByteArrayToBase64(newAvatar, img.ContentType);
+            }
+        }
+
+        public InteractButtonsDTO GetInteractsCountDL(int postID)
+        {
+            using(var context = new MiniBirdEntities())
+            {
+                var replys = context.Post.Where(ps => ps.InReplyTo == postID).Count();
+                var reposts = context.RePost.Where(rp => rp.ID_Post == postID).Count();
+                var likes = context.LikePost.Where(lp => lp.ID_Post == postID).Count();
+
+                return new InteractButtonsDTO()
+                {
+                    ReplysCount = replys,
+                    RepostsCount = reposts,
+                    LikesCount = likes
+                };
+            }
+        }
+
+        public void SendRepostDL(int postID, int personID)
+        {
+            using (var context = new MiniBirdEntities())
+            {
+                var repost = context.RePost.Where(lp => lp.ID_Post == postID && lp.ID_PersonThatRePost == personID).FirstOrDefault();
+
+                if (repost != null)
+                    context.RePost.Remove(repost);
+                else
+                    context.RePost.Add(new RePost() { ID_Post = postID, ID_PersonThatRePost = personID, PublicationDate = DateTime.Now });
+
+                context.SaveChanges();
+            }
+        }
+
+        public void GiveALikeDL(int postID, int personID)
+        {
+            using(var context = new MiniBirdEntities())
+            {
+                var like = context.LikePost.Where(lp => lp.ID_Post == postID && lp.ID_PersonThatLikesPost == personID).FirstOrDefault();
+
+                if(like != null)                
+                    context.LikePost.Remove(like);                                    
+                else                
+                    context.LikePost.Add(new LikePost() { ID_Post = postID, ID_PersonThatLikesPost = personID, DateOfAction = DateTime.Now });                                   
+
+                context.SaveChanges();
             }
         }
 

@@ -10,13 +10,13 @@ namespace Domain_Layer.DTO
     {
         public ProfileSectionDTO ProfileSection { get; set; }
         public List<TopTrendingsDTO> TopTrendingsSection { get; set; }
-        public List<PostSectionDTO> PostSection { get; set; }
+        public List<PostSectionDTO> PostSection { get; set; }        
 
         public TimelineDTO()
         {
             this.ProfileSection = new ProfileSectionDTO();
             this.TopTrendingsSection = new List<TopTrendingsDTO>();
-            this.PostSection = new List<PostSectionDTO>();
+            this.PostSection = new List<PostSectionDTO>();            
         }
     }
 
@@ -54,5 +54,18 @@ namespace Domain_Layer.DTO
         public string NickName { get; set; }
         public string UserName { get; set; }
         public string ProfileAvatar { get; set; }
+        public InteractButtonsDTO InteractButtons { get; set; }
+
+        public PostSectionDTO()
+        {
+            this.InteractButtons = new InteractButtonsDTO();
+        }
+    }
+
+    public class InteractButtonsDTO
+    {
+        public int ReplysCount { get; set; }
+        public int RepostsCount { get; set; }
+        public int LikesCount { get; set; }
     }
 }

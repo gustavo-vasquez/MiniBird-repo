@@ -16,6 +16,32 @@
 
         loadImagePreview(srcArray, src);
     });
+
+    $('.interact-buttons').on('click', '.repost', function () {
+        var $interactButtonsDiv = $(this).parent('div');
+
+        $.ajax({
+            url: "/Account/SendRepost",
+            method: "POST",
+            data: "postID=" + $interactButtonsDiv.data('postid'),
+            success: function (response) {
+                $interactButtonsDiv.html(response);
+            }
+        });
+    });
+
+    $('.interact-buttons').on('click', '.like', function () {
+        var $interactButtonsDiv = $(this).parent('div');
+
+        $.ajax({
+            url: "/Account/GiveALike",
+            method: "POST",
+            data: "postID=" + $interactButtonsDiv.data('postid'),
+            success: function (response) {
+                $interactButtonsDiv.html(response);                
+            }
+        });
+    });
 });
 
 function goTop() {

@@ -115,10 +115,8 @@
                     </div>
                 </div>
                 <div class="row mt-4 justify-content-center">
-                    <div class="col-md-5 interact-buttons">
-                        <button class="leave-comment" title="Responder"><i class="far fa-comment"></i><span> 28</span></button>
-                        <button class="repost" title="Repostear"><i class="fas fa-retweet"></i><span> 152K</span></button>
-                        <button class="card-link like" title="Me gusta"><i class="far fa-heart"></i><span> 11K</span></button>
+                    <div class="col-md-5 interact-buttons" data-postid="@post.PostID">
+                        @Html.Partial("~/Views/Account/_InteractButtons.cshtml", post.InteractButtons)
                     </div>
                     <div class="col-md-5 text-right text-muted">
                         <p class="text-lowercase"><i class="far fa-clock"></i> @post.PublicationDate.ToString("dd/MM/yyyy hh:mm tt", new System.Globalization.CultureInfo("en-US"))</p>

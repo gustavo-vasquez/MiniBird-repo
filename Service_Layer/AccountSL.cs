@@ -69,6 +69,21 @@ namespace Service_Layer
             return Account.ChangeAvatarDL(img, personID);
         }
 
+        public void SendRepostSL(int postID, int personID)
+        {
+            Account.SendRepostDL(postID, personID);
+        }
+
+        public void GiveALikeSL(int postID, int personID)
+        {
+            Account.GiveALikeDL(postID, personID);
+        }
+
+        public InteractButtonsDTO GetInteractsCountSL(int postID)
+        {
+            return Account.GetInteractsCountDL(postID);
+        }
+
         #region TAREAS AUXILIARES
 
         public bool UserNameExistsSL(string username)

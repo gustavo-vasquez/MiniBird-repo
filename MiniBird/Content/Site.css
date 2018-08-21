@@ -296,6 +296,14 @@
     color: red;
 }
 
+.reposted {
+    color: #25c707;
+}
+
+.liked {
+    color: red;
+}
+
 .tpr {
     padding-right: 0.5px !important;
 }
