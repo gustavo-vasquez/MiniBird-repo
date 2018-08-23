@@ -137,6 +137,40 @@ namespace MiniBird.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult NewList(ListDTO model)
+        {
+            if(!ModelState.IsValid)            
+                return View(model);
+
+            Account.NewListSL(model, ActiveSession.GetPersonID());
+
+            return RedirectToAction("ProfileScreen", "Account", new { v = "lists" });
+        }
+
+        public ActionResult ListScreen(int id)
+        {
+            var model = Account.ListScreenCollectionDataSL(id, ActiveSession.GetPersonID());
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditList(ListDTO model, string RedirectUrl)
+        {
+            Account.EditListSL(model);
+            return Redirect(RedirectUrl);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RemoveList(ListScreenDTO model)
+        {
+            Account.RemoveListSL(model.CurrentListSection.MyListID, ActiveSession.GetPersonID());
+            return RedirectToAction("ProfileScreen", "Account", new { v = "lists" });
+        }
+
         #region TAREAS AUXILIARES
 
         public void LoginCookie(string email)

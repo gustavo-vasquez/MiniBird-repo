@@ -1,5 +1,6 @@
 ﻿using Domain_Layer;
 using Domain_Layer.DTO;
+using Domain_Layer.Enum;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -197,6 +198,20 @@ namespace Data_Layer
                         case "likes":
                             break;
                         case "lists":
+                            var myLists = context.MyList.Where(ml => ml.ID_Person == person.PersonID);
+
+                            foreach(var list in myLists)
+                            {
+                                profileScreenDTO.MyLists.Add(new ListDTO()
+                                {
+                                    MyListID = list.MyListID,
+                                    Name = list.Name,
+                                    Description = list.Description,
+                                    Privacy = (list.IsPrivate != true) ? Privacy.Public : Privacy.Private,
+                                    MembersCount = list.Person1.Count
+                                });
+                            }
+
                             break;
                         default:
                             var myPosts = context.Post.Where(mp => mp.ID_Person == personID && mp.InReplyTo == null).OrderByDescending(mp => mp.PublicationDate);
@@ -217,7 +232,8 @@ namespace Data_Layer
                                     CreatedBy = person.PersonID,
                                     NickName = person.NickName,
                                     UserName = person.UserName,
-                                    ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar
+                                    ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar,
+                                    InteractButtons = GetInteractsCountDL(post.PostID)
                                 });
                             }
                             break;
@@ -296,13 +312,13 @@ namespace Data_Layer
                     timelineDTO.ProfileSection.ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar;
                     timelineDTO.ProfileSection.PostCount = posts.Count();
                     timelineDTO.ProfileSection.FollowerCount = person.Person11.Count;
-                    timelineDTO.ProfileSection.FollowingCount = person.Person3.Count;
+                    timelineDTO.ProfileSection.FollowingCount = person.Person3.Count;                    
 
                     posts = posts.OrderByDescending(ps => ps.PublicationDate).ToList();
 
                     foreach (var post in posts)
                     {
-                        var createdBy = context.Person.Where(p => p.PersonID == post.ID_Person).First();
+                        var createdBy = context.Person.Where(p => p.PersonID == post.ID_Person).First();                        
 
                         timelineDTO.PostSection.Add(new PostSectionDTO()
                         {
@@ -406,6 +422,132 @@ namespace Data_Layer
                 context.SaveChanges();
             }
         }
+
+        public void NewListDL(ListDTO data, int personID)
+        {
+            using(var context = new MiniBirdEntities())
+            {
+                context.MyList.Add(new MyList()
+                {
+                    Name = data.Name,
+                    Description = data.Description,
+                    IsPrivate = (data.Privacy != Privacy.Public) ? true : false,
+                    ID_Person = personID
+                });
+
+                context.SaveChanges();
+            }
+        }
+
+        public ListScreenDTO ListScreenCollectionDataDL(int listID, int personID)
+        {
+            try
+            {
+                using (var context = new MiniBirdEntities())
+                {
+                    var currentList = context.MyList.Where(ml => ml.MyListID == listID).First();
+
+                    var listScreenDTO = new ListScreenDTO();
+                    listScreenDTO.CurrentListSection.MyListID = currentList.MyListID;
+                    listScreenDTO.CurrentListSection.Name = currentList.Name;
+                    listScreenDTO.CurrentListSection.Description = currentList.Description;
+                    listScreenDTO.CurrentListSection.MembersCount = currentList.Person1.Count;
+
+                    var myLists = context.MyList.Where(ml => ml.ID_Person == personID);
+
+                    foreach (var list in myLists)
+                    {
+                        listScreenDTO.MyListsSection.Add(new ListDTO()
+                        {
+                            MyListID = list.MyListID,
+                            Name = list.Name,
+                            Description = list.Description,
+                            Privacy = (list.IsPrivate != true) ? Privacy.Public : Privacy.Private
+                        });
+                    }
+
+                    foreach(var pe in currentList.Person1)
+                    {
+                        var posts = context.Post.Where(p => p.ID_Person == pe.PersonID);
+                        posts = posts.OrderByDescending(ps => ps.PublicationDate);
+
+                        foreach (var post in posts)
+                        {
+                            var createdBy = context.Person.Where(p => p.PersonID == post.ID_Person).First();
+
+                            listScreenDTO.PostSection.Add(new PostSectionDTO()
+                            {
+                                PostID = post.PostID,
+                                Comment = post.Comment,
+                                GIFImage = post.GIFImage,
+                                VideoFile = post.VideoFile,
+                                ImageFirstSlot = ByteArrayToBase64(post.ImageFirstSlot, post.ImageFirstSlot_MimeType),
+                                ImageSecondSlot = ByteArrayToBase64(post.ImageSecondSlot, post.ImageSecondSlot_MimeType),
+                                ImageThirdSlot = ByteArrayToBase64(post.ImageThirdSlot, post.ImageThirdSlot_MimeType),
+                                ImageFourthSlot = ByteArrayToBase64(post.ImageFourthSlot, post.ImageFourthSlot_MimeType),
+                                PublicationDate = post.PublicationDate,
+                                CreatedBy = createdBy.PersonID,
+                                NickName = createdBy.NickName,
+                                UserName = createdBy.UserName,
+                                ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
+                                InteractButtons = GetInteractsCountDL(post.PostID)
+                            });
+                        }                        
+                    }
+
+                    return listScreenDTO;
+                }
+            }
+            catch
+            {
+                throw;
+            }        
+        }
+
+        public void EditListDL(ListDTO data)
+        {
+            try
+            {
+                using (var context = new MiniBirdEntities())
+                {
+                    var list = context.MyList.Find(data.MyListID);
+                    list.Name = data.Name;
+                    list.Description = data.Description;
+                    list.IsPrivate = (data.Privacy != Privacy.Public) ? true : false;
+                    context.SaveChanges();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void RemoveListDL(int listID, int personID)
+        {
+            try
+            {
+                using (var context = new MiniBirdEntities())
+                {
+                    var listToRemove = context.MyList.Find(listID);                    
+
+                    foreach(var p in context.Person)
+                    {
+                        if(p.MyList1.Any(ml => ml.MyListID == listID))
+                            p.MyList1.Remove(listToRemove);
+                    }
+                    context.MyList.Remove(listToRemove);
+                    context.SaveChanges();
+                }
+            }
+            catch
+            {
+                throw;
+            }            
+        }        
+
+
+
 
         #region TAREAS AUXILIARES
 
@@ -558,7 +700,7 @@ namespace Data_Layer
             {
                 throw;
             }
-        }
+        }        
 
         #endregion
 

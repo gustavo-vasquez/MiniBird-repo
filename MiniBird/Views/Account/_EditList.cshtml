@@ -1,0 +1,48 @@
+﻿@using Domain_Layer.Enum
+@model Domain_Layer.DTO.ListDTO
+
+<div class="modal fade" id="myListModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        @using (Html.BeginForm("EditList", "Account", new { RedirectUrl = Request.Url.ToString() }, FormMethod.Post, new { id = "MyListForm" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.MyListID)
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar esta lista</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="Name" class="col-form-label">Nombre de la lista:</label>
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control form-control-sm", maxLength = 100 })
+                        @Html.ValidationMessageFor(m => m.Name, null, new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <label for="Description" class="col-form-label">Descripción:</label>
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control form-control-sm", maxLength = 100 })
+                        <small class="form-text text-muted">Menos de 100 caracteres, opcional.</small>
+                        @Html.ValidationMessageFor(m => m.Description, null, new { @class = "text-danger" })
+                    </div>
+                    <h6 class="mt-4">Privacidad</h6>
+                    <hr />
+                    <div class="form-group">
+                        <div class="custom-control custom-radio">
+                            @Html.RadioButtonFor(m => m.Privacy, Privacy.Public, new { id = "Public", name = "myListRadio", @class = "custom-control-input", @checked = true })
+                            <label class="custom-control-label" for="Public">Pública <small class="text-muted">Todos podrán verla</small></label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            @Html.RadioButtonFor(m => m.Privacy, Privacy.Private, new { id = "Private", name = "myListRadio", @class = "custom-control-input" })
+                            <label class="custom-control-label" for="Private">Privada <small class="text-muted">Solo tú podrás verla</small></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Editar lista</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>

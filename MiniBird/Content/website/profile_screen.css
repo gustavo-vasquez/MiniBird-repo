@@ -28,6 +28,14 @@
     left: 20px;
 }
 
+/*******/
+
+/* Panel para crear lista */
+
+#Description {
+    resize: none;
+}
+
 /*.profile_screen-trends > h5 > a {
     margin-right: 1rem !important;
 }*/

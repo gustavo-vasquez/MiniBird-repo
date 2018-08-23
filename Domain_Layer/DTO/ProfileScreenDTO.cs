@@ -13,6 +13,7 @@ namespace Domain_Layer.DTO
         public List<TopTrendingsDTO> TopTrendings { get; set; }
         public List<PostSectionDTO> PostsSection { get; set; }
         public StatisticsBar StatisticsBar { get; set; }
+        public List<ListDTO> MyLists { get; set; }
 
         public ProfileScreenDTO()
         {
@@ -20,6 +21,7 @@ namespace Domain_Layer.DTO
             this.TopTrendings = new List<TopTrendingsDTO>();
             this.PostsSection = new List<PostSectionDTO>();
             this.StatisticsBar = new StatisticsBar();
+            this.MyLists = new List<ListDTO>();
         }
     }
 

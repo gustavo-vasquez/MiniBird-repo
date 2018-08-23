@@ -83,7 +83,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="@Url.Action("ProfileScreen", "Account", new { v = "lists" })">Listas <span class="badge badge-primary badge-pill">@Model.StatisticsBar.ListsCount</span></a>
-                    </li>                    
+                    </li>
                 </ul>
             </div>
         </div>
@@ -158,25 +158,29 @@
 
                         break;
                     case "lists":
+                        <button type="button" class="btn btn-block btn-outline-primary" data-toggle="modal" data-target="#myListModal"><i class="fas fa-plus"></i> Agregar nueva lista</button>
 
-                        <div class="card mb-1">
-                            <div class="card-body">
-                                <h4 class="card-title">Soy list</h4>
-                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>
+                        if(Model.MyLists.Count > 0)
+                        {
+                            <div class="list-group mt-2">
+                                @foreach (var list in Model.MyLists)
+                                {
+                                    <a href="@Url.Action("ListScreen", "Account", new { id = list.MyListID })" class="list-group-item list-group-item-action flex-column align-items-start">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">@list.Name</h5>                                            
+                                        </div>
+                                        <p class="mb-1">@list.Description</p>
+                                        <small>@list.MembersCount miembros</small>
+                                    </a>
+                                }
                             </div>
-                        </div>
-                        <div class="card mb-1">
-                            <div class="card-body">
-                                <h4 class="card-title">Soy list</h4>
-                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>
-                            </div>
-                        </div>
+                        }
+                        else
+                        {
+                            @Html.Partial("~/Views/Account/_EmptyCard.cshtml")
+                        }                        
+
+                        @Html.Partial("~/Views/Account/_CreateList.cshtml", new Domain_Layer.DTO.ListDTO())
 
                         break;
                     default:

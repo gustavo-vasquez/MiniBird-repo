@@ -55,6 +55,7 @@ namespace Domain_Layer.DTO
         public string UserName { get; set; }
         public string ProfileAvatar { get; set; }
         public InteractButtonsDTO InteractButtons { get; set; }
+        public string RepostedBy { get; set; }
 
         public PostSectionDTO()
         {

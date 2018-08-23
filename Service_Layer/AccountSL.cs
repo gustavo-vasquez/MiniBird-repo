@@ -84,6 +84,28 @@ namespace Service_Layer
             return Account.GetInteractsCountDL(postID);
         }
 
+        public void NewListSL(ListDTO data, int personID)
+        {
+            Account.NewListDL(data, personID);
+        }
+
+        public ListScreenDTO ListScreenCollectionDataSL(int listID, int personID)
+        {
+            return Account.ListScreenCollectionDataDL(listID, personID);
+        }
+
+        public void EditListSL(ListDTO data)
+        {
+            Account.EditListDL(data);
+        }
+
+        public void RemoveListSL(int listID, int personID)
+        {
+            Account.RemoveListDL(listID, personID);
+        }
+
+
+
         #region TAREAS AUXILIARES
 
         public bool UserNameExistsSL(string username)

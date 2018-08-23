@@ -173,6 +173,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="Scripts\account\jquery.marquee.js" />
+    <Content Include="Scripts\account\listScreen.js" />
     <Content Include="Scripts\account\newPost.js" />
     <Content Include="Scripts\account\profileScreen.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -260,6 +261,10 @@
     <Content Include="Views\Account\_EditProfileDetails.cshtml" />
     <Content Include="Views\Account\_ImagePreview.cshtml" />
     <Content Include="Views\Account\_InteractButtons.cshtml" />
+    <Content Include="Views\Account\_EmptyCard.cshtml" />
+    <Content Include="Views\Account\_CreateList.cshtml" />
+    <Content Include="Views\Account\ListScreen.cshtml" />
+    <Content Include="Views\Account\_EditList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

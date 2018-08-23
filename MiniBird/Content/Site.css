@@ -118,6 +118,11 @@
     resize: none;
 }
 
+#Comment {
+    overflow: hidden;
+    resize: none;    
+}
+
 .img-upload-newPost {
     width: 140px;
     height: 140px;
@@ -317,11 +322,6 @@
 }
 
 /**********/
-
-#Comment {
-    overflow: hidden;
-    resize: none;    
-}
 
 /* Set padding to keep content from hitting the edges */
 /*.body-content {

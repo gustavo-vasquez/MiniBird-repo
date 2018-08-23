@@ -1,0 +1,49 @@
+﻿@model Domain_Layer.DTO.ListScreenDTO
+
+@{
+    ViewBag.Title = "Mis listas";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="sticky-top">
+            <div class="card mb-2">
+                <div class="card-body text-center">
+                    <h4 class="card-title">@Model.CurrentListSection.Name</h4>
+                    <h6 class="card-subtitle mb-2 text-muted">@Model.CurrentListSection.Description</h6>
+                    <p class="card-text">@(Model.CurrentListSection.MembersCount != 1 ? Model.CurrentListSection.MembersCount + " miembros" : Model.CurrentListSection.MembersCount + " miembro")</p>
+                    <div class="row">
+                        <div class="col-md-6">                            
+                            <button type="button" class="btn btn-block btn-outline-success" data-toggle="modal" data-target="#myListModal">Editar</button>                            
+                        </div>
+                        <div class="col-md-6">
+                            @using (Html.BeginForm("RemoveList", "Account", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.HiddenFor(m => m.CurrentListSection.MyListID)                                
+                                <button id="removeList" type="submit" class="btn btn-block btn-outline-danger">Eliminar</button>
+                            }
+                        </div>
+                    </div>                                       
+                </div>
+            </div>
+            <h5 class="mt-4">Mis listas</h5>            
+            <div class="list-group">
+                @foreach (var list in Model.MyListsSection)
+                {
+                    <a href="@Url.Action("ListScreen", "Account", new { id = list.MyListID })" class="list-group-item list-group-item-action" title="@list.Description">@list.Name</a>
+                }                
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+            @Html.Partial("~/Views/Account/_PostSection.cshtml", Model.PostSection)
+    </div>
+</div>
+
+@Html.Partial("~/Views/Account/_EditList.cshtml", Model.CurrentListSection)
+
+@section scripts {
+        @Scripts.Render("~/Scripts/account/listScreen.js")
+    }
