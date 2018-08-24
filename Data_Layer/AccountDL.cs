@@ -297,12 +297,18 @@ namespace Data_Layer
                 {
                     var person = context.Person.Where(p => p.PersonID == personID).First();
                     var posts = context.Post.Where(ps => ps.ID_Person == personID && ps.InReplyTo == null).ToList();
+                    var reposts = context.RePost.Where(rp => rp.ID_PersonThatRePost == person.PersonID).ToList();
 
-                    foreach(var p in person.Person3)
+                    foreach (var p in person.Person3)
                     {
                         var postsOfFollowing = context.Post.Where(ps => ps.ID_Person == p.PersonID && ps.InReplyTo == null).ToList();
+                        var repostreOfFollowing = context.RePost.Where(rp => rp.ID_PersonThatRePost == p.PersonID).ToList();
+
                         if (postsOfFollowing.Count > 0)
                             posts.AddRange(postsOfFollowing);
+
+                        if (repostreOfFollowing.Count > 0)
+                            reposts.AddRange(repostreOfFollowing);
                     }
 
                     var timelineDTO = new TimelineDTO();
@@ -312,13 +318,37 @@ namespace Data_Layer
                     timelineDTO.ProfileSection.ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar;
                     timelineDTO.ProfileSection.PostCount = posts.Count();
                     timelineDTO.ProfileSection.FollowerCount = person.Person11.Count;
-                    timelineDTO.ProfileSection.FollowingCount = person.Person3.Count;                    
-
-                    posts = posts.OrderByDescending(ps => ps.PublicationDate).ToList();
+                    timelineDTO.ProfileSection.FollowingCount = person.Person3.Count;
 
                     foreach (var post in posts)
                     {
-                        var createdBy = context.Person.Where(p => p.PersonID == post.ID_Person).First();                        
+                        var createdBy = context.Person.Where(p => p.PersonID == post.ID_Person).First();
+                        var reposted = reposts.Where(rp => rp.ID_Post == post.PostID);
+
+                        if (reposted != null)
+                        {
+                            foreach (var repost in reposted)
+                            {
+                                timelineDTO.PostSection.Add(new PostSectionDTO()
+                                {
+                                    PostID = post.PostID,
+                                    Comment = post.Comment,
+                                    GIFImage = post.GIFImage,
+                                    VideoFile = post.VideoFile,
+                                    ImageFirstSlot = ByteArrayToBase64(post.ImageFirstSlot, post.ImageFirstSlot_MimeType),
+                                    ImageSecondSlot = ByteArrayToBase64(post.ImageSecondSlot, post.ImageSecondSlot_MimeType),
+                                    ImageThirdSlot = ByteArrayToBase64(post.ImageThirdSlot, post.ImageThirdSlot_MimeType),
+                                    ImageFourthSlot = ByteArrayToBase64(post.ImageFourthSlot, post.ImageFourthSlot_MimeType),
+                                    PublicationDate = repost.PublicationDate,
+                                    CreatedBy = createdBy.PersonID,
+                                    NickName = createdBy.NickName,
+                                    UserName = createdBy.UserName,
+                                    ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
+                                    InteractButtons = GetInteractsCountDL(post.PostID),
+                                    RepostedBy = (repost.ID_PersonThatRePost != person.PersonID) ? context.Person.Find(repost.ID_PersonThatRePost).NickName : "ti"
+                                });
+                            }
+                        }
 
                         timelineDTO.PostSection.Add(new PostSectionDTO()
                         {
@@ -337,8 +367,9 @@ namespace Data_Layer
                             ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
                             InteractButtons = GetInteractsCountDL(post.PostID)
                         });
-                    }                    
+                    }
 
+                    timelineDTO.PostSection = timelineDTO.PostSection.OrderByDescending(ps => ps.PublicationDate).ToList();
                     return timelineDTO;
                 }                
             }
@@ -544,7 +575,7 @@ namespace Data_Layer
             {
                 throw;
             }            
-        }        
+        }
 
 
 

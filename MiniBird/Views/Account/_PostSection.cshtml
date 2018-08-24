@@ -9,6 +9,10 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
+                        @if (!string.IsNullOrEmpty(post.RepostedBy))
+                        {
+                            <h6 class="text-center text-muted mb-2"><i class="fas fa-retweet"></i> Reposteado por @post.RepostedBy</h6>
+                        }                        
                         <a class="card-link" href="@Url.Action("ProfileScreen", "Account", new { id = post.CreatedBy })">
                             <img class="post-profile-img mr-2" src="@post.ProfileAvatar" alt="profile_image" />
                             <span class="card-title"><b>@post.NickName</b></span>

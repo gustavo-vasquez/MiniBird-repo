@@ -110,15 +110,15 @@ namespace MiniBird.Controllers
 
         public ActionResult Timeline()
         {
-            try
-            {
+            //try
+            //{
                 var model = Account.TimelineCollectionDataSL(ActiveSession.GetPersonID());
                 return View(model);
-            }
-            catch(Exception ex)
-            {
-                return ProcessError(ex);
-            }            
+            //}
+            //catch(Exception ex)
+            //{
+            //    return ProcessError(ex);
+            //}            
         }
 
         [HttpPost]
