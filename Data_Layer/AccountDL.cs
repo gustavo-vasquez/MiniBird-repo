@@ -214,7 +214,34 @@ namespace Data_Layer
 
                             break;
                         default:
-                            var myPosts = context.Post.Where(mp => mp.ID_Person == personID && mp.InReplyTo == null).OrderByDescending(mp => mp.PublicationDate);
+                            var myPosts = context.Post.Where(mp => mp.ID_Person == personID && mp.InReplyTo == null).ToList();
+                            var myReposts = context.RePost.Where(rp => rp.ID_PersonThatRePost == person.PersonID).ToList();                            
+
+                            foreach (var repost in myReposts)
+                            {
+                                var postReposted = context.Post.Find(repost.ID_Post);
+                                var createdBy = context.Person.Where(p => p.PersonID == postReposted.ID_Person).First();
+
+                                profileScreenDTO.PostsSection.Add(new PostSectionDTO()
+                                {
+                                    PostID = postReposted.PostID,
+                                    Comment = postReposted.Comment,
+                                    GIFImage = postReposted.GIFImage,
+                                    VideoFile = postReposted.VideoFile,
+                                    ImageFirstSlot = ByteArrayToBase64(postReposted.ImageFirstSlot, postReposted.ImageFirstSlot_MimeType),
+                                    ImageSecondSlot = ByteArrayToBase64(postReposted.ImageSecondSlot, postReposted.ImageSecondSlot_MimeType),
+                                    ImageThirdSlot = ByteArrayToBase64(postReposted.ImageThirdSlot, postReposted.ImageThirdSlot_MimeType),
+                                    ImageFourthSlot = ByteArrayToBase64(postReposted.ImageFourthSlot, postReposted.ImageFourthSlot_MimeType),
+                                    PublicationDate = repost.PublicationDate,
+                                    CreatedBy = createdBy.PersonID,
+                                    NickName = createdBy.NickName,
+                                    UserName = createdBy.UserName,
+                                    ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
+                                    InteractButtons = GetInteractsCountDL(postReposted.PostID),
+                                    RepostedBy = (repost.ID_PersonThatRePost != person.PersonID) ? context.Person.Find(repost.ID_PersonThatRePost).NickName : "ti"
+                                });
+                            }
+
 
                             foreach (var post in myPosts)
                             {
@@ -239,6 +266,7 @@ namespace Data_Layer
                             break;
                     }
 
+                    profileScreenDTO.PostsSection = profileScreenDTO.PostsSection.OrderByDescending(ps => ps.PublicationDate).ToList();
                     return profileScreenDTO;
                 }
             }
@@ -297,19 +325,6 @@ namespace Data_Layer
                 {
                     var person = context.Person.Where(p => p.PersonID == personID).First();
                     var posts = context.Post.Where(ps => ps.ID_Person == personID && ps.InReplyTo == null).ToList();
-                    var reposts = context.RePost.Where(rp => rp.ID_PersonThatRePost == person.PersonID).ToList();
-
-                    foreach (var p in person.Person3)
-                    {
-                        var postsOfFollowing = context.Post.Where(ps => ps.ID_Person == p.PersonID && ps.InReplyTo == null).ToList();
-                        var repostreOfFollowing = context.RePost.Where(rp => rp.ID_PersonThatRePost == p.PersonID).ToList();
-
-                        if (postsOfFollowing.Count > 0)
-                            posts.AddRange(postsOfFollowing);
-
-                        if (repostreOfFollowing.Count > 0)
-                            reposts.AddRange(repostreOfFollowing);
-                    }
 
                     var timelineDTO = new TimelineDTO();
                     timelineDTO.ProfileSection.UserName = person.UserName;
@@ -319,6 +334,20 @@ namespace Data_Layer
                     timelineDTO.ProfileSection.PostCount = posts.Count();
                     timelineDTO.ProfileSection.FollowerCount = person.Person11.Count;
                     timelineDTO.ProfileSection.FollowingCount = person.Person3.Count;
+
+                    var reposts = context.RePost.Where(rp => rp.ID_PersonThatRePost == person.PersonID).ToList();
+
+                    foreach (var p in person.Person3)
+                    {
+                        var postsOfFollowing = context.Post.Where(ps => ps.ID_Person == p.PersonID && ps.InReplyTo == null).ToList();
+                        var repostsOfFollowing = context.RePost.Where(rp => rp.ID_PersonThatRePost == p.PersonID).ToList();
+
+                        if (postsOfFollowing.Count > 0)
+                            posts.AddRange(postsOfFollowing);
+
+                        if (repostsOfFollowing.Count > 0)
+                            reposts.AddRange(repostsOfFollowing);
+                    }
 
                     foreach (var post in posts)
                     {
