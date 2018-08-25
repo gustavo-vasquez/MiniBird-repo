@@ -1,4 +1,12 @@
-﻿.pane-left {
+﻿#welcome {
+    margin-top: -50px;
+}
+
+.alert {
+    z-index: 9999;
+}
+
+.pane-left {
     background-image: url('../../Content/images/cloud03.jpg');
     background-position: center;
     background-size: cover;

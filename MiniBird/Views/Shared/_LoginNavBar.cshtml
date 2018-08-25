@@ -1,0 +1,19 @@
+﻿@model MiniBird.DTO.SignInDTO
+
+<div class="navbar-nav w-100 justify-content-end draw-borders">
+    @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { id = "loginNavBarForm", @class = "form-inline" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.TextBoxFor(m => m.Login.Email, new { id = "Login_Email_Navbar", @class = "form-control form-control-sm mr-sm-2", placeholder = "Correo electrónico" })
+        @Html.ValidationMessageFor(m => m.Login.Email, null, new { @class = "badge badge-danger" })
+        @Html.PasswordFor(m => m.Login.Password, new { id = "Login_Password_Navbar", @class = "form-control form-control-sm mr-sm-2", placeholder = "Contraseña" })
+        @Html.ValidationMessageFor(m => m.Login.Password, null, new { @class = "badge badge-danger" })
+        <div class="form-check mr-sm-2">
+            <div class="custom-control custom-checkbox">
+                @Html.CheckBoxFor(m => m.Login.RememberMe, new { id = "Login_RememberMe_Navbar", @class = "custom-control-input" })
+                <label class="custom-control-label rememberMeLabel" for="Login_RememberMe_Navbar">Recordarme</label>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-sm btn-primary">Iniciar sesión</button>
+    }
+</div>

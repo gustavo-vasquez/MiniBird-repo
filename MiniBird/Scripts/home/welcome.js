@@ -1,8 +1,11 @@
 ﻿$(document).ready(function () {
+    $('#welcome').parent('div').removeClass('container');    
+    $('footer, hr').remove();
+
     if ($('#loginForm').hasClass('activate')) {
         $('#registerForm').hide();
         $('#loginForm').removeClass('d-none');
-    }        
+    }
 
     $('#loginLink').on('click', function (event) {
         event.preventDefault();        

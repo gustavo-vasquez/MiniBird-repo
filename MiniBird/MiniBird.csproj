@@ -145,7 +145,7 @@
     <Content Include="Content\images\defaultHeader.jpg" />
     <Content Include="Content\images\example_avatar.jpg" />
     <Content Include="Content\images\example_header.jpg" />
-    <Content Include="Content\register.css" />
+    <Content Include="Content\website\welcome.css" />
     <Content Include="Content\themes\bootstrap.cerulean.min.css" />
     <Content Include="Content\themes\bootstrap.cosmo.min.css" />
     <Content Include="Content\themes\bootstrap.cyborg.min.css" />
@@ -226,7 +226,7 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
-    <Content Include="Scripts\account\register.js" />
+    <Content Include="Scripts\home\welcome.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -241,7 +241,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper-utils.min.js.map" />
@@ -251,7 +250,6 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\ProfileScreen.cshtml" />
     <Content Include="Views\Account\_NewPost.cshtml" />
     <Content Include="Views\Account\Timeline.cshtml" />
@@ -265,6 +263,8 @@
     <Content Include="Views\Account\_CreateList.cshtml" />
     <Content Include="Views\Account\ListScreen.cshtml" />
     <Content Include="Views\Account\_EditList.cshtml" />
+    <Content Include="Views\Home\Welcome.cshtml" />
+    <Content Include="Views\Shared\_LoginNavBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

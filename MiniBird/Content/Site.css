@@ -37,6 +37,12 @@
     outline: 0;
 }
 
+.rememberMeLabel {
+    font-size: 1rem;
+    font-weight: normal;
+    cursor: pointer;
+}
+
 /*************/
 
 
