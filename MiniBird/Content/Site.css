@@ -329,6 +329,70 @@
 
 /**********/
 
+
+/* Estilos para la vista de un post */
+
+.view-post-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 9999;
+    width: 100%;
+    padding-right: unset;
+    margin-right: auto;
+    margin-left: auto;
+    background: rgba(0,0,0,.6);
+    max-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;    
+}
+
+.write-answer {
+    border-top: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.write-answer .card-body {
+    padding-top: unset;
+    padding-bottom: unset;
+}
+
+.answers {
+    border-left: unset;
+    border-right: unset;
+    border-bottom: unset;
+}
+
+.slide-in {
+    animation: slide-in 0.3s forwards;
+    -webkit-animation: slide-in 0.3s forwards;
+}
+
+.slide-out {
+    animation: slide-out 0.3s forwards;
+    -webkit-animation: slide-out 0.3s forwards;
+}
+    
+@keyframes slide-in {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(0%); }
+}
+
+@-webkit-keyframes slide-in {
+    0% { -webkit-transform: translateX(100%); }
+    100% { -webkit-transform: translateX(0%); }
+}
+    
+@keyframes slide-out {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(100%); }
+}
+
+@-webkit-keyframes slide-out {
+    0% { -webkit-transform: translateX(0%); }
+    100% { -webkit-transform: translateX(100%); }
+}
+
 /* Set padding to keep content from hitting the edges */
 /*.body-content {
     padding-left: 15px;

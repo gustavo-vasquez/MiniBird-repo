@@ -265,6 +265,7 @@
     <Content Include="Views\Account\_EditList.cshtml" />
     <Content Include="Views\Home\Welcome.cshtml" />
     <Content Include="Views\Shared\_LoginNavBar.cshtml" />
+    <Content Include="Views\Account\_ViewPost.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

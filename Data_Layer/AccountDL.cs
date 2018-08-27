@@ -606,6 +606,40 @@ namespace Data_Layer
             }            
         }
 
+        public PostSectionDTO ViewPostCollectionDataDL(int postID)
+        {
+            try
+            {
+                using(var context = new MiniBirdEntities())
+                {
+                    var post = context.Post.Find(postID);
+                    var createdBy = context.Person.Find(post.ID_Person);
+
+                    return new PostSectionDTO()
+                    {
+                        PostID = post.PostID,
+                        Comment = post.Comment,
+                        GIFImage = post.GIFImage,
+                        VideoFile = post.VideoFile,
+                        ImageFirstSlot = ByteArrayToBase64(post.ImageFirstSlot, post.ImageFirstSlot_MimeType),
+                        ImageSecondSlot = ByteArrayToBase64(post.ImageSecondSlot, post.ImageSecondSlot_MimeType),
+                        ImageThirdSlot = ByteArrayToBase64(post.ImageThirdSlot, post.ImageThirdSlot_MimeType),
+                        ImageFourthSlot = ByteArrayToBase64(post.ImageFourthSlot, post.ImageFourthSlot_MimeType),
+                        PublicationDate = post.PublicationDate,
+                        CreatedBy = createdBy.PersonID,
+                        NickName = createdBy.NickName,
+                        UserName = createdBy.UserName,
+                        ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
+                        InteractButtons = GetInteractsCountDL(post.PostID)
+                    };
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
 
 
 

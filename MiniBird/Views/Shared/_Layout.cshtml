@@ -32,7 +32,8 @@
                         <a class="nav-link" href="#"><i class="fas fa-search"></i> Buscar</a>
                     </li>
                 </ul>
-            }            
+            }
+
             <div class="navbar-nav w-100 justify-content-center">
                 <button class="navbar-brand minibird-logo" onclick="goTop();">
                     <img src="~/Content/images/minibird-logo.svg" width="30" height="30" class="d-inline-block align-top" alt="minibird_logo">
@@ -84,7 +85,7 @@
                 @Html.Partial("~/Views/Shared/_LoginNavBar.cshtml", new MiniBird.DTO.SignInDTO())                
             }
         </div>
-    </nav>
+    </nav>    
         
     <div class="container">
         @if (ActiveSession.IsAuthenticated)
@@ -106,7 +107,7 @@
         <footer>
             <p>&copy; @DateTime.Now.Year - MiniBird</p>
         </footer>        
-    </div>
+    </div>       
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")

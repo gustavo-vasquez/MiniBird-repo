@@ -171,6 +171,23 @@ namespace MiniBird.Controllers
             return RedirectToAction("ProfileScreen", "Account", new { v = "lists" });
         }
 
+        public ActionResult ViewPost(int postID)
+        {
+            try
+            {
+                var model = Account.ViewPostCollectionDataSL(postID);
+
+                if (Request.IsAjaxRequest())
+                    return PartialView("_ViewPost", model);
+                else
+                    return View();
+            }
+            catch(Exception ex)
+            {
+                return ProcessError(ex);
+            }
+        }
+
         #region TAREAS AUXILIARES
 
         //public void LoginCookie(string email)

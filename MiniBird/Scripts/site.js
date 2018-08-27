@@ -1,13 +1,13 @@
 ﻿$(document).ready(function () {
-    $('.dropdown-menu > a, .dropdown-menu > form > button').hover(function () {
+    $('body').on('mouseenter mouseleave', '.dropdown-menu > a, .dropdown-menu > form > button', function () {
         $(this).toggleClass('active');
-    });
+    });    
 
     $('#postModal').on('shown.bs.modal', function () {
         $('#Comment').focus();
     });
 
-    $('.post-images img').on('click', function () {
+    $('body').on('click', '.post-images img', function () {
         var src = $(this).attr('src');
         var images = $(this).closest('.post-images').find('img');
         var srcArray = images.map(function () {
@@ -17,7 +17,7 @@
         loadImagePreview(srcArray, src);
     });
 
-    $('.interact-buttons').on('click', '.repost', function () {
+    $('body').on('click', '.repost', function () {
         var $interactButtonsDiv = $(this).parent('div');
 
         $.ajax({
@@ -30,7 +30,7 @@
         });
     });
 
-    $('.interact-buttons').on('click', '.like', function () {
+    $('body').on('click', '.like', function () {
         var $interactButtonsDiv = $(this).parent('div');
 
         $.ajax({
@@ -42,7 +42,37 @@
             }
         });
     });
+
+    $('.interact-buttons').on('click', '.leave-comment', function () {
+        $.ajax({
+            url: "/Account/ViewPost",
+            method: "GET",
+            data: "postID=" + $(this).closest('.interact-buttons').data('postid'),
+            success: function (data) {
+                openPost(data);
+                $('body').on('click', '#closePost', closePost);
+
+                $('.view-post-container').on('click', function (event) {
+                    if ($(event.target).find('#viewingPost').length > 0)                        
+                        closePost();                    
+                    else
+                        return;
+                });
+
+                $(document).keydown(function (e) {
+                    if (e.keyCode === 27 && $('.view-post-container').length > 0)                        
+                        closePost();
+                });
+            },
+            error: function () {
+                alert("¡Ocurrió un error!");
+            }
+        });
+    });
 });
+
+
+// FUNCIONES
 
 function goTop() {
     $('body,html').animate({
@@ -115,4 +145,19 @@ function loadImagePreview(srcArray, src) {
             alert("¡Ups ocurrió un error!");
         }
     });
+}
+
+function openPost(data) {
+    $('body').append(data);
+    $('body').css('overflow', 'hidden');
+    $('#viewingPost').addClass('slide-in');
+}
+
+
+function closePost() {
+    $('#viewingPost').addClass('slide-out');
+    setTimeout(function () {
+        $('.view-post-container').remove();
+        $('body').css('overflow', 'visible');
+    }, 300);
 }

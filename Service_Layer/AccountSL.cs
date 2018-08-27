@@ -104,6 +104,11 @@ namespace Service_Layer
             Account.RemoveListDL(listID, personID);
         }
 
+        public PostSectionDTO ViewPostCollectionDataSL(int postID)
+        {
+            return Account.ViewPostCollectionDataDL(postID);
+        }
+
 
 
         #region TAREAS AUXILIARES
