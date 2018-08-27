@@ -163,8 +163,12 @@
 
 /* Estilos para los posts */
 
-.card:hover {
-    background-color: rgb(255,252,244);
+.post {
+    cursor: pointer;
+}
+
+.post:hover {
+    background-color: rgb(255,252,240);
 }
 
 .post-profile-img {
@@ -235,6 +239,7 @@
     font-size: 2rem;
     color: white;
     text-shadow: 0px 0px 10px rgba(50, 50, 50, 1);    
+    cursor: pointer;
 }
 
 .close-img-preview {

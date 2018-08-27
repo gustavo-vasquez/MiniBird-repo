@@ -43,31 +43,10 @@
         });
     });
 
-    $('.interact-buttons').on('click', '.leave-comment', function () {
-        $.ajax({
-            url: "/Account/ViewPost",
-            method: "GET",
-            data: "postID=" + $(this).closest('.interact-buttons').data('postid'),
-            success: function (data) {
-                openPost(data);
-                $('body').on('click', '#closePost', closePost);
-
-                $('.view-post-container').on('click', function (event) {
-                    if ($(event.target).find('#viewingPost').length > 0)                        
-                        closePost();                    
-                    else
-                        return;
-                });
-
-                $(document).keydown(function (e) {
-                    if (e.keyCode === 27 && $('.view-post-container').length > 0)                        
-                        closePost();
-                });
-            },
-            error: function () {
-                alert("¡Ocurrió un error!");
-            }
-        });
+    $('body').on('click', '.post', function (event) {
+        var filterList = ".post-images img, .repost i, .repost span, .like i, .like span, .card-link, .card-link img, .post-actions-menu a, .post-actions-menu i, .post-actions-menu .dropdown-menu";
+        if (!$(event.target).is(filterList))
+            loadPost($(this).data('postid'));
     });
 });
 
@@ -143,6 +122,33 @@ function loadImagePreview(srcArray, src) {
         },
         error: function () {
             alert("¡Ups ocurrió un error!");
+        }
+    });
+}
+
+function loadPost(postLink) {
+    $.ajax({
+        url: "/Account/ViewPost",
+        method: "GET",
+        data: "postID=" + postLink,
+        success: function (data) {
+            openPost(data);
+            $('body').on('click', '#closePost', closePost);
+
+            $('.view-post-container').on('click', function (event) {
+                if ($(event.target).find('#viewingPost').length > 0)
+                    closePost();
+                else
+                    return;
+            });
+
+            $(document).keydown(function (e) {
+                if (e.keyCode === 27 && $('.view-post-container').length > 0)                        
+                    closePost();
+            });
+        },
+        error: function () {
+            alert("¡Ocurrió un error!");
         }
     });
 }
