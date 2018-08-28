@@ -1,17 +1,17 @@
 ﻿$(document).ready(function () {
     //console.log($('#NewPostForm'));
-    //var form = $('#NewPostForm').removeData("validator").removeData("unobtrusiveValidation");  /* added by the jquery unobtrusive plugin*/
-    //$.validator.unobtrusive.parse($('#NewPostForm'));
-    //$(form).data('unobtrusiveValidation')      
+    //var form = $('#NewReplyForm').removeData("validator").removeData("unobtrusiveValidation");  /* added by the jquery unobtrusive plugin*/
+    $.validator.unobtrusive.parse($('#NewPostForm, #NewReplyForm'));
+    //$(form).data('unobtrusiveValidation')
     $('#Comment').magicsize();
-    $('#newLinkBtn').on('click', addLinkToPost);
-    $('#Comment').on('keyup', calculateChars);
+    $('body').on('click', '#newLinkBtn', addLinkToPost);
+    $('body').on('keydown', '#Comment', calculateChars);
     eventsforUploadImages();
 });
 
 function addLinkToPost() {
     if ($('#linkGroup').length <= 0) {
-        $('#NewPostForm .modal-body').append('<div id="linkGroup" class="input-group"><div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-link"></i></span></div><input type="text" class="form-control" id="linkText" placeholder="Ingresa una dirección web"><div class="input-group-append"><button id="addLinkBtn" class="btn btn-primary" type="button" title="Añadir"><i class="fas fa-plus"></i></button></div></div>');
+        $('#NewPostForm .modal-body, #NewReplyForm .modal-body').append('<div id="linkGroup" class="input-group"><div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-link"></i></span></div><input type="text" class="form-control" id="linkText" placeholder="Ingresa una dirección web"><div class="input-group-append"><button id="addLinkBtn" class="btn btn-primary" type="button" title="Añadir"><i class="fas fa-plus"></i></button></div></div>');
         $('#linkText').focus();
 
         $('#addLinkBtn').on('click', function () {

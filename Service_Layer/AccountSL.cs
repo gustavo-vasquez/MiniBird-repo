@@ -104,9 +104,14 @@ namespace Service_Layer
             Account.RemoveListDL(listID, personID);
         }
 
-        public PostSectionDTO ViewPostCollectionDataSL(int postID)
+        public ViewPostDTO ViewPostCollectionDataSL(int postID)
         {
             return Account.ViewPostCollectionDataDL(postID);
+        }
+
+        public bool CreateNewReplySL(NewPostDTO data, int personID)
+        {
+            return Account.CreateNewReplyDL(data, personID);
         }
 
 

@@ -1,8 +1,8 @@
-﻿@model Domain_Layer.DTO.PostSectionDTO
+﻿@model Domain_Layer.DTO.ViewPostDTO
 
 @if (Model != null)
 {
-    <div class="view-post-container">
+    <div class="view-post-container" data-postid="@Model.PostSection.PostID">
         <div class="row justify-content-end">            
             <div class="col-md-6">
                 <div id="viewingPost" class="card">
@@ -10,10 +10,10 @@
                         <button id="closePost" type="button" class="close" title="Cerrar post">&times;</button>
                         <div class="row">
                             <div class="col">                                
-                                <a class="card-link" href="@Url.Action("ProfileScreen", "Account", new { id = Model.CreatedBy })">
-                                    <img class="post-profile-img mr-2" src="@Model.ProfileAvatar" alt="profile_image" />
-                                    <span class="card-title"><b>@Model.NickName</b></span>
-                                    <span class="card-subtitle mb-2 text-muted">@Model.UserName</span>
+                                <a class="card-link" href="@Url.Action("ProfileScreen", "Account", new { id = Model.PostSection.CreatedBy })">
+                                    <img class="post-profile-img mr-2" src="@Model.PostSection.ProfileAvatar" alt="profile_image" />
+                                    <span class="card-title"><b>@Model.PostSection.NickName</b></span>
+                                    <span class="card-subtitle mb-2 text-muted">@Model.PostSection.UserName</span>
                                 </a>
                                 <div class="dropdown post-actions-menu">
                                     <a id="viewPostLinkActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-caret-square-down ml-2"></i></a>
@@ -31,52 +31,52 @@
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-md-10">
-                                <p class="card-text">@Model.Comment</p>
+                                <p class="card-text">@Model.PostSection.Comment</p>
 
-                                @if (Model.ImageFirstSlot != null && Model.ImageSecondSlot == null && Model.ImageThirdSlot == null && Model.ImageFourthSlot == null)
+                                @if (Model.PostSection.ImageFirstSlot != null && Model.PostSection.ImageSecondSlot == null && Model.PostSection.ImageThirdSlot == null && Model.PostSection.ImageFourthSlot == null)
                                 {
                                     <div class="card post-images one-thumbnail ovh">
-                                        <img src="@Model.ImageFirstSlot" alt="posted_image">
+                                        <img src="@Model.PostSection.ImageFirstSlot" alt="posted_image">
                                     </div>
                                 }
-                                else if (Model.ImageFirstSlot != null && Model.ImageSecondSlot != null && Model.ImageThirdSlot == null && Model.ImageFourthSlot == null)
+                                else if (Model.PostSection.ImageFirstSlot != null && Model.PostSection.ImageSecondSlot != null && Model.PostSection.ImageThirdSlot == null && Model.PostSection.ImageFourthSlot == null)
                                 {
                                     <div class="card post-images two-thumbnails">
                                         <div class="row no-gutters">
                                             <div class="col tpr">
                                                 <div class="ovh">
-                                                    <img src="@Model.ImageFirstSlot" alt="posted_image">
+                                                    <img src="@Model.PostSection.ImageFirstSlot" alt="posted_image">
                                                 </div>
                                             </div>
                                             <div class="col tpl">
                                                 <div class="ovh">
-                                                    <img src="@Model.ImageSecondSlot" alt="posted_image" />
+                                                    <img src="@Model.PostSection.ImageSecondSlot" alt="posted_image" />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 }
-                                else if (Model.ImageFirstSlot != null && Model.ImageSecondSlot != null && Model.ImageThirdSlot != null && Model.ImageFourthSlot == null)
+                                else if (Model.PostSection.ImageFirstSlot != null && Model.PostSection.ImageSecondSlot != null && Model.PostSection.ImageThirdSlot != null && Model.PostSection.ImageFourthSlot == null)
                                 {
                                     <div class="card post-images three-thumbnails">
                                         <div class="row no-gutters">
                                             <div class="col-md-8 tpr">
                                                 <div class="ovh">
-                                                    <img src="@Model.ImageFirstSlot" alt="posted_image">
+                                                    <img src="@Model.PostSection.ImageFirstSlot" alt="posted_image">
                                                 </div>
                                             </div>
                                             <div class="col-md-4 tpl">
                                                 <div class="row tpb">
                                                     <div class="col">
                                                         <div class="ovh">
-                                                            <img class="mini-thumbnail" src="@Model.ImageSecondSlot" alt="posted_image" />
+                                                            <img class="mini-thumbnail" src="@Model.PostSection.ImageSecondSlot" alt="posted_image" />
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col">
                                                         <div class="ovh">
-                                                            <img class="mini-thumbnail" src="@Model.ImageThirdSlot" alt="posted_image" />
+                                                            <img class="mini-thumbnail" src="@Model.PostSection.ImageThirdSlot" alt="posted_image" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -84,29 +84,29 @@
                                         </div>
                                     </div>
                                 }
-                                else if (Model.ImageFirstSlot != null && Model.ImageSecondSlot != null && Model.ImageThirdSlot != null && Model.ImageFourthSlot != null)
+                                else if (Model.PostSection.ImageFirstSlot != null && Model.PostSection.ImageSecondSlot != null && Model.PostSection.ImageThirdSlot != null && Model.PostSection.ImageFourthSlot != null)
                                 {
                                     <div class="card post-images four-thumbnails">
                                         <div class="row no-gutters">
                                             <div class="col-md-6 tpr">
                                                 <div class="ovh">
-                                                    <img src="@Model.ImageFirstSlot" alt="posted_image">
+                                                    <img src="@Model.PostSection.ImageFirstSlot" alt="posted_image">
                                                 </div>
                                             </div>
                                             <div class="col-md-6 tpl">
                                                 <div class="ovh">
-                                                    <img src="@Model.ImageSecondSlot" alt="posted_image">
+                                                    <img src="@Model.PostSection.ImageSecondSlot" alt="posted_image">
                                                 </div>
                                             </div>
                                             <div class="w-100 tpb"></div>
                                             <div class="col-md-6 tpr">
                                                 <div class="ovh">
-                                                    <img src="@Model.ImageThirdSlot" alt="posted_image" />
+                                                    <img src="@Model.PostSection.ImageThirdSlot" alt="posted_image" />
                                                 </div>
                                             </div>
                                             <div class="col-md-6 tpl">
                                                 <div class="ovh">
-                                                    <img src="@Model.ImageFourthSlot" alt="posted_image" />
+                                                    <img src="@Model.PostSection.ImageFourthSlot" alt="posted_image" />
                                                 </div>
                                             </div>
                                         </div>
@@ -116,50 +116,23 @@
                             </div>
                         </div>
                         <div class="row mt-4 justify-content-center">
-                            <div class="col-md-5 interact-buttons" data-postid="@Model.PostID">
-                                @Html.Partial("~/Views/Account/_InteractButtons.cshtml", Model.InteractButtons)
+                            <div class="col-md-5 interact-buttons" data-postid="@Model.PostSection.PostID">
+                                @Html.Partial("~/Views/Account/_InteractButtons.cshtml", Model.PostSection.InteractButtons)
                             </div>
                             <div class="col-md-5 text-right text-muted">
-                                <p class="text-lowercase"><i class="far fa-clock"></i> @Model.PublicationDate.ToString("dd/MM/yyyy hh:mm tt", new System.Globalization.CultureInfo("en-US"))</p>
+                                <p class="text-lowercase"><i class="far fa-clock"></i> @Model.PostSection.PublicationDate.ToString("dd/MM/yyyy hh:mm tt", new System.Globalization.CultureInfo("en-US"))</p>
                             </div>
                         </div>
-                    </div>                    
+                    </div>
                     <div class="card border-light write-answer mb-3">
                         <div class="card-body">
-                            <button type="button" class="btn btn-block btn-outline-success">Responder</button>
-                        </div>                                                
-                    </div>
-                    <div class="card answers mt-2">                        
-                        <div class="card-body">
-                            <h4 class="card-title">Light card title</h4>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <button id="replyBtn" type="button" class="btn btn-block btn-outline-success" data-replyto="@Model.PostSection.UserName">Responder</button>
                         </div>
+                    </div>        
+                    <div id="replies">
+                        @Html.Partial("~/Views/Account/_RepliesToPost.cshtml", Model.RepliesToPost)
                     </div>
-                    <div class="card answers mt-2">
-                        <div class="card-body">
-                            <h4 class="card-title">Light card title</h4>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                    <div class="card answers mt-2">
-                        <div class="card-body">
-                            <h4 class="card-title">Light card title</h4>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                    <div class="card answers mt-2">
-                        <div class="card-body">
-                            <h4 class="card-title">Light card title</h4>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                    <div class="card answers mt-2">
-                        <div class="card-body">
-                            <h4 class="card-title">Light card title</h4>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                    </div>
-                </div>
+                </div>                
             </div>
         </div>
     </div>    

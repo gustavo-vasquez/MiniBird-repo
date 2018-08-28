@@ -1,0 +1,154 @@
+﻿@model IEnumerable<Domain_Layer.DTO.PostSectionDTO>
+
+@foreach (var reply in Model)
+{
+    <div class="card answers mt-2" data-postid="@reply.PostID">
+        <div class="card-body">
+            <div class="row">
+                <div class="col">                    
+                    <a class="card-link" href="@Url.Action("ProfileScreen", "Account", new { id = reply.CreatedBy })">
+                        <img class="post-profile-img mr-2" src="@reply.ProfileAvatar" alt="profile_image" />
+                        <span class="card-title"><b>@reply.NickName</b></span>
+                        <span class="card-subtitle mb-2 text-muted">@reply.UserName</span>
+                    </a>
+                    <div class="dropdown post-actions-menu">
+                        <a id="menuLinkActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-caret-square-down ml-2"></i></a>
+                        <div class="dropdown-menu" aria-labelledby="menuLinkActions">
+                            <a class="dropdown-item" href="#"><i class="far fa-copy"></i> Copiar enlace del post</a>                            
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#"><i class="fas fa-microphone-alt-slash"></i> Silenciar a @@usuario</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-lock"></i> Bloquear a @@usuario</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#"><i class="far fa-flag"></i> Denunciar este post</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <p class="card-text">@reply.Comment</p>
+
+                    @if (reply.ImageFirstSlot != null && reply.ImageSecondSlot == null && reply.ImageThirdSlot == null && reply.ImageFourthSlot == null)
+                    {
+                        <div class="card post-images one-thumbnail ovh">
+                            <img src="@reply.ImageFirstSlot" alt="posted_image">
+                        </div>
+                    }
+                    else if (reply.ImageFirstSlot != null && reply.ImageSecondSlot != null && reply.ImageThirdSlot == null && reply.ImageFourthSlot == null)
+                    {
+                        <div class="card post-images two-thumbnails">
+                            <div class="row no-gutters">
+                                <div class="col tpr">
+                                    <div class="ovh">
+                                        <img src="@reply.ImageFirstSlot" alt="posted_image">
+                                    </div>
+                                </div>
+                                <div class="col tpl">
+                                    <div class="ovh">
+                                        <img src="@reply.ImageSecondSlot" alt="posted_image" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else if (reply.ImageFirstSlot != null && reply.ImageSecondSlot != null && reply.ImageThirdSlot != null && reply.ImageFourthSlot == null)
+                    {
+                        <div class="card post-images three-thumbnails">
+                            <div class="row no-gutters">
+                                <div class="col-md-8 tpr">
+                                    <div class="ovh">
+                                        <img src="@reply.ImageFirstSlot" alt="posted_image">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 tpl">
+                                    <div class="row tpb">
+                                        <div class="col">
+                                            <div class="ovh">
+                                                <img class="mini-thumbnail" src="@reply.ImageSecondSlot" alt="posted_image" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="ovh">
+                                                <img class="mini-thumbnail" src="@reply.ImageThirdSlot" alt="posted_image" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else if (reply.ImageFirstSlot != null && reply.ImageSecondSlot != null && reply.ImageThirdSlot != null && reply.ImageFourthSlot != null)
+                    {
+                        <div class="card post-images four-thumbnails">
+                            <div class="row no-gutters">
+                                <div class="col-md-6 tpr">
+                                    <div class="ovh">
+                                        <img src="@reply.ImageFirstSlot" alt="posted_image">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 tpl">
+                                    <div class="ovh">
+                                        <img src="@reply.ImageSecondSlot" alt="posted_image">
+                                    </div>
+                                </div>
+                                <div class="w-100 tpb"></div>
+                                <div class="col-md-6 tpr">
+                                    <div class="ovh">
+                                        <img src="@reply.ImageThirdSlot" alt="posted_image" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 tpl">
+                                    <div class="ovh">
+                                        <img src="@reply.ImageFourthSlot" alt="posted_image" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+            <div class="row mt-4 justify-content-center">
+                <div class="col-md-5 interact-buttons" data-postid="@reply.PostID">
+                    @Html.Partial("~/Views/Account/_InteractButtons.cshtml", reply.InteractButtons)
+                </div>
+                <div class="col-md-5 text-right text-muted">
+                    <p class="text-lowercase"><i class="far fa-clock"></i> @reply.PublicationDate.ToString("dd/MM/yyyy hh:mm tt", new System.Globalization.CultureInfo("en-US"))</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="card answers mt-2">
+    <div class="card-body">
+        <h4 class="card-title">Light card title</h4>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    </div>
+</div>
+<div class="card answers mt-2">
+    <div class="card-body">
+        <h4 class="card-title">Light card title</h4>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    </div>
+</div>
+<div class="card answers mt-2">
+    <div class="card-body">
+        <h4 class="card-title">Light card title</h4>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    </div>
+</div>
+<div class="card answers mt-2">
+    <div class="card-body">
+        <h4 class="card-title">Light card title</h4>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    </div>
+</div>
+<div class="card answers mt-2">
+    <div class="card-body">
+        <h4 class="card-title">Light card title</h4>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    </div>
+</div>

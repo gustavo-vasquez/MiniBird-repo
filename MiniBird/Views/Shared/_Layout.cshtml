@@ -49,7 +49,7 @@
             {
                 <ul class="navbar-nav w-100 justify-content-end draw-borders">
                     <li class="nav-item">
-                        <button class="btn btn-success mt-1 mr-2" type="button" data-toggle="modal" data-target="#postModal"><i class="fas fa-feather-alt"></i> Postear</button>
+                        <button id="postBtn" class="btn btn-success mt-1 mr-2" type="button"><i class="fas fa-feather-alt"></i> Postear</button>
                     </li>                    
 
                     <li class="nav-item active">
@@ -96,9 +96,7 @@
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                     <p class="mb-0">@TempData["message"]</p>
                 </div>
-            }
-
-            @Html.Partial("~/Views/Account/_NewPost.cshtml", new MiniBird.DTO.NewPostDTO())
+            }            
         }        
 
         @RenderBody()        
@@ -114,7 +112,7 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/Scripts/site.js")
     @RenderSection("scripts", required: false)
-    @Scripts.Render("~/Scripts/account/newPost.js")
+    @*@Scripts.Render("~/Scripts/account/newPost.js")*@
     @*@{ 
         var action = ViewContext.RouteData.Values["action"].ToString();
         var controller = ViewContext.RouteData.Values["controller"].ToString();

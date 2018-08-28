@@ -606,7 +606,7 @@ namespace Data_Layer
             }            
         }
 
-        public PostSectionDTO ViewPostCollectionDataDL(int postID)
+        public ViewPostDTO ViewPostCollectionDataDL(int postID)
         {
             try
             {
@@ -615,28 +615,107 @@ namespace Data_Layer
                     var post = context.Post.Find(postID);
                     var createdBy = context.Person.Find(post.ID_Person);
 
-                    return new PostSectionDTO()
+                    var ViewPost = new ViewPostDTO();
+                    ViewPost.PostSection.PostID = post.PostID;
+                    ViewPost.PostSection.Comment = post.Comment;
+                    ViewPost.PostSection.GIFImage = post.GIFImage;
+                    ViewPost.PostSection.VideoFile = post.VideoFile;
+                    ViewPost.PostSection.ImageFirstSlot = ByteArrayToBase64(post.ImageFirstSlot, post.ImageFirstSlot_MimeType);
+                    ViewPost.PostSection.ImageSecondSlot = ByteArrayToBase64(post.ImageSecondSlot, post.ImageSecondSlot_MimeType);
+                    ViewPost.PostSection.ImageThirdSlot = ByteArrayToBase64(post.ImageThirdSlot, post.ImageThirdSlot_MimeType);
+                    ViewPost.PostSection.ImageFourthSlot = ByteArrayToBase64(post.ImageFourthSlot, post.ImageFourthSlot_MimeType);
+                    ViewPost.PostSection.PublicationDate = post.PublicationDate;
+                    ViewPost.PostSection.CreatedBy = createdBy.PersonID;
+                    ViewPost.PostSection.NickName = createdBy.NickName;
+                    ViewPost.PostSection.UserName = createdBy.UserName;
+                    ViewPost.PostSection.ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar;
+                    ViewPost.PostSection.InteractButtons = GetInteractsCountDL(post.PostID);
+
+                    var replies = context.Post.Where(r => r.InReplyTo == postID);
+
+                    foreach(var reply in replies)
                     {
-                        PostID = post.PostID,
-                        Comment = post.Comment,
-                        GIFImage = post.GIFImage,
-                        VideoFile = post.VideoFile,
-                        ImageFirstSlot = ByteArrayToBase64(post.ImageFirstSlot, post.ImageFirstSlot_MimeType),
-                        ImageSecondSlot = ByteArrayToBase64(post.ImageSecondSlot, post.ImageSecondSlot_MimeType),
-                        ImageThirdSlot = ByteArrayToBase64(post.ImageThirdSlot, post.ImageThirdSlot_MimeType),
-                        ImageFourthSlot = ByteArrayToBase64(post.ImageFourthSlot, post.ImageFourthSlot_MimeType),
-                        PublicationDate = post.PublicationDate,
-                        CreatedBy = createdBy.PersonID,
-                        NickName = createdBy.NickName,
-                        UserName = createdBy.UserName,
-                        ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
-                        InteractButtons = GetInteractsCountDL(post.PostID)
-                    };
+                        var replyCreatedBy = context.Person.Find(reply.ID_Person);
+
+                        ViewPost.RepliesToPost.Add(new PostSectionDTO()
+                        {
+                            PostID = reply.PostID,
+                            Comment = reply.Comment,
+                            GIFImage = reply.GIFImage,
+                            VideoFile = reply.VideoFile,
+                            ImageFirstSlot = ByteArrayToBase64(reply.ImageFirstSlot, reply.ImageFirstSlot_MimeType),
+                            ImageSecondSlot = ByteArrayToBase64(reply.ImageSecondSlot, reply.ImageSecondSlot_MimeType),
+                            ImageThirdSlot = ByteArrayToBase64(reply.ImageThirdSlot, reply.ImageThirdSlot_MimeType),
+                            ImageFourthSlot = ByteArrayToBase64(reply.ImageFourthSlot, reply.ImageFourthSlot_MimeType),
+                            PublicationDate = reply.PublicationDate,
+                            CreatedBy = replyCreatedBy.PersonID,
+                            NickName = replyCreatedBy.NickName,
+                            UserName = replyCreatedBy.UserName,
+                            ProfileAvatar = (replyCreatedBy.ProfileAvatar != null) ? ByteArrayToBase64(replyCreatedBy.ProfileAvatar, replyCreatedBy.ProfileAvatar_MimeType) : defaultAvatar,
+                            InteractButtons = GetInteractsCountDL(reply.PostID)
+                        });
+                    }
+
+                    return ViewPost;
                 }
             }
             catch
             {
                 throw;
+            }
+        }
+
+        public bool CreateNewReplyDL(NewPostDTO data, int personID)
+        {
+            try
+            {
+                using (var context = new MiniBirdEntities())
+                {
+                    if (context.Person.Any(p => p.PersonID == personID))
+                    {
+                        var post = new Post();
+                        post.Comment = data.Comment;
+                        if (data.ImagesUploaded != null && data.ImagesUploaded.Length != 0)
+                        {
+                            for (int i = 0; i < data.ImagesUploaded.Length; i++)
+                            {
+                                switch (i)
+                                {
+                                    case 0:
+                                        post.ImageFirstSlot = imgBase64ToByteArray(data.ImagesUploaded[i]);
+                                        post.ImageFirstSlot_MimeType = ExtractMimeType(data.ImagesUploaded[i]);
+                                        break;
+                                    case 1:
+                                        post.ImageSecondSlot = imgBase64ToByteArray(data.ImagesUploaded[i]);
+                                        post.ImageSecondSlot_MimeType = ExtractMimeType(data.ImagesUploaded[i]);
+                                        break;
+                                    case 2:
+                                        post.ImageThirdSlot = imgBase64ToByteArray(data.ImagesUploaded[i]);
+                                        post.ImageThirdSlot_MimeType = ExtractMimeType(data.ImagesUploaded[i]);
+                                        break;
+                                    case 3:
+                                        post.ImageFourthSlot = imgBase64ToByteArray(data.ImagesUploaded[i]);
+                                        post.ImageFourthSlot_MimeType = ExtractMimeType(data.ImagesUploaded[i]);
+                                        break;
+                                }
+                            }
+                        }
+                        post.PublicationDate = DateTime.Now;
+                        if (data.InReplyTo != null && data.InReplyTo != 0)
+                            post.InReplyTo = data.InReplyTo;
+                        post.ID_Person = personID;
+                        context.Post.Add(post);
+                        context.SaveChanges();
+
+                        return true;
+                    }
+
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
             }
         }
 
@@ -796,92 +875,6 @@ namespace Data_Layer
             }
         }        
 
-        #endregion
-
-        //List<string> emailsperson1list = new List<string>();
-        //List<string> emailsperson2list = new List<string>();
-
-        //var person1list = person.Person1.ToList();
-
-        //foreach (var p in person1list)
-        //{
-        //    emailsperson1list.Add(p.Email);
-        //}
-
-        //var person2list = person.Person2.ToList();
-
-        //foreach (var p2 in person2list)
-        //{
-        //    emailsperson2list.Add(p2.Email);
-        //}
-
-        //List<int> blockedids = new List<int>();
-        //var blocked = person.Person1.Union(person.Person2);
-        //var blockedlist = blocked.ToList();
-
-        //foreach (var b in blockedlist)
-        //{
-        //    blockedids.Add(b.PersonID);
-        //}
-
-        //var blocked2 = person.Person2.Union(person.Person1);
-
-        //List<string> emailsperson11list = new List<string>();
-        //List<string> emailsperson3list = new List<string>();
-
-        //var person11list = person.Person11.ToList();
-
-        //foreach (var p11 in person11list)
-        //{
-        //    emailsperson11list.Add(p11.Email);
-        //}
-
-        //var person3list = person.Person3.ToList();
-
-        //foreach (var p3 in person3list)
-        //{
-        //    emailsperson3list.Add(p3.Email);
-        //}
-
-        //List<int> followids = new List<int>();
-        //var follow = person.Person11.Union(person.Person3);
-        //var followlist = follow.ToList();
-
-        //foreach (var f in followlist)
-        //{
-        //    followids.Add(f.PersonID);
-        //}
-
-        //var follow = person.Person11.Union(person.Person3);
-        //var follow2 = person.Person3.Union(person.Person11);
-
-        //List<string> emailsperson12list = new List<string>();
-        //List<string> emailsperson4list = new List<string>();
-
-        //var person12list = person.Person12.ToList();
-
-        //foreach (var p12 in person12list)
-        //{
-        //    emailsperson12list.Add(p12.Email);
-        //}
-
-        //var person4list = person.Person4.ToList();
-
-        //foreach (var p4 in person4list)
-        //{
-        //    emailsperson4list.Add(p4.Email);
-        //}
-
-        //List<int> mutedids = new List<int>();                    
-        //var muted = person.Person12.Union(person.Person4);
-        //var mutedlist = muted.ToList();
-
-        //foreach (var m in mutedlist)
-        //{
-        //    mutedids.Add(m.PersonID);
-        //}
-
-        //var muted = person.Person12.Union(person.Person4);
-        //var muted2 = person.Person4.Union(person.Person12);
+        #endregion        
     }
 }

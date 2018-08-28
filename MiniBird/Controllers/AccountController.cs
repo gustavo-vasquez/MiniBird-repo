@@ -186,27 +186,9 @@ namespace MiniBird.Controllers
             {
                 return ProcessError(ex);
             }
-        }
+        }        
 
-        #region TAREAS AUXILIARES
-
-        //public void LoginCookie(string email)
-        //{
-        //    try
-        //    {
-        //        HttpCookie cookie = new HttpCookie("MBLC");
-        //        cookie.Domain = "localhost";
-        //        cookie.Expires = DateTime.Now.AddDays(30);
-        //        cookie.Path = "/";
-        //        cookie.Secure = false;
-        //        cookie.Value = Account.EncryptCookieValueSL(email);
-        //        Response.Cookies.Add(cookie);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
+        #region TAREAS AUXILIARES        
 
         #endregion
 
@@ -275,6 +257,36 @@ namespace MiniBird.Controllers
         {
             Account.GiveALikeSL(postID, ActiveSession.GetPersonID());
             return PartialView("_InteractButtons", Account.GetInteractsCountSL(postID));
+        }
+
+        [HttpGet]
+        public PartialViewResult NewPublication(string call)
+        {
+            switch(call)
+            {
+                case "post":
+                    return PartialView("_NewPost");                    
+                case "reply":
+                    return PartialView("_NewReply");
+                default:
+                    return null;
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult NewReply(NewPostDTO model)
+        {
+            if (!ModelState.IsValid)
+                return Content("Fallaron las validaciones.");
+
+            if (Account.CreateNewReplySL(model, ActiveSession.GetPersonID()))
+            {
+                var newModel = Account.ViewPostCollectionDataSL(Convert.ToInt32(model.InReplyTo));
+                return PartialView("_RepliesToPost", newModel.RepliesToPost);
+            }
+
+            return RedirectToAction("Timeline", "Account");
         }
 
         #endregion

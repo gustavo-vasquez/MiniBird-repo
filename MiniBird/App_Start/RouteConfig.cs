@@ -16,7 +16,7 @@ namespace MiniBird
             routes.MapRoute(
                 name: "ProfileTabs",
                 url: "Account/ProfileScreen/{v}",
-                defaults: new { controller = "Account", action = "ProfileScreen", v = UrlParameter.Optional }
+                defaults: new { controller = "Account", action = "ProfileScreen" }
                 //constraints: new { username = new UserNameConstraint() }
             );            
 

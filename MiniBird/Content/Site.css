@@ -180,6 +180,7 @@
 
 .post-images {
     border: none !important;
+    cursor: pointer;
 }
 
 .post-images img {    
@@ -292,6 +293,7 @@
 
 .post-actions-menu {
     display: inline;
+    cursor: pointer;
 }
 
 .interact-buttons button {
@@ -366,6 +368,10 @@
     border-left: unset;
     border-right: unset;
     border-bottom: unset;
+}
+
+.answers > .card-body {
+    padding-bottom: unset;
 }
 
 .slide-in {

@@ -1,0 +1,40 @@
+﻿@model Domain_Layer.DTO.NewPostDTO
+
+<div class="modal fade" id="replyModal" tabindex="-1" role="dialog" aria-labelledby="replyModalTitle" aria-hidden="true" style="z-index: 9999;">
+    <div class="modal-dialog modal-md" role="document">
+        @using (Ajax.BeginForm("NewReply", "Account", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "replies", InsertionMode = InsertionMode.InsertAfter }, new { id = "NewReplyForm" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.InReplyTo)
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="replyModalTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        @Html.ValidationMessageFor(m => m.Comment, null, new { @class = "badge badge-danger mb-1" })
+                        @Html.TextAreaFor(m => m.Comment, new { @class = "form-control", placeholder = "¿Cuál es tu respuesta?", rows = 1 })
+                    </div>
+                    <div class="form-group text-center d-none">
+                        <div id="imgThumbnailsRow" class="row no-gutters"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="w-100 justify-content-start">
+                        <input type="file" id="UploadImage" name="imgUploaded[]" class="d-none" accept="image/*" multiple />
+                        <button id="newImageBtn" type="button" class="btn btn-secondary" title="Agregar una imágen"><i class="fas fa-image"></i></button>
+                        <button id="newVideoBtn" type="button" class="btn btn-secondary" title="Agregar un video"><i class="fas fa-video"></i></button>
+                        <button id="newLinkBtn" type="button" class="btn btn-secondary" title="Agregar un enlace"><i class="fas fa-link"></i></button>
+                    </div>
+                    <div class="w-100 text-right justify-content-end">
+                        <label class="mr-2 available-chars">280</label>
+                        <button type="submit" class="btn btn-success"><i class="fas fa-reply"></i> Responder</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

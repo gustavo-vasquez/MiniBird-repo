@@ -50,10 +50,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActiveSession.cs" />
+    <Compile Include="DTO\CustomDataAnnotations.cs" />
     <Compile Include="DTO\ListScreenDTO.cs" />
     <Compile Include="DTO\ListDTO.cs" />
+    <Compile Include="DTO\NewPostDTO.cs" />
     <Compile Include="DTO\ProfileScreenDTO.cs" />
     <Compile Include="DTO\TimelineDTO.cs" />
+    <Compile Include="DTO\ViewPostDTO.cs" />
     <Compile Include="Enum\Privacy.cs" />
     <Compile Include="Hashtag.cs">
       <DependentUpon>MiniBirdDB.tt</DependentUpon>
