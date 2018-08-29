@@ -1,8 +1,8 @@
 ﻿@model Domain_Layer.DTO.NewPostDTO
 
-<div class="modal fade" id="replyModal" tabindex="-1" role="dialog" aria-labelledby="replyModalTitle" aria-hidden="true" style="z-index: 9999;">
+<div class="modal fade" id="replyModal" tabindex="-1" role="dialog" aria-labelledby="replyModalTitle" aria-hidden="true" data-backdrop="false">
     <div class="modal-dialog modal-md" role="document">
-        @using (Ajax.BeginForm("NewReply", "Account", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "replies", InsertionMode = InsertionMode.InsertAfter }, new { id = "NewReplyForm" }))
+        @using (Ajax.BeginForm("NewReply", "Account", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "replies", InsertionMode = InsertionMode.Replace, OnSuccess = "$('#replyModal').modal('hide');" }, new { id = "NewReplyForm" }))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.InReplyTo)

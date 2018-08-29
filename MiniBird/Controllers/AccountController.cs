@@ -260,7 +260,7 @@ namespace MiniBird.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult NewPublication(string call)
+        public PartialViewResult DrawPublication(string call)
         {
             switch(call)
             {

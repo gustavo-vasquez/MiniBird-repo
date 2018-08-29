@@ -631,7 +631,7 @@ namespace Data_Layer
                     ViewPost.PostSection.ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar;
                     ViewPost.PostSection.InteractButtons = GetInteractsCountDL(post.PostID);
 
-                    var replies = context.Post.Where(r => r.InReplyTo == postID);
+                    var replies = context.Post.Where(r => r.InReplyTo == postID).OrderByDescending(r => r.PublicationDate);
 
                     foreach(var reply in replies)
                     {

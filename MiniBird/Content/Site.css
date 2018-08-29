@@ -354,14 +354,19 @@
     overflow-x: hidden;    
 }
 
-.write-answer {
+.writeAnswer {
     border-top: 1px solid rgba(0,0,0,0.1);
     border-bottom: 1px solid rgba(0,0,0,0.1);
 }
 
-.write-answer .card-body {
+.writeAnswer .card-body {
     padding-top: unset;
     padding-bottom: unset;
+}
+
+#replyModal {
+    position: relative;
+    z-index: 9999;
 }
 
 .answers {

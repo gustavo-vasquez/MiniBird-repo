@@ -65,12 +65,10 @@ function goTop() {
     return false;
 }
 
-function newPost() {    
-    $('#replyModal').remove();
-
+function newPost() {
     if ($('#postModal').length <= 0) {        
         $.ajax({
-            url: "/Account/NewPublication",
+            url: "/Account/DrawPublication",
             method: "GET",
             data: "call=post",
             success: function (data) {
@@ -84,7 +82,7 @@ function newPost() {
                 });                
             },
             error: function () {
-                alert("Ups!");
+                alert("¡Error al cargar el panel de publicación!\nInténtelo de nuevo más tarde.");
             }
         });
     }
@@ -98,11 +96,11 @@ function newReply() {
 
     if ($('#replyModal').length <= 0) {
         $.ajax({
-            url: "/Account/NewPublication",
+            url: "/Account/DrawPublication",
             method: "GET",
             data: "call=reply",
             success: function (data, textStatus, XMLHttpRequest) {
-                $('body').append(data);
+                $('#writeAnswer').append(data);
                 $('#replyModalTitle').text('En respuesta a ' + $('#replyBtn').data('replyto'));
                 $('#InReplyTo').val($('.view-post-container').data('postid'));
 
@@ -114,7 +112,7 @@ function newReply() {
                 });
             },
             error: function () {
-                alert("Ups!");
+                alert("¡Error al cargar el panel de publicación!\nInténtelo de nuevo más tarde.");
             }
         });
     }
@@ -212,14 +210,7 @@ function loadPost(postLink) {
 
             $('#replyModal').on('shown.bs.modal', function () {
                 $('#Comment_Reply').focus();
-            });
-
-            //$('#sendReply').on('click', function () {
-            //    $.ajax({
-            //        url: "/Account/NewReply",
-            //        method: "GET"
-            //    });
-            //});
+            });            
         },
         error: function () {
             alert("¡Ocurrió un error!");
