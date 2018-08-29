@@ -66,7 +66,7 @@ function goTop() {
 }
 
 function newPost() {
-    if ($('#postModal').length <= 0) {        
+    if ($('#postModal').length <= 0) {
         $.ajax({
             url: "/Account/DrawPublication",
             method: "GET",
@@ -79,10 +79,10 @@ function newPost() {
                     $('#postModal').on('shown.bs.modal', function () {
                         $('#Comment').focus();
                     });
-                });                
+                });
             },
             error: function () {
-                alert("¡Error al cargar el panel de publicación!\nInténtelo de nuevo más tarde.");
+                alert("¡Error al cargar el panel de publicación!\nInténtelo de nuevo más tarde.");                
             }
         });
     }
@@ -100,7 +100,7 @@ function newReply() {
             method: "GET",
             data: "call=reply",
             success: function (data, textStatus, XMLHttpRequest) {
-                $('#writeAnswer').append(data);
+                $('#writeAnswer > .card-body').append(data);
                 $('#replyModalTitle').text('En respuesta a ' + $('#replyBtn').data('replyto'));
                 $('#InReplyTo').val($('.view-post-container').data('postid'));
 
