@@ -1,6 +1,12 @@
-﻿body {
+﻿@font-face {
+    font-family: 'Arimo';
+    src: url('fonts/Arimo-Regular.ttf');
+}
+
+body {
     padding-top: 50px;
     background-color: rgb(240, 237, 236);
+    font-family: Arimo;
 }
 
 /* Estilos para la navbar */
