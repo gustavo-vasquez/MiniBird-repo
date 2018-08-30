@@ -23,36 +23,18 @@
     });
 
     $('body').on('click', '.repost', function () {
-        var $interactButtonsDiv = $(this).parent('div');
-
-        $.ajax({
-            url: "/Account/SendRepost",
-            method: "POST",
-            data: "postID=" + $interactButtonsDiv.data('postid'),
-            success: function (response) {
-                $interactButtonsDiv.html(response);
-            }
-        });
+        sendARepost($(this).parent('.interact-buttons'));
     });
 
     $('body').on('click', '.like', function () {
-        var $interactButtonsDiv = $(this).parent('div');
-
-        $.ajax({
-            url: "/Account/GiveALike",
-            method: "POST",
-            data: "postID=" + $interactButtonsDiv.data('postid'),
-            success: function (response) {
-                $interactButtonsDiv.html(response);                
-            }
-        });
+        giveALike($(this).parent('.interact-buttons'));
     });
 
-    $('body').on('click', '.post', function (event) {
-        var filterList = ".post-images img, .repost i, .repost span, .like i, .like span, .card-link, .card-link img, .post-actions-menu a, .post-actions-menu i, .post-actions-menu .dropdown-menu";
+    $('body').on('click', '.post, .answers', function (event) {
+        var filterList = ".post-images img, .repost, .repost i, .repost span, .like, .like i, .like span, .card-link, .card-link img, .post-actions-menu a, .post-actions-menu i, .post-actions-menu .dropdown-menu";
         if (!$(event.target).is(filterList))
             loadPost($(this).data('postid'));
-    });
+    });    
 });
 
 
@@ -66,6 +48,8 @@ function goTop() {
 }
 
 function newPost() {
+    $('#replyModal').remove();
+
     if ($('#postModal').length <= 0) {
         $.ajax({
             url: "/Account/DrawPublication",
@@ -79,6 +63,12 @@ function newPost() {
                     $('#postModal').on('shown.bs.modal', function () {
                         $('#Comment').focus();
                     });
+                });
+
+                $('#NewPostForm').on('keydown', function (event) {
+                    if (event.ctrlKey && event.keyCode === 13) {
+                        $(this).trigger('submit');
+                    }
                 });
             },
             error: function () {
@@ -109,6 +99,12 @@ function newReply() {
                     $('#replyModal').on('shown.bs.modal', function () {
                         $('#Comment').focus();
                     });
+                });
+
+                $('#NewReplyForm').on('keydown', function (event) {
+                    if (event.ctrlKey && event.keyCode === 13) {
+                        $(this).trigger('submit');
+                    }
                 });
             },
             error: function () {
@@ -203,11 +199,6 @@ function loadPost(postLink) {
                     return;
             });
 
-            $(document).keydown(function (e) {
-                if (e.keyCode === 27 && $('.view-post-container').length > 0)                        
-                    closePost();
-            });
-
             $('#replyModal').on('shown.bs.modal', function () {
                 $('#Comment_Reply').focus();
             });            
@@ -219,11 +210,11 @@ function loadPost(postLink) {
 }
 
 function openPost(data) {
+    $('.view-post-container').remove();
     $('body').append(data);
     $('body').css('overflow', 'hidden');
     $('#viewingPost').addClass('slide-in');
 }
-
 
 function closePost() {
     $('#viewingPost').addClass('slide-out');
@@ -232,4 +223,26 @@ function closePost() {
         $('body').css('overflow', 'visible');
         $('#replyModal').remove();
     }, 300);    
+}
+
+function giveALike(containerDiv) {
+    $.ajax({
+        url: "/Account/GiveALike",
+        method: "POST",
+        data: "postID=" + containerDiv.data('postid'),
+        success: function (response) {
+            containerDiv.html(response);
+        }
+    });
+}
+
+function sendARepost(containerDiv) {
+    $.ajax({
+        url: "/Account/SendRepost",
+        method: "POST",
+        data: "postID=" + containerDiv.data('postid'),
+        success: function (response) {
+            containerDiv.html(response);
+        }
+    });
 }
