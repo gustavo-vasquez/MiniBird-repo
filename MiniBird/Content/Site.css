@@ -188,6 +188,10 @@ body {
     border-radius: 50%;
 }
 
+.card-text {
+    white-space: pre-wrap;
+}
+
 .post-images {
     border: none !important;
     cursor: pointer;

@@ -34,7 +34,9 @@
         var filterList = ".post-images img, .repost, .repost i, .repost span, .like, .like i, .like span, .card-link, .card-link img, .post-actions-menu a, .post-actions-menu i, .post-actions-menu .dropdown-menu";
         if (!$(event.target).is(filterList))
             loadPost($(this).data('postid'));
-    });    
+    });
+
+    searchUrls();
 });
 
 
@@ -201,7 +203,9 @@ function loadPost(postLink) {
 
             $('#replyModal').on('shown.bs.modal', function () {
                 $('#Comment_Reply').focus();
-            });            
+            });
+
+            searchUrls();
         },
         error: function () {
             alert("¡Ocurrió un error!");
@@ -244,5 +248,18 @@ function sendARepost(containerDiv) {
         success: function (response) {
             containerDiv.html(response);
         }
+    });
+}
+
+function searchUrls() {
+    $.each($('.text-comment'), function (index, value) {
+        var $words = $(value).text().split(' ');
+        for (i in $words) {
+            if ($words[i].indexOf('http://') == 0 || $words[i].indexOf('https://') == 0) {
+                $words[i] = '<a target="_blank" rel="noopener noreferrer" href="' + $words[i] + '">' + $words[i] + '</a>';
+            }
+        }
+
+        $(value).html($words.join(' '));
     });
 }
