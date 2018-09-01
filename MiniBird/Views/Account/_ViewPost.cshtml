@@ -2,10 +2,10 @@
 
 @if (Model != null)
 {
-    <div class="view-post-container" data-postid="@Model.PostSection.PostID">
+    <div class="view-post-container">
         <div class="row justify-content-end">
             <div class="col-md-6">
-                <div id="viewingPost" class="card">
+                <div id="viewingPostDynamic" class="card">
                     <div class="card-body">
                         <button id="closePost" type="button" class="close" title="Cerrar post">&times;</button>
                         <div class="row">
@@ -123,12 +123,12 @@
                             </div>
                         </div>
                     </div>
-                    <div id="writeAnswer" class="card border-light mb-3">
+                    <div class="card border-light mb-3 write-answer">
                         <div class="card-body">
-                            <button id="replyBtn" type="button" class="btn btn-block btn-outline-success" data-replyto="@Model.PostSection.UserName"><i class="fas fa-reply"></i> Responder</button>
+                            <button id="replyBtnDynamic" type="button" class="btn btn-block btn-outline-success" data-replyto="@Model.PostSection.UserName" data-postid="@Model.PostSection.PostID" data-updatetarget="repliesDynamic"><i class="fas fa-reply"></i> Responder</button>
                         </div>
                     </div>
-                    <div id="replies">
+                    <div id="repliesDynamic">
                         @Html.Partial("~/Views/Account/_RepliesToPost.cshtml", Model.RepliesToPost)
                     </div>
                 </div>                

@@ -175,18 +175,22 @@ namespace MiniBird.Controllers
         {
             try
             {
-                var model = Account.ViewPostCollectionDataSL(postID);
-
                 if (Request.IsAjaxRequest())
+                {
+                    var model = Account.ViewPostCollectionDataSL(postID);                    
                     return PartialView("_ViewPost", model);
+                }
                 else
-                    return View();
+                {
+                    var model = Account.FullViewPostCollectionDataSL(postID);                    
+                    return View(model);
+                }
             }
             catch(Exception ex)
             {
                 return ProcessError(ex);
             }
-        }        
+        }
 
         #region TAREAS AUXILIARES        
 
@@ -260,13 +264,14 @@ namespace MiniBird.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult DrawPublication(string call)
+        public PartialViewResult DrawPublication(string call, string updateTarget)
         {
             switch(call)
             {
                 case "post":
-                    return PartialView("_NewPost");                    
+                    return PartialView("_NewPost");
                 case "reply":
+                    TempData["UpdateDiv"] = updateTarget;
                     return PartialView("_NewReply");
                 default:
                     return null;
@@ -287,6 +292,12 @@ namespace MiniBird.Controllers
             }
 
             return RedirectToAction("Timeline", "Account");
+        }
+
+        [HttpGet]
+        public PartialViewResult Search()
+        {
+            return PartialView("_Search");
         }
 
         #endregion

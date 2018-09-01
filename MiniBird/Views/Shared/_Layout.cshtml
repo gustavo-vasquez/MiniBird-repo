@@ -28,7 +28,7 @@
                         <a class="nav-link" href="#"><i class="fas fa-envelope"></i> Mensajes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-search"></i> Buscar</a>
+                        <a id="search" class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-search"></i> Buscar</a>
                     </li>
                 </ul>
             }
@@ -84,7 +84,9 @@
                 @Html.Partial("~/Views/Shared/_LoginNavBar.cshtml", new MiniBird.DTO.SignInDTO())                
             }
         </div>
-    </nav>    
+    </nav>
+    
+    @Html.Partial("~/Views/Shared/_Search.cshtml")
         
     <div class="container">
         @if (ActiveSession.IsAuthenticated)

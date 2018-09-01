@@ -665,6 +665,36 @@ namespace Data_Layer
             }
         }
 
+        public FullViewPostDTO FullViewPostCollectionDataDL(int postID)
+        {
+            try
+            {
+                var fullViewPost = new FullViewPostDTO();
+                ViewPostDTO viewPost = this.ViewPostCollectionDataDL(postID);
+                fullViewPost.PostSection = viewPost.PostSection;
+                fullViewPost.RepliesToPost = viewPost.RepliesToPost;
+
+                using(var context = new MiniBirdEntities())
+                {
+                    var person = context.Person.Find(fullViewPost.PostSection.CreatedBy);
+                    fullViewPost.ProfileInformation.Birthdate = person.Birthdate;
+                    fullViewPost.ProfileInformation.NickName = person.NickName;
+                    fullViewPost.ProfileInformation.PersonalDescription = person.PersonalDescription;
+                    fullViewPost.ProfileInformation.ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar;
+                    fullViewPost.ProfileInformation.ProfileHeader = (person.ProfileHeader != null) ? ByteArrayToBase64(person.ProfileHeader, person.ProfileHeader_MimeType) : defaultHeader;
+                    fullViewPost.ProfileInformation.RegistrationDate = person.RegistrationDate;
+                    fullViewPost.ProfileInformation.UserName = person.UserName;
+                    fullViewPost.ProfileInformation.WebSiteURL = person.WebSiteURL;
+
+                    return fullViewPost;
+                }                               
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public bool CreateNewReplyDL(NewPostDTO data, int personID)
         {
             try

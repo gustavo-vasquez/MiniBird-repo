@@ -217,7 +217,7 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 9999;    
+    z-index: 9999;
 }
 
 .dummy {
@@ -369,12 +369,12 @@ body {
     overflow-x: hidden;    
 }
 
-.writeAnswer {
+.write-answer {
     border-top: 1px solid rgba(0,0,0,0.1);
     border-bottom: 1px solid rgba(0,0,0,0.1);
 }
 
-.writeAnswer .card-body {
+.write-answer .card-body {
     padding-top: unset;
     padding-bottom: unset;
 }
@@ -422,6 +422,25 @@ body {
 @-webkit-keyframes slide-out {
     0% { -webkit-transform: translateX(0%); }
     100% { -webkit-transform: translateX(100%); }
+}
+
+/************/
+
+/* ESTILOS PARA LA BÚSQUEDA */
+
+.search-results span {
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.search-results img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+}
+
+.active small {
+    color: white !important;
 }
 
 /* Set padding to keep content from hitting the edges */

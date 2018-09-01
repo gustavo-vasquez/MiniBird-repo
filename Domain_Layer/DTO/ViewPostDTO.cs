@@ -16,5 +16,15 @@ namespace Domain_Layer.DTO
             this.PostSection = new PostSectionDTO();
             this.RepliesToPost = new List<PostSectionDTO>();
         }
-    }    
+    }
+
+    public class FullViewPostDTO : ViewPostDTO
+    {
+        public ProfileInformationDTO ProfileInformation { get; set; }
+        
+        public FullViewPostDTO()
+        {
+            this.ProfileInformation = new ProfileInformationDTO();
+        }
+    }
 }

@@ -18,7 +18,13 @@ namespace MiniBird
                 url: "Account/ProfileScreen/{v}",
                 defaults: new { controller = "Account", action = "ProfileScreen" }
                 //constraints: new { username = new UserNameConstraint() }
-            );            
+            );
+
+            routes.MapRoute(
+                name: "ViewPost",
+                url: "Account/ProfileScreen/ViewPost/{postID}",
+                defaults: new { controller = "Account", action = "ViewPost" }
+            );
 
             routes.MapRoute(
                 name: "Default",

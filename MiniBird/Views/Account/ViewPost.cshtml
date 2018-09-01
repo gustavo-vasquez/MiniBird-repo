@@ -1,0 +1,175 @@
+﻿@model Domain_Layer.DTO.FullViewPostDTO
+
+@{
+    ViewBag.Title = "Post de " + Model.ProfileInformation.UserName;
+}
+
+@Styles.Render("~/Content/website/profile_screen.css")
+
+<div class="row">
+    <div class="col">        
+        <img class="profile_screen-header" src="@Model.ProfileInformation.ProfileHeader" alt="header_background" />        
+    </div>
+</div>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4 text-center">
+        <div class="row">
+            <div class="col">                
+                <img class="profile_screen-avatar" src="@Model.ProfileInformation.ProfileAvatar" alt="avatar" />                
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <h3>@Model.ProfileInformation.NickName</h3>
+                <h5>@Model.ProfileInformation.UserName</h5>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div id="lala" class="col profile-details">
+                <p class="mt-2"><i class="far fa-comment-dots"></i> @Model.ProfileInformation.PersonalDescription</p>
+                <p><a href="@Model.ProfileInformation.WebSiteURL"><i class="fas fa-link"></i> @Model.ProfileInformation.WebSiteURL</a></p>
+                <p class="text-muted"><i class="fas fa-birthday-cake"></i> Nació el 31 de diciembre de 2010</p>
+                <p class="text-muted"><i class="far fa-calendar-alt"></i> Se unió en diciembre de 1999</p>
+                <a href="@Url.Action("ProfileScreen", "Account", new { id = Model.PostSection.CreatedBy })" class="btn btn-block btn-outline-primary">Ir al perfil</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col">
+                @if (Model.PostSection != null)
+                {
+                    <div id="viewingPostFixed" class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <a class="card-link" href="@Url.Action("ProfileScreen", "Account", new { id = Model.PostSection.CreatedBy })">
+                                        <img class="post-profile-img mr-2" src="@Model.PostSection.ProfileAvatar" alt="profile_image" />
+                                        <span class="card-title"><b>@Model.PostSection.NickName</b></span>
+                                        <span class="card-subtitle mb-2 text-muted">@Model.PostSection.UserName</span>
+                                    </a>
+                                    <div class="dropdown post-actions-menu">
+                                        <a id="viewPostLinkActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-caret-square-down ml-2"></i></a>
+                                        <div class="dropdown-menu" aria-labelledby="viewPostLinkActions">
+                                            <a class="dropdown-item" href="#"><i class="far fa-copy"></i> Copiar enlace del post</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#"><i class="fas fa-microphone-alt-slash"></i> Silenciar a @@usuario</a>
+                                            <a class="dropdown-item" href="#"><i class="fas fa-lock"></i> Bloquear a @@usuario</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#"><i class="far fa-flag"></i> Denunciar este post</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-10">
+                                    <p class="card-text text-comment">@Model.PostSection.Comment</p>
+
+                                    @if (Model.PostSection.ImageFirstSlot != null && Model.PostSection.ImageSecondSlot == null && Model.PostSection.ImageThirdSlot == null && Model.PostSection.ImageFourthSlot == null)
+                                    {
+                                        <div class="card post-images one-thumbnail ovh">
+                                            <img src="@Model.PostSection.ImageFirstSlot" alt="posted_image">
+                                        </div>
+                                    }
+                                    else if (Model.PostSection.ImageFirstSlot != null && Model.PostSection.ImageSecondSlot != null && Model.PostSection.ImageThirdSlot == null && Model.PostSection.ImageFourthSlot == null)
+                                    {
+                                        <div class="card post-images two-thumbnails">
+                                            <div class="row no-gutters">
+                                                <div class="col tpr">
+                                                    <div class="ovh">
+                                                        <img src="@Model.PostSection.ImageFirstSlot" alt="posted_image">
+                                                    </div>
+                                                </div>
+                                                <div class="col tpl">
+                                                    <div class="ovh">
+                                                        <img src="@Model.PostSection.ImageSecondSlot" alt="posted_image" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else if (Model.PostSection.ImageFirstSlot != null && Model.PostSection.ImageSecondSlot != null && Model.PostSection.ImageThirdSlot != null && Model.PostSection.ImageFourthSlot == null)
+                                    {
+                                        <div class="card post-images three-thumbnails">
+                                            <div class="row no-gutters">
+                                                <div class="col-md-8 tpr">
+                                                    <div class="ovh">
+                                                        <img src="@Model.PostSection.ImageFirstSlot" alt="posted_image">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 tpl">
+                                                    <div class="row tpb">
+                                                        <div class="col">
+                                                            <div class="ovh">
+                                                                <img class="mini-thumbnail" src="@Model.PostSection.ImageSecondSlot" alt="posted_image" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="ovh">
+                                                                <img class="mini-thumbnail" src="@Model.PostSection.ImageThirdSlot" alt="posted_image" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else if (Model.PostSection.ImageFirstSlot != null && Model.PostSection.ImageSecondSlot != null && Model.PostSection.ImageThirdSlot != null && Model.PostSection.ImageFourthSlot != null)
+                                    {
+                                        <div class="card post-images four-thumbnails">
+                                            <div class="row no-gutters">
+                                                <div class="col-md-6 tpr">
+                                                    <div class="ovh">
+                                                        <img src="@Model.PostSection.ImageFirstSlot" alt="posted_image">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 tpl">
+                                                    <div class="ovh">
+                                                        <img src="@Model.PostSection.ImageSecondSlot" alt="posted_image">
+                                                    </div>
+                                                </div>
+                                                <div class="w-100 tpb"></div>
+                                                <div class="col-md-6 tpr">
+                                                    <div class="ovh">
+                                                        <img src="@Model.PostSection.ImageThirdSlot" alt="posted_image" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 tpl">
+                                                    <div class="ovh">
+                                                        <img src="@Model.PostSection.ImageFourthSlot" alt="posted_image" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                            <div class="row mt-4 justify-content-center">
+                                <div class="col-md-5 interact-buttons" data-postid="@Model.PostSection.PostID">
+                                    @Html.Partial("~/Views/Account/_InteractButtons.cshtml", Model.PostSection.InteractButtons)
+                                </div>
+                                <div class="col-md-5 text-right text-muted">
+                                    <p class="text-lowercase"><i class="far fa-clock"></i> @Model.PostSection.PublicationDate.ToString("dd/MM/yyyy hh:mm tt", new System.Globalization.CultureInfo("en-US"))</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card border-light mb-3 write-answer">
+                            <div class="card-body">
+                                <button id="replyBtnFixed" type="button" class="btn btn-block btn-outline-success" data-replyto="@Model.PostSection.UserName" data-postid="@Model.PostSection.PostID" data-updatetarget="repliesFixed"><i class="fas fa-reply"></i> Responder</button>
+                            </div>
+                        </div>
+                        <div id="repliesFixed">
+                            @Html.Partial("~/Views/Account/_RepliesToPost.cshtml", Model.RepliesToPost)
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

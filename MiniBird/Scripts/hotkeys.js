@@ -22,10 +22,10 @@
         //    window.location.href = "/Account/ProfileScreen";
 
         //if (event.keyCode === 71 && event.keyCode === 72) // keys g l
-        //    window.location.href = "/Account/ProfileScreen/likes";
+        //    window.location.href = "/Account/ProfileScreen/likes";        
 
-        if ($('#viewingPost').length > 0) {
-            var containerDiv = $('#viewingPost > .card-body').find('.interact-buttons');
+        if ($('#viewingPostDynamic').length > 0) {
+            var containerDiv = $('#viewingPostDynamic > .card-body').find('.interact-buttons');
 
             switch (event.keyCode) {
                 case 80:
@@ -35,12 +35,30 @@
                     giveALike(containerDiv);
                     break; // key l
                 case 82:
-                    newReply();
+                    newReply($('#replyBtnDynamic'));
                     break; // key r
                 case 27:
                     closePost();
                     break; // key esc
-            }            
+            }
         }
+        else if ($('#viewingPostFixed').length > 0) {
+            var containerDiv = $('#viewingPostFixed > .card-body').find('.interact-buttons');
+
+            switch (event.keyCode) {
+                case 80:
+                    sendARepost(containerDiv);
+                    break; // key p
+                case 76:
+                    giveALike(containerDiv);
+                    break; // key l
+                case 82:
+                    newReply($('#replyBtnFixed'));
+                    break; // key r
+                case 27:
+                    closePost();
+                    break; // key esc
+            }
+        }        
     }
 });

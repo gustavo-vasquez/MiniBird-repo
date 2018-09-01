@@ -109,6 +109,11 @@ namespace Service_Layer
             return Account.ViewPostCollectionDataDL(postID);
         }
 
+        public FullViewPostDTO FullViewPostCollectionDataSL(int postID)
+        {
+            return Account.FullViewPostCollectionDataDL(postID);
+        }
+
         public bool CreateNewReplySL(NewPostDTO data, int personID)
         {
             return Account.CreateNewReplyDL(data, personID);

@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    $('body').on('mouseenter mouseleave', '.dropdown-menu > a, .dropdown-menu > form > button', function () {
+    $('body').on('mouseenter mouseleave', '.dropdown-menu > a, .dropdown-menu > form > button, .list-group-item', function () {
         $(this).toggleClass('active');
     });
 
@@ -10,7 +10,9 @@
     });
 
     $('body').on('click', '#postBtn', newPost);
-    $('body').on('click', '#replyBtn', newReply);
+    $('body').on('click', '#replyBtnFixed, #replyBtnDynamic', function () {
+        newReply($(this));
+    });
 
     $('body').on('click', '.post-images img', function () {
         var src = $(this).attr('src');
@@ -37,6 +39,8 @@
     });
 
     searchUrls();
+
+    $('#search').on('click', search);
 });
 
 
@@ -83,18 +87,18 @@ function newPost() {
     }
 }
 
-function newReply() {
+function newReply($replyBtn) {
     $('#postModal').remove();
 
     if ($('#replyModal').length <= 0) {
         $.ajax({
             url: "/Account/DrawPublication",
             method: "GET",
-            data: "call=reply",
+            data: "call=reply&updateTarget=" + $replyBtn.data('updatetarget'),
             success: function (data, textStatus, XMLHttpRequest) {
-                $('#writeAnswer > .card-body').append(data);
-                $('#replyModalTitle').text('En respuesta a ' + $('#replyBtn').data('replyto'));
-                $('#InReplyTo').val($('.view-post-container').data('postid'));
+                $replyBtn.after(data);
+                $('#replyModalTitle').text('En respuesta a ' + $replyBtn.data('replyto'));
+                $('#InReplyTo').val($replyBtn.data('postid'));
 
                 $.getScript("/Scripts/account/newPost.js", function () {
                     $('#replyModal').modal('show');
@@ -186,16 +190,18 @@ function loadImagePreview(srcArray, src) {
 }
 
 function loadPost(postLink) {
+    $('#replyModal').remove();
+
     $.ajax({
         url: "/Account/ViewPost",
         method: "GET",
         data: "postID=" + postLink,
-        success: function (data) {
+        success: function (data) {            
             openPost(data);
             $('body').on('click', '#closePost', closePost);
 
             $('.view-post-container').on('click', function (event) {
-                if ($(event.target).find('#viewingPost').length > 0)
+                if ($(event.target).find('#viewingPostDynamic').length > 0)
                     closePost();
                 else
                     return;
@@ -217,11 +223,11 @@ function openPost(data) {
     $('.view-post-container').remove();
     $('body').append(data);
     $('body').css('overflow', 'hidden');
-    $('#viewingPost').addClass('slide-in');
+    $('#viewingPostDynamic').addClass('slide-in');
 }
 
 function closePost() {
-    $('#viewingPost').addClass('slide-out');
+    $('#viewingPostDynamic').addClass('slide-out');
     setTimeout(function () {
         $('.view-post-container').remove();
         $('body').css('overflow', 'visible');
@@ -261,5 +267,23 @@ function searchUrls() {
         }
 
         $(value).html($words.join(' '));
+    });
+}
+
+function search() {
+    $.ajax({
+        url: "/Account/Search",
+        method: "GET",
+        success: function (data) {
+            $('body').append(data);
+            $('#searchModal').modal('show');
+
+            $('#searchModal').on('hidden.bs.modal', function () {
+                $(this).remove();
+            });
+        },
+        error: function () {
+            alert("Ups!");
+        }
     });
 }

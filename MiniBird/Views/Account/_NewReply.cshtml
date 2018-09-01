@@ -2,7 +2,7 @@
 
 <div class="modal fade" id="replyModal" tabindex="-1" role="dialog" aria-labelledby="replyModalTitle" aria-hidden="true" data-backdrop="false">
     <div class="modal-dialog modal-md" role="document">
-        @using (Ajax.BeginForm("NewReply", "Account", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "replies", InsertionMode = InsertionMode.Replace, OnSuccess = "$('#replyModal').modal('hide');", LoadingElementId = "replying", LoadingElementDuration = 1000 }, new { id = "NewReplyForm" }))
+        @using (Ajax.BeginForm("NewReply", "Account", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = (string)TempData["UpdateDiv"], InsertionMode = InsertionMode.Replace, OnSuccess = "$('#replyModal').remove();", LoadingElementId = "replying", LoadingElementDuration = 1000 }, new { id = "NewReplyForm" }))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.InReplyTo)
@@ -36,8 +36,8 @@
                 </div>
             </div>
         }
-    </div>    
-</div>
-<div id="replying" class="progress" style="display: none;">
-    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+    </div>
+    <div id="replying" class="progress" style="display: none;">
+        <div class="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+    </div>
 </div>
