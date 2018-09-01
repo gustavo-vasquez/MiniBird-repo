@@ -54,12 +54,10 @@
                                     <div class="dropdown post-actions-menu">
                                         <a id="viewPostLinkActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-caret-square-down ml-2"></i></a>
                                         <div class="dropdown-menu" aria-labelledby="viewPostLinkActions">
-                                            <a class="dropdown-item" href="#"><i class="far fa-copy"></i> Copiar enlace del post</a>
+                                            <a class="dropdown-item copy-link" href="javascript:void(0);" data-copyurl="@(Request.Url.Authority + "/Account/ProfileScreen/ViewPost/" + Model.PostSection.PostID)"><i class="far fa-copy"></i> Copiar enlace del post</a>
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" href="#"><i class="fas fa-microphone-alt-slash"></i> Silenciar a @@usuario</a>
                                             <a class="dropdown-item" href="#"><i class="fas fa-lock"></i> Bloquear a @@usuario</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#"><i class="far fa-flag"></i> Denunciar este post</a>
                                         </div>
                                     </div>
                                 </div>

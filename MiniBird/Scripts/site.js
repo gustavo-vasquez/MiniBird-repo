@@ -40,7 +40,12 @@
 
     searchUrls();
 
-    $('#search').on('click', search);
+    $('body').on('click', '.copy-link', function (event) {
+        event.preventDefault();
+        copyLinkToClipboard($(this));
+    });
+
+    $('#search').on('click', search);    
 });
 
 
@@ -268,6 +273,15 @@ function searchUrls() {
 
         $(value).html($words.join(' '));
     });
+}
+
+function copyLinkToClipboard($element) {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val($element.data('copyurl')).select();
+    document.execCommand("copy");
+    $temp.remove();
+    alert("¡Enlace copiado!");
 }
 
 function search() {
