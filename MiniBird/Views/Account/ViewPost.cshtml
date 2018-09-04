@@ -28,11 +28,23 @@
             </div>
         </div>
         <div class="row mt-3">
-            <div id="lala" class="col profile-details">
-                <p class="mt-2"><i class="far fa-comment-dots"></i> @Model.ProfileInformation.PersonalDescription</p>
-                <p><a href="@Model.ProfileInformation.WebSiteURL"><i class="fas fa-link"></i> @Model.ProfileInformation.WebSiteURL</a></p>
-                <p class="text-muted"><i class="fas fa-birthday-cake"></i> Nació el 31 de diciembre de 2010</p>
-                <p class="text-muted"><i class="far fa-calendar-alt"></i> Se unió en diciembre de 1999</p>
+            <div class="col">
+                @if (!string.IsNullOrEmpty(Model.ProfileInformation.PersonalDescription))
+                {
+                    <p class="mt-2"><i class="far fa-comment-dots"></i> @Model.ProfileInformation.PersonalDescription</p>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.ProfileInformation.WebSiteURL))
+                {
+                    <p><a href="@Model.ProfileInformation.WebSiteURL"><i class="fas fa-link"></i> @Model.ProfileInformation.WebSiteURL</a></p>
+                }
+                
+                @if (!string.IsNullOrEmpty(Model.ProfileInformation.Birthdate))
+                {
+                    <p class="text-muted"><i class="fas fa-birthday-cake"></i> @Model.ProfileInformation.Birthdate</p>
+                }
+                
+                <p class="text-muted"><i class="far fa-calendar-alt"></i> Se unió en @Model.ProfileInformation.RegistrationDate.ToString("y")</p>
                 <a href="@Url.Action("ProfileScreen", "Account", new { id = Model.PostSection.CreatedBy })" class="btn btn-block btn-outline-primary">Ir al perfil</a>
             </div>
         </div>

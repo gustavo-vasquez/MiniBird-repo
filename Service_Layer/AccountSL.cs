@@ -49,9 +49,9 @@ namespace Service_Layer
             return Account.ChangeProfileDetailsDL(personID);
         }
 
-        public void ChangeProfileDetailsSL(ProfileDetailsDTO data, int personID)
+        public ProfileDetailsDTO ChangeProfileDetailsSL(ProfileDetailsDTO data, int personID)
         {
-            Account.ChangeProfileDetailsDL(data, personID);
+            return Account.ChangeProfileDetailsDL(data, personID);
         }
 
         public TimelineDTO TimelineCollectionDataSL(int personID)

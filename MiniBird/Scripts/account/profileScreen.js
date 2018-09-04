@@ -81,14 +81,102 @@
         $.ajax({
             url: "/Account/EditDetailsForm",
             method: "GET",
-            success: function (response) {
-                $('.profile-details').html(response);
-                $.validator.unobtrusive.parse($('#editDetailsForm'));                
-
-                function changeMade(data) {
-                    console.log(data.personalDescription);
-                }
+            success: function (partialView) {
+                $('#profileDetails').children().hide();
+                $('#profileDetails').append(partialView);
+                $.validator.unobtrusive.parse($('#editDetailsForm'));                                
+            },
+            error: function (response) {
+                console.log("Ocurrió un error.");
             }
         });
     });
+
+    // Valida que el valor tenga como inicio el protocolo http o https
+    $.validator.addMethod('startswithprotocol', function (value, element, params) {
+        return value.startsWith("http://") || value.startsWith("https://");
+    });
+
+    $.validator.unobtrusive.adapters.add(
+        'startswithprotocol', {}, function (options) {
+            options.rules['startswithprotocol'] = true;
+            options.messages['startswithprotocol'] = options.message;
+        });
+
+    // Valida que el valor cumpla el rango de fechas
+    $.validator.addMethod('rangebirthyear', function (value, element, params) {        
+        return parseInt(value) >= params.minYear && parseInt(value) <= params.maxYear;
+    });
+
+    $.validator.unobtrusive.adapters.add(
+        'rangebirthyear', ['minyear', 'maxyear'], function (options) {
+            var params = {
+                minYear: options.params.minyear,
+                maxYear: options.params.maxyear
+            };
+
+            options.rules['rangebirthyear'] = params;
+            options.messages['rangebirthyear'] = options.message;
+        });
+
+
+    // Valida que el valor cumpla el rango de meses
+    $.validator.addMethod('rangebirthmonth', function (value, element, params) {
+        return parseInt(value) >= params.minMonth && parseInt(value) <= params.maxMonth;
+    });
+
+    $.validator.unobtrusive.adapters.add(
+        'rangebirthmonth', ['minmonth', 'maxmonth'], function (options) {
+            var params = {
+                minMonth: options.params.minmonth,
+                maxMonth: options.params.maxmonth
+            };
+
+            options.rules['rangebirthmonth'] = params;
+            options.messages['rangebirthmonth'] = options.message;
+        });
+
+    $('body').on('keyup', '#Day, #Month, #Year', isValidDate);    
 });
+
+function changeDetails(data) {
+    $('#personDescription span').text(data.personalDescription);
+    $('#websiteUrl a').attr('href', data.websiteURL);
+    $('#websiteUrl a').text(data.websiteURL);
+    $('#birthday span').text(data.birthDate);
+    $('#editDetailsForm').remove();
+    $('#profileDetails').children().show();
+}
+
+function isValidDate() {
+    var day = $('#Day').val();
+    var month = $('#Month').val();
+    var year = $('#Year').val();
+
+    if (day == "" && month == "" && year == "") {
+        $('#dateInvalid').addClass('d-none');
+        $('#editDetailsForm button[type="submit"]').prop('disabled', false);
+        return;
+    }
+    
+    day = Number(day);
+    month = Number(month) - 1; // month - 1 since the month index is 0-based (0 = January)
+    year = Number(year);
+    var minYear = new Date().getFullYear() - 100;
+    var maxYear = new Date().getFullYear();
+
+    if (year >= minYear && year <= maxYear) {
+        var date = new Date();
+        date.setFullYear(year, month, day);
+
+        if ((date.getFullYear() == year) && (date.getMonth() == month) && (date.getDate() == day)) {
+            $('#dateInvalid').addClass('d-none');
+            $('#editDetailsForm button[type="submit"]').prop('disabled', false);
+            return;
+        }
+    }
+
+    $('#dateInvalid').removeClass('d-none');
+    $('#editDetailsForm button[type="submit"]').prop('disabled', true);
+    return;
+}

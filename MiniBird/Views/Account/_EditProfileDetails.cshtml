@@ -1,19 +1,33 @@
 ﻿@model Domain_Layer.DTO.ProfileDetailsDTO
 
-@using (Ajax.BeginForm("EditDetailsForm", "Account", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "lala", OnSuccess = "changeMade(data)", InsertionMode = InsertionMode.Replace }, new { id = "editDetailsForm", @class = "mt-3" }))
+@using (Ajax.BeginForm("EditDetailsForm", "Account", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "changeDetails(data)" }, new { id = "editDetailsForm", @class = "mt-3" }))
 {
     <div class="form-group">
+        <small>Frase personal:</small>
         @Html.TextBoxFor(m => m.PersonalDescription, new { @class = "form-control form-control-sm", placeholder = "Agrega una descripción" })        
         @Html.ValidationMessageFor(m => m.PersonalDescription, null, new { @class = "text-danger" })
         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
     </div>
     <div class="form-group">
-        @Html.TextBoxFor(m => m.WebSiteURL, new { @class = "form-control form-control-sm", placeholder = "Agrega un sitio web" })        
+        <small>Sitio web:</small>
+        @Html.TextBoxFor(m => m.WebSiteURL, new { @class = "form-control form-control-sm", placeholder = "Agrega un sitio web" })
+        @Html.ValidationMessageFor(m => m.WebSiteURL, null, new { @class = "text-danger" })
         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-    </div>
-    <div class="form-group">
-        <input type="email" class="form-control form-control-sm" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>    
+    <div class="form-group">        
+        <small>Fecha de nacimiento:</small>
+        <div class="row justify-content-center">
+            <div class="col-md-3">
+                @Html.TextBoxFor(m => m.Day, new { @class = "form-control form-control-sm", placeholder = "DD" })                
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(m => m.Month, new { @class = "form-control form-control-sm", placeholder = "MM" })                
+            </div>
+            <div class="col-md-4">
+                @Html.TextBoxFor(m => m.Year, new { @class = "form-control form-control-sm", placeholder = "AAAA" })                
+            </div>
+        </div>        
+        <small id="dateInvalid" class="form-text text-danger d-none">La fecha no es válida</small>
     </div>
     <button type="submit" class="btn btn-sm btn-outline-success">Aplicar cambios</button>
 }

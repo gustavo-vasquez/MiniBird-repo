@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Domain_Layer.Validations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace Domain_Layer.DTO
 {
@@ -31,18 +33,24 @@ namespace Domain_Layer.DTO
         public string NickName { get; set; }
         public string PersonalDescription { get; set; }
         public string WebSiteURL { get; set; }
-        public DateTime? Birthdate { get; set; }
+        public string Birthdate { get; set; }
         public DateTime RegistrationDate { get; set; }
         public string ProfileAvatar { get; set; }
         public string ProfileHeader { get; set; }
     }
 
     public class ProfileDetailsDTO
-    {
-        [Required(ErrorMessage = "Escribe algo")]
+    {        
+        [MaxLength(100, ErrorMessage = "Máximo 100 caracteres")]
         public string PersonalDescription { get; set; }
-        public string WebSiteURL { get; set; }
-        public DateTime? Birthdate { get; set; }
+                
+        [StartsWithProtocol(ErrorMessage = "El sitio web no es válido")]
+        [MaxLength(100, ErrorMessage = "Máximo 100 caracteres")]
+        public string WebSiteURL { get; set; }        
+        public string Birthdate { get; set; }        
+        public string Day { get; set; }        
+        public string Month { get; set; }                        
+        public string Year { get; set; }
     }
 
     public class StatisticsBar
@@ -52,5 +60,5 @@ namespace Domain_Layer.DTO
         public int FollowersCount { get; set; }
         public int LikesCount { get; set; }
         public int ListsCount { get; set; }
-    }
+    }    
 }

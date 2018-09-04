@@ -124,6 +124,7 @@
     <Compile Include="Controllers\ExceptionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="DTO\CustomDataAnnotations.cs" />
     <Compile Include="DTO\SignInDTO.cs" />
     <Compile Include="Filters\SessionFilters.cs" />
     <Compile Include="Global.asax.cs">

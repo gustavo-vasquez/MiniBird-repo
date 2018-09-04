@@ -240,8 +240,11 @@ namespace MiniBird.Controllers
         [HttpPost]
         public JsonResult EditDetailsForm(ProfileDetailsDTO model)
         {
-            Account.ChangeProfileDetailsSL(model, ActiveSession.GetPersonID());
-            return Json(new { personalDescription = model.PersonalDescription, websiteURL = model.WebSiteURL, birthDate = model.Birthdate });
+            if (!ModelState.IsValid)
+                return Json(new { message = "Fallaron las validaciones" });
+
+            ProfileDetailsDTO newDetails = Account.ChangeProfileDetailsSL(model, ActiveSession.GetPersonID());
+            return Json(new { personalDescription = newDetails.PersonalDescription, websiteURL = newDetails.WebSiteURL, birthDate = newDetails.Birthdate });
         }
 
         public PartialViewResult ImagePreview()

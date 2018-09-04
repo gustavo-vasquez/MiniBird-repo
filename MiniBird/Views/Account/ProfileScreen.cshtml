@@ -56,11 +56,41 @@
             </div>
         </div>
         <div class="row mt-3">
-            <div id="lala" class="col profile-details">
-                <p class="mt-2"><i class="far fa-comment-dots"></i> @Model.ProfileInformation.PersonalDescription</p>
-                <p><a href="@Model.ProfileInformation.WebSiteURL"><i class="fas fa-link"></i> @Model.ProfileInformation.WebSiteURL</a></p>
-                <p class="text-muted"><i class="fas fa-birthday-cake"></i> Nació el 31 de diciembre de 2010</p>
-                <p class="text-muted"><i class="far fa-calendar-alt"></i> Se unió en diciembre de 1999</p>
+            <div id="profileDetails" class="col">                
+                    <p id="personDescription" class="mt-2">
+                        <i class="far fa-comment-dots"></i>
+                        @if (!string.IsNullOrEmpty(Model.ProfileInformation.PersonalDescription))
+                        {
+                            <span>@Model.ProfileInformation.PersonalDescription</span>
+                        }
+                        else
+                        {
+                            <span></span>
+                        }
+                    </p>                                
+                    <p id="websiteUrl">
+                        <i class="fas fa-link"></i>
+                        @if (!string.IsNullOrEmpty(Model.ProfileInformation.WebSiteURL))
+                        {
+                            <a href="@Model.ProfileInformation.WebSiteURL">@Model.ProfileInformation.WebSiteURL</a>
+                        }
+                        else
+                        {
+                            <a></a>
+                        }
+                    </p>                                
+                    <p id="birthday" class="text-muted">
+                        <i class="fas fa-birthday-cake"></i>
+                        @if (!string.IsNullOrEmpty(Model.ProfileInformation.Birthdate))
+                        {
+                            <span> @Model.ProfileInformation.Birthdate</span>
+                        }
+                        else
+                        {
+                            <span></span>
+                        }
+                    </p>
+                <p class="text-muted"><i class="far fa-calendar-alt"></i> Se unió en @Model.ProfileInformation.RegistrationDate.ToString("y")</p>
                 <button id="editDetails" type="button" class="btn btn-sm btn-outline-primary">Editar</button>
             </div>
         </div>

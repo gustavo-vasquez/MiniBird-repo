@@ -179,7 +179,7 @@ namespace Data_Layer
                     profileScreenDTO.ProfileInformation.NickName = person.NickName;
                     profileScreenDTO.ProfileInformation.PersonalDescription = person.PersonalDescription;
                     profileScreenDTO.ProfileInformation.WebSiteURL = person.WebSiteURL;
-                    profileScreenDTO.ProfileInformation.Birthdate = person.Birthdate;
+                    profileScreenDTO.ProfileInformation.Birthdate = (person.Birthdate.HasValue) ? BirthDatePhrase(person.Birthdate) : "";
                     profileScreenDTO.ProfileInformation.RegistrationDate = person.RegistrationDate;
                     profileScreenDTO.ProfileInformation.ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar;
                     profileScreenDTO.ProfileInformation.ProfileHeader = (person.ProfileHeader != null) ? ByteArrayToBase64(person.ProfileHeader, person.ProfileHeader_MimeType) : defaultHeader;
@@ -286,8 +286,14 @@ namespace Data_Layer
                     var profileDetailsDTO = new ProfileDetailsDTO();
                     profileDetailsDTO.PersonalDescription = person.PersonalDescription;
                     profileDetailsDTO.WebSiteURL = person.WebSiteURL;
-                    profileDetailsDTO.Birthdate = person.Birthdate;
-                    context.SaveChanges();
+
+                    if(person.Birthdate.HasValue)
+                    {
+                        profileDetailsDTO.Birthdate = BirthDatePhrase(person.Birthdate);
+                        profileDetailsDTO.Day = person.Birthdate.Value.Day.ToString();
+                        profileDetailsDTO.Month = person.Birthdate.Value.Month.ToString();
+                        profileDetailsDTO.Year = person.Birthdate.Value.Year.ToString();
+                    }
 
                     return profileDetailsDTO;
                 }
@@ -298,7 +304,7 @@ namespace Data_Layer
             }
         }
 
-        public void ChangeProfileDetailsDL(ProfileDetailsDTO data, int personID)
+        public ProfileDetailsDTO ChangeProfileDetailsDL(ProfileDetailsDTO data, int personID)
         {
             try
             {
@@ -307,8 +313,20 @@ namespace Data_Layer
                     var person = context.Person.Where(p => p.PersonID == personID).First();
                     person.PersonalDescription = data.PersonalDescription;
                     person.WebSiteURL = data.WebSiteURL;
-                    person.Birthdate = data.Birthdate;
+
+                    if (string.IsNullOrWhiteSpace(data.Year) && string.IsNullOrWhiteSpace(data.Month) && string.IsNullOrWhiteSpace(data.Day))
+                    {
+                        person.Birthdate = null;
+                        data.Birthdate = null;                        
+                    }                        
+                    else
+                    {
+                        person.Birthdate = new DateTime(Convert.ToInt32(data.Year), Convert.ToInt32(data.Month), Convert.ToInt32(data.Day));
+                        data.Birthdate = BirthDatePhrase(person.Birthdate);
+                    }                        
                     context.SaveChanges();
+
+                    return data;
                 }
             }
             catch
@@ -677,7 +695,7 @@ namespace Data_Layer
                 using(var context = new MiniBirdEntities())
                 {
                     var person = context.Person.Find(fullViewPost.PostSection.CreatedBy);
-                    fullViewPost.ProfileInformation.Birthdate = person.Birthdate;
+                    fullViewPost.ProfileInformation.Birthdate = (person.Birthdate.HasValue) ? BirthDatePhrase(person.Birthdate) : "";
                     fullViewPost.ProfileInformation.NickName = person.NickName;
                     fullViewPost.ProfileInformation.PersonalDescription = person.PersonalDescription;
                     fullViewPost.ProfileInformation.ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar;
@@ -847,6 +865,11 @@ namespace Data_Layer
             img.InputStream.CopyTo(ms);
 
             return ms.ToArray();
+        }
+
+        private string BirthDatePhrase(DateTime? birthDate)
+        {
+            return "Nació el " + birthDate.Value.Day + " de " + birthDate.Value.ToString("MMMM") + " de " + birthDate.Value.Year;
         }
 
         public string TemporaryPostImageDL(HttpPostedFile tempImage, HttpServerUtilityBase localServer, int personID)

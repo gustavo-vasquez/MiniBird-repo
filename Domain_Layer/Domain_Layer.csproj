@@ -41,6 +41,12 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.6\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,7 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActiveSession.cs" />
-    <Compile Include="DTO\CustomDataAnnotations.cs" />
     <Compile Include="DTO\ListScreenDTO.cs" />
     <Compile Include="DTO\ListDTO.cs" />
     <Compile Include="DTO\NewPostDTO.cs" />
@@ -92,6 +97,9 @@
       <DependentUpon>MiniBirdDB.tt</DependentUpon>
     </Compile>
     <Compile Include="SessionInformation.cs" />
+    <Compile Include="Validations\RangeBirthMonthAttribute.cs" />
+    <Compile Include="Validations\RangeBirthYearAttribute.cs" />
+    <Compile Include="Validations\StartsWithProtocolAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="MiniBirdDB.tt">
