@@ -28,6 +28,7 @@
           <Property Name="HashtagID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="30" Nullable="false" />
           <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="Assiduity" Type="int" StoreGeneratedPattern="None" />
         </EntityType>
         <EntityType Name="HashtagsInPost">
           <Key>
@@ -561,6 +562,7 @@
           <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Post" Relationship="Self.HashtagsInPost" FromRole="Hashtag" ToRole="Post" />
+          <Property Name="Assiduity" Type="Int32" annotation:StoreGeneratedPattern="None" />
         </EntityType>
         <EntityType Name="LikePost">
           <Key>
@@ -979,6 +981,7 @@
           <EntitySetMapping Name="Hashtag">
             <EntityTypeMapping TypeName="MiniBirdModel.Hashtag">
               <MappingFragment StoreEntitySet="Hashtag">
+                <ScalarProperty Name="Assiduity" ColumnName="Assiduity" />
                 <ScalarProperty Name="HashtagID" ColumnName="HashtagID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />

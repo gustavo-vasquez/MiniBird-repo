@@ -1,5 +1,5 @@
 ﻿$(document).on('keydown', function (event) {
-    if (!$(document.activeElement).is('textarea') || !$(document.activeElement).is('input[type="text"]')) {
+    if (!($(document.activeElement).is('textarea') || $(document.activeElement).is('input'))) {
         switch (event.keyCode) {
             case 77:
                 $('#profileMenuLink').trigger('click');

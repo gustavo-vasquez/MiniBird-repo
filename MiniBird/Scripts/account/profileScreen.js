@@ -177,6 +177,6 @@ function isValidDate() {
     }
 
     $('#dateInvalid').removeClass('d-none');
-    $('#editDetailsForm button[type="submit"]').prop('disabled', true);
+    $('#editDetailsForm button[type="submit"]').prop('disabled', true);    
     return;
 }

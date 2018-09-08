@@ -24,7 +24,7 @@
                 <div class="card-body">
                     @if (Model.TopTrendingsSection.Count > 0)
                     {
-                        @Html.Partial("~/Views/Account/_TopTrendings.cshtml");
+                        @Html.Partial("~/Views/Account/_TopTrendings.cshtml", Model.TopTrendingsSection);
                     }
                     else
                     {

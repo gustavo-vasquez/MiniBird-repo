@@ -34,7 +34,7 @@ namespace Domain_Layer.DTO
     public class TopTrendingsDTO
     {
         public string Name { get; set; }
-        public int UsageCount { get; set; }
+        public int? Assiduity { get; set; }
     }
 
     public class PostSectionDTO

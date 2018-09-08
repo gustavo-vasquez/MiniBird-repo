@@ -38,7 +38,7 @@
             loadPost($(this).data('postid'));
     });
 
-    searchUrls();
+    scanSpecialWords();
 
     $('body').on('click', '.copy-link', function (event) {
         event.preventDefault();
@@ -216,7 +216,7 @@ function loadPost(postLink) {
                 $('#Comment_Reply').focus();
             });
 
-            searchUrls();
+            scanSpecialWords();            
         },
         error: function () {
             alert("¡Ocurrió un error!");
@@ -262,12 +262,21 @@ function sendARepost(containerDiv) {
     });
 }
 
-function searchUrls() {
+function scanSpecialWords() {
     $.each($('.text-comment'), function (index, value) {
         var $words = $(value).text().split(' ');
         for (i in $words) {
-            if ($words[i].indexOf('http://') == 0 || $words[i].indexOf('https://') == 0) {
+
+            // search urls
+            if ($words[i].startsWith('http://') || $words[i].startsWith('https://')) {
                 $words[i] = '<a target="_blank" rel="noopener noreferrer" href="' + $words[i] + '">' + $words[i] + '</a>';
+            }
+
+            // search hashtags
+            if ($words[i].length >= 3) {
+                if ($words[i].startsWith('#') && $words[i].indexOf('#', 1) < 1) {
+                    $words[i] = '<a href="/Home/Search?q=' + encodeURIComponent($words[i]) + '">' + $words[i] + '</a>';
+                }
             }
         }
 

@@ -1,62 +1,13 @@
-﻿<ul class="trends-list">
-    <li>
-        <a href="#" class="card-link">
-            <span class="trend-name">#TendenciaNumero1</span>
-            <div class="trend-stats">1.000.000 posts</div>
-        </a>
-    </li>
-    <li>
-        <a href="#" class="card-link">
-            <span class="trend-name">#TendenciaNumero2</span>
-            <div class="trend-stats">1.000.000 posts</div>
-        </a>
-    </li>
-    <li>
-        <a href="#" class="card-link">
-            <span class="trend-name">#TendenciaNumero3</span>
-            <div class="trend-stats">1.000.000 posts</div>
-        </a>
-    </li>
-    <li>
-        <a href="#" class="card-link">
-            <span class="trend-name">#TendenciaNumero4</span>
-            <div class="trend-stats">860.015 posts</div>
-        </a>
-    </li>
-    <li>
-        <a href="#" class="card-link">
-            <span class="trend-name">#TendenciaNumero5</span>
-            <div class="trend-stats">439.486 posts</div>
-        </a>
-    </li>
-    <li>
-        <a href="#" class="card-link">
-            <span class="trend-name">#TendenciaNumero6</span>
-            <div class="trend-stats">144.174 posts</div>
-        </a>
-    </li>
-    <li>
-        <a href="#" class="card-link">
-            <span class="trend-name">#TendenciaNumero7</span>
-            <div class="trend-stats">79.955 posts</div>
-        </a>
-    </li>
-    <li>
-        <a href="#" class="card-link">
-            <span class="trend-name">#TendenciaNumero8</span>
-            <div class="trend-stats">56.113 posts</div>
-        </a>
-    </li>
-    <li>
-        <a href="#" class="card-link">
-            <span class="trend-name">#TendenciaNumero9</span>
-            <div class="trend-stats">26.887 posts</div>
-        </a>
-    </li>
-    <li>
-        <a href="#" class="card-link">
-            <span class="trend-name">#TendenciaNumero10</span>
-            <div class="trend-stats">15.477 posts</div>
-        </a>
-    </li>
+﻿@model IEnumerable<Domain_Layer.DTO.TopTrendingsDTO>
+
+<ul class="trends-list">
+    @foreach (var trending in Model)
+    {
+        <li>
+            <a href="@Url.Action("Search", "Home", new { q = trending.Name })" class="card-link">
+                <span class="trend-name">@trending.Name</span>
+                <div class="trend-stats">@trending.Assiduity posts</div>
+            </a>
+        </li>
+    }    
 </ul>

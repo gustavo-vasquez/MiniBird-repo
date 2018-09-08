@@ -9,6 +9,34 @@ body {
     font-family: Arimo;
 }
 
+.card, .btn, input[type=text], textarea {
+    border-radius: 1rem !important;
+}
+
+.dropdown-menu {
+    border-radius: 1rem;
+    padding-left: 1px;
+    padding-right: 1px;
+}
+
+.dropdown-item {
+    border-radius: 0.5rem;    
+}
+
+.input-group input {
+    border-top-right-radius: unset !important;
+    border-bottom-right-radius: unset !important;
+}
+
+.input-group-append .btn {
+    border-top-left-radius: unset !important;
+    border-bottom-left-radius: unset !important;
+}
+
+.nav-pills .nav-link {
+    border-radius: 1rem;
+}
+
 /* Estilos para la navbar */
 
 .navbar.fixed-top {
@@ -59,6 +87,8 @@ body {
     height: 95px;
     display: block;
     object-fit: cover;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
 }
 
 .profile-section-avatar {
@@ -99,6 +129,7 @@ body {
 
 #trendsSection .card-header {
     padding: 0.3rem 1rem 0.3rem 1rem;
+    background-color: transparent;
 }
 
 .trends-list {

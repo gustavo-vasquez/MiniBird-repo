@@ -8,6 +8,7 @@
     height: 416px;
     border-radius: 5px;
     object-fit: cover;
+    border-radius: 1rem;
 }
 
 .profile_screen-avatar {

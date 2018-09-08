@@ -147,10 +147,19 @@ namespace Data_Layer
                                 }
                             }
                         }
+
                         post.PublicationDate = DateTime.Now;
-                        if(inReplyTo != null && inReplyTo != 0)
-                            post.InReplyTo = inReplyTo;
                         post.ID_Person = personID;
+
+                        if (inReplyTo != null && inReplyTo != 0)
+                            post.InReplyTo = inReplyTo;
+
+                        var hashtags = DiscoverHashtag(comment);
+
+                        if(hashtags.Count() > 0)                        
+                            foreach(var hashtag in hashtags)                            
+                                post.Hashtag.Add(hashtag);
+
                         context.Post.Add(post);
                         context.SaveChanges();
 
@@ -352,6 +361,7 @@ namespace Data_Layer
                     timelineDTO.ProfileSection.PostCount = posts.Count();
                     timelineDTO.ProfileSection.FollowerCount = person.Person11.Count;
                     timelineDTO.ProfileSection.FollowingCount = person.Person3.Count;
+                    timelineDTO.TopTrendingsSection = TopTrendings();
 
                     var reposts = context.RePost.Where(rp => rp.ID_PersonThatRePost == person.PersonID).ToList();
 
@@ -872,6 +882,59 @@ namespace Data_Layer
             return "Nació el " + birthDate.Value.Day + " de " + birthDate.Value.ToString("MMMM") + " de " + birthDate.Value.Year;
         }
 
+        private IEnumerable<Hashtag> DiscoverHashtag(string comment)
+        {
+            string[] words = comment.Split(' ');
+            List<Hashtag> hashtags = new List<Hashtag>();
+
+            using(var context = new MiniBirdEntities())
+            {
+                foreach (string word in words)
+                {
+                    if (word.Length >= 3)
+                    {
+                        if (word.StartsWith("#") && word.IndexOf('#', 1) < 1)
+                        {
+                            if (!context.Hashtag.Any(h => h.Name == word))
+                                hashtags.Add(new Hashtag() { Name = word, CreationDate = DateTime.Now, Assiduity = 1 });
+                            else
+                            {
+                                Hashtag hashtag = context.Hashtag.SingleOrDefault(h => h.Name == word);
+                                hashtag.Assiduity = hashtag.Assiduity + 1;
+                                context.SaveChanges();
+                            }
+                        }
+                    }
+                }
+            }
+
+            return hashtags;
+        }
+
+        private List<TopTrendingsDTO> TopTrendings()
+        {
+            using (var context = new MiniBirdEntities())
+            {
+                IQueryable<Hashtag> topTrendings = context.Hashtag.OrderByDescending(h => h.Assiduity).Take(10);
+                List<TopTrendingsDTO> topTrendingsDTO = new List<TopTrendingsDTO>();
+
+                if(topTrendings.Count() > 0)
+                {
+                    foreach (var trending in topTrendings)
+                    {
+                        topTrendingsDTO.Add(new TopTrendingsDTO()
+                        {
+                            Name = trending.Name,
+                            Assiduity = trending.Assiduity
+                        });
+                    }
+                }
+
+                return topTrendingsDTO;
+            }
+        }
+
+
         public string TemporaryPostImageDL(HttpPostedFile tempImage, HttpServerUtilityBase localServer, int personID)
         {
             try
@@ -882,7 +945,7 @@ namespace Data_Layer
                 string imgDir;
                 using (var context = new MiniBirdEntities())
                 {
-                    imgDir = "/Content/images/temporary" + context.Person.Where(p => p.PersonID == personID).Single().UserName;
+                    imgDir = "/Content/images/temporary" + context.Person.Where(p => p.PersonID == personID).Single().UserName;                    
                 }
 
                 Directory.CreateDirectory(localServer.MapPath(imgDir));
