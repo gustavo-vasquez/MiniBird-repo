@@ -14,20 +14,12 @@ namespace Domain_Layer
     
     public partial class RePost
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public RePost()
-        {
-            this.NotificationAlert = new HashSet<NotificationAlert>();
-        }
-    
         public int RePostID { get; set; }
         public string Comment { get; set; }
         public System.DateTime PublicationDate { get; set; }
         public int ID_Post { get; set; }
         public int ID_PersonThatRePost { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NotificationAlert> NotificationAlert { get; set; }
         public virtual Person Person { get; set; }
         public virtual Post Post { get; set; }
     }

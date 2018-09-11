@@ -12,18 +12,19 @@ namespace Domain_Layer
     using System;
     using System.Collections.Generic;
     
-    public partial class MyList
+    public partial class List
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public MyList()
+        public List()
         {
             this.Person1 = new HashSet<Person>();
         }
     
-        public int MyListID { get; set; }
+        public int ListID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public Nullable<bool> IsPrivate { get; set; }
+        public System.DateTime CreationDate { get; set; }
         public int ID_Person { get; set; }
     
         public virtual Person Person { get; set; }

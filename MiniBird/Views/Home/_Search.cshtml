@@ -8,12 +8,15 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="ej: &#64;usuario / #hashtag" aria-label="ej: &#64;usuario / #hashtag" aria-describedby="button-addon2">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-primary" type="button" id="button-addon2" title="Buscar"><i class="fas fa-search"></i></button>
+                @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { id = "searchForm" }))
+                {
+                    <div class="input-group">
+                        <input id="wordToSearch" name="wordToSearch" type="text" class="form-control" placeholder="ej: &#64;usuario / #hashtag" aria-label="ej: &#64;usuario / #hashtag">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-primary" type="submit" title="Realizar búsqueda"><i class="fas fa-search"></i></button>
+                        </div>
                     </div>
-                </div>
+                }                
             </div>
             <div class="modal-footer search-results">
                 <div class="list-group w-100">

@@ -295,11 +295,15 @@ function copyLinkToClipboard($element) {
 
 function search() {
     $.ajax({
-        url: "/Account/Search",
+        url: "/Home/Search",
         method: "GET",
         success: function (data) {
             $('body').append(data);
             $('#searchModal').modal('show');
+
+            $('#searchModal').on('shown.bs.modal', function () {
+                $('#wordToSearch').focus();
+            });            
 
             $('#searchModal').on('hidden.bs.modal', function () {
                 $(this).remove();

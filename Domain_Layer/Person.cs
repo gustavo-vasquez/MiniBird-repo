@@ -18,11 +18,8 @@ namespace Domain_Layer
         public Person()
         {
             this.LikePost = new HashSet<LikePost>();
-            this.MyList = new HashSet<MyList>();
-            this.NotificationAlert = new HashSet<NotificationAlert>();
+            this.List = new HashSet<List>();
             this.Post = new HashSet<Post>();
-            this.PrivateMessage = new HashSet<PrivateMessage>();
-            this.RecipientsOfPM = new HashSet<RecipientsOfPM>();
             this.RePost = new HashSet<RePost>();
             this.Person1 = new HashSet<Person>();
             this.Person2 = new HashSet<Person>();
@@ -30,7 +27,7 @@ namespace Domain_Layer
             this.Person3 = new HashSet<Person>();
             this.Person12 = new HashSet<Person>();
             this.Person4 = new HashSet<Person>();
-            this.MyList1 = new HashSet<MyList>();
+            this.List1 = new HashSet<List>();
         }
     
         public int PersonID { get; set; }
@@ -42,24 +39,18 @@ namespace Domain_Layer
         public string WebSiteURL { get; set; }
         public Nullable<System.DateTime> Birthdate { get; set; }
         public byte[] ProfileAvatar { get; set; }
+        public string ProfileAvatar_MimeType { get; set; }
         public byte[] ProfileHeader { get; set; }
+        public string ProfileHeader_MimeType { get; set; }
         public System.DateTime RegistrationDate { get; set; }
         public string PersonCryptID { get; set; }
-        public string ProfileAvatar_MimeType { get; set; }
-        public string ProfileHeader_MimeType { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LikePost> LikePost { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MyList> MyList { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NotificationAlert> NotificationAlert { get; set; }
+        public virtual ICollection<List> List { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Post> Post { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PrivateMessage> PrivateMessage { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RecipientsOfPM> RecipientsOfPM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RePost> RePost { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -75,6 +66,6 @@ namespace Domain_Layer
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Person> Person4 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MyList> MyList1 { get; set; }
+        public virtual ICollection<List> List1 { get; set; }
     }
 }

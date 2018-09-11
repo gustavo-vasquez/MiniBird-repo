@@ -2,7 +2,7 @@
 
 <div class="modal fade" id="replyModal" tabindex="-1" role="dialog" aria-labelledby="replyModalTitle" aria-hidden="true" data-backdrop="false">
     <div class="modal-dialog modal-md" role="document">
-        @using (Ajax.BeginForm("NewReply", "Account", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = (string)TempData["UpdateDiv"], InsertionMode = InsertionMode.Replace, OnSuccess = "$('#replyModal').remove();", LoadingElementId = "replying", LoadingElementDuration = 1000 }, new { id = "NewReplyForm" }))
+        @using (Ajax.BeginForm("NewReply", "Account", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = (string)TempData["UpdateDiv"], InsertionMode = InsertionMode.Replace, OnSuccess = "$('#replyModal').remove();scanSpecialWords();", LoadingElementId = "replying", LoadingElementDuration = 1000 }, new { id = "NewReplyForm" }))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.InReplyTo)

@@ -54,15 +54,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountDL.cs" />
-    <Compile Include="MiniBirdDB.Context.cs">
+    <Compile Include="MiniBirdDatabase.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MiniBirdDB.Context.tt</DependentUpon>
+      <DependentUpon>MiniBirdDatabase.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="MiniBirdDB.Designer.cs">
+    <Compile Include="MiniBirdDatabase.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MiniBirdDB.edmx</DependentUpon>
+      <DependentUpon>MiniBirdDatabase.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -73,28 +73,26 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="MiniBirdDB.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MiniBirdDB.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.Config" />
-    <None Include="MiniBirdDB.edmx.diagram">
-      <DependentUpon>MiniBirdDB.edmx</DependentUpon>
+    <EntityDeploy Include="MiniBirdDatabase.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MiniBirdDatabase.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="MiniBirdDatabase.edmx.diagram">
+      <DependentUpon>MiniBirdDatabase.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MiniBirdDB.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MiniBirdDB.edmx</DependentUpon>
-      <LastGenOutput>MiniBirdDB.Context.cs</LastGenOutput>
-      <CustomToolNamespace>Domain_Layer</CustomToolNamespace>
-    </Content>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Content Include="MiniBirdDatabase.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MiniBirdDatabase.edmx</DependentUpon>
+      <LastGenOutput>MiniBirdDatabase.Context.cs</LastGenOutput>
+      <CustomToolNamespace>Domain_Layer</CustomToolNamespace>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

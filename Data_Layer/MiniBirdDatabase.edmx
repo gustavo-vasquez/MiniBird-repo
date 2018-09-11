@@ -1,0 +1,867 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MiniBirdModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Block">
+          <Key>
+            <PropertyRef Name="ID_Person" />
+            <PropertyRef Name="ID_PersonBlocked" />
+          </Key>
+          <Property Name="ID_Person" Type="int" Nullable="false" />
+          <Property Name="ID_PersonBlocked" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Follow">
+          <Key>
+            <PropertyRef Name="ID_Person" />
+            <PropertyRef Name="ID_PersonFollowed" />
+          </Key>
+          <Property Name="ID_Person" Type="int" Nullable="false" />
+          <Property Name="ID_PersonFollowed" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Hashtag">
+          <Key>
+            <PropertyRef Name="HashtagID" />
+          </Key>
+          <Property Name="HashtagID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="UseCount" Type="int" />
+        </EntityType>
+        <EntityType Name="LikePost">
+          <Key>
+            <PropertyRef Name="LikePostID" />
+          </Key>
+          <Property Name="LikePostID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateOfAction" Type="datetime" Nullable="false" />
+          <Property Name="ID_Post" Type="int" Nullable="false" />
+          <Property Name="ID_PersonThatLikesPost" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="List">
+          <Key>
+            <PropertyRef Name="ListID" />
+          </Key>
+          <Property Name="ListID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="IsPrivate" Type="bit" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="ID_Person" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Mute">
+          <Key>
+            <PropertyRef Name="ID_Person" />
+            <PropertyRef Name="ID_PersonMuted" />
+          </Key>
+          <Property Name="ID_Person" Type="int" Nullable="false" />
+          <Property Name="ID_PersonMuted" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="PersonID" />
+          </Key>
+          <Property Name="PersonID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="16" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="NickName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PersonalDescription" Type="nvarchar" MaxLength="100" />
+          <Property Name="WebSiteURL" Type="nvarchar" MaxLength="100" />
+          <Property Name="Birthdate" Type="datetime" />
+          <Property Name="ProfileAvatar" Type="varbinary(max)" />
+          <Property Name="ProfileAvatar_MimeType" Type="nvarchar" MaxLength="15" />
+          <Property Name="ProfileHeader" Type="varbinary(max)" />
+          <Property Name="ProfileHeader_MimeType" Type="nvarchar" MaxLength="15" />
+          <Property Name="RegistrationDate" Type="datetime" Nullable="false" />
+          <Property Name="PersonCryptID" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="PostID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="280" Nullable="false" />
+          <Property Name="GIFImage" Type="varbinary(max)" />
+          <Property Name="VideoFile" Type="varbinary(max)" />
+          <Property Name="PublicationDate" Type="datetime" Nullable="false" />
+          <Property Name="InReplyTo" Type="int" />
+          <Property Name="ID_Person" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PostToHashtag">
+          <Key>
+            <PropertyRef Name="ID_Post" />
+            <PropertyRef Name="ID_Hashtag" />
+          </Key>
+          <Property Name="ID_Post" Type="int" Nullable="false" />
+          <Property Name="ID_Hashtag" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RePost">
+          <Key>
+            <PropertyRef Name="RePostID" />
+          </Key>
+          <Property Name="RePostID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="280" />
+          <Property Name="PublicationDate" Type="datetime" Nullable="false" />
+          <Property Name="ID_Post" Type="int" Nullable="false" />
+          <Property Name="ID_PersonThatRePost" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Thumbnail">
+          <Key>
+            <PropertyRef Name="ThumbnailID" />
+          </Key>
+          <Property Name="ThumbnailID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ImagePath" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ID_Post" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserToList">
+          <Key>
+            <PropertyRef Name="ID_Person" />
+            <PropertyRef Name="ID_List" />
+          </Key>
+          <Property Name="ID_Person" Type="int" Nullable="false" />
+          <Property Name="ID_List" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FKBlock_Blocked_PersonT">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Block" Type="Self.Block" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="Block">
+              <PropertyRef Name="ID_PersonBlocked" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKBlock_Blocker_PersonT">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Block" Type="Self.Block" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="Block">
+              <PropertyRef Name="ID_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKFollow_Followed_PersonT">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Follow" Type="Self.Follow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="Follow">
+              <PropertyRef Name="ID_PersonFollowed" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKFollow_Follower_PersonT">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Follow" Type="Self.Follow" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="Follow">
+              <PropertyRef Name="ID_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKLikePost_PersonT">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="LikePost" Type="Self.LikePost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="LikePost">
+              <PropertyRef Name="ID_PersonThatLikesPost" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKLikePost_PostT">
+          <End Role="Post" Type="Self.Post" Multiplicity="1" />
+          <End Role="LikePost" Type="Self.LikePost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="LikePost">
+              <PropertyRef Name="ID_Post" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKList_PersonT">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="List" Type="Self.List" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="List">
+              <PropertyRef Name="ID_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKMute_Muted_PersonT">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Mute" Type="Self.Mute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="Mute">
+              <PropertyRef Name="ID_PersonMuted" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKMute_Muter_PersonT">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Mute" Type="Self.Mute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="Mute">
+              <PropertyRef Name="ID_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKPost_PersonT">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="ID_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKPost_PostT">
+          <End Role="Post" Type="Self.Post" Multiplicity="0..1" />
+          <End Role="Post1" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="Post1">
+              <PropertyRef Name="InReplyTo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKPostToHashtag_HashtagT">
+          <End Role="Hashtag" Type="Self.Hashtag" Multiplicity="1" />
+          <End Role="PostToHashtag" Type="Self.PostToHashtag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hashtag">
+              <PropertyRef Name="HashtagID" />
+            </Principal>
+            <Dependent Role="PostToHashtag">
+              <PropertyRef Name="ID_Hashtag" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKPostToHashtag_PostT">
+          <End Role="Post" Type="Self.Post" Multiplicity="1" />
+          <End Role="PostToHashtag" Type="Self.PostToHashtag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="PostToHashtag">
+              <PropertyRef Name="ID_Post" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKRePost_PersonT">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="RePost" Type="Self.RePost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="RePost">
+              <PropertyRef Name="ID_PersonThatRePost" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKRePost_PostT">
+          <End Role="Post" Type="Self.Post" Multiplicity="1" />
+          <End Role="RePost" Type="Self.RePost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="RePost">
+              <PropertyRef Name="ID_Post" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKThumbnail_PostT">
+          <End Role="Post" Type="Self.Post" Multiplicity="1" />
+          <End Role="Thumbnail" Type="Self.Thumbnail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="Thumbnail">
+              <PropertyRef Name="ID_Post" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKUserToList_ListT">
+          <End Role="List" Type="Self.List" Multiplicity="1" />
+          <End Role="UserToList" Type="Self.UserToList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="List">
+              <PropertyRef Name="ListID" />
+            </Principal>
+            <Dependent Role="UserToList">
+              <PropertyRef Name="ID_List" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKUserToList_PersonT">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="UserToList" Type="Self.UserToList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="UserToList">
+              <PropertyRef Name="ID_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MiniBirdModelStoreContainer">
+          <EntitySet Name="Block" EntityType="Self.Block" Schema="MiniBird" store:Type="Tables" />
+          <EntitySet Name="Follow" EntityType="Self.Follow" Schema="MiniBird" store:Type="Tables" />
+          <EntitySet Name="Hashtag" EntityType="Self.Hashtag" Schema="MiniBird" store:Type="Tables" />
+          <EntitySet Name="LikePost" EntityType="Self.LikePost" Schema="MiniBird" store:Type="Tables" />
+          <EntitySet Name="List" EntityType="Self.List" Schema="MiniBird" store:Type="Tables" />
+          <EntitySet Name="Mute" EntityType="Self.Mute" Schema="MiniBird" store:Type="Tables" />
+          <EntitySet Name="Person" EntityType="Self.Person" Schema="MiniBird" store:Type="Tables" />
+          <EntitySet Name="Post" EntityType="Self.Post" Schema="MiniBird" store:Type="Tables" />
+          <EntitySet Name="PostToHashtag" EntityType="Self.PostToHashtag" Schema="MiniBird" store:Type="Tables" />
+          <EntitySet Name="RePost" EntityType="Self.RePost" Schema="MiniBird" store:Type="Tables" />
+          <EntitySet Name="Thumbnail" EntityType="Self.Thumbnail" Schema="MiniBird" store:Type="Tables" />
+          <EntitySet Name="UserToList" EntityType="Self.UserToList" Schema="MiniBird" store:Type="Tables" />
+          <AssociationSet Name="FKBlock_Blocked_PersonT" Association="Self.FKBlock_Blocked_PersonT">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Block" EntitySet="Block" />
+          </AssociationSet>
+          <AssociationSet Name="FKBlock_Blocker_PersonT" Association="Self.FKBlock_Blocker_PersonT">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Block" EntitySet="Block" />
+          </AssociationSet>
+          <AssociationSet Name="FKFollow_Followed_PersonT" Association="Self.FKFollow_Followed_PersonT">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Follow" EntitySet="Follow" />
+          </AssociationSet>
+          <AssociationSet Name="FKFollow_Follower_PersonT" Association="Self.FKFollow_Follower_PersonT">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Follow" EntitySet="Follow" />
+          </AssociationSet>
+          <AssociationSet Name="FKLikePost_PersonT" Association="Self.FKLikePost_PersonT">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="LikePost" EntitySet="LikePost" />
+          </AssociationSet>
+          <AssociationSet Name="FKLikePost_PostT" Association="Self.FKLikePost_PostT">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="LikePost" EntitySet="LikePost" />
+          </AssociationSet>
+          <AssociationSet Name="FKList_PersonT" Association="Self.FKList_PersonT">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="List" EntitySet="List" />
+          </AssociationSet>
+          <AssociationSet Name="FKMute_Muted_PersonT" Association="Self.FKMute_Muted_PersonT">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Mute" EntitySet="Mute" />
+          </AssociationSet>
+          <AssociationSet Name="FKMute_Muter_PersonT" Association="Self.FKMute_Muter_PersonT">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Mute" EntitySet="Mute" />
+          </AssociationSet>
+          <AssociationSet Name="FKPost_PersonT" Association="Self.FKPost_PersonT">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="FKPost_PostT" Association="Self.FKPost_PostT">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="Post1" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="FKPostToHashtag_HashtagT" Association="Self.FKPostToHashtag_HashtagT">
+            <End Role="Hashtag" EntitySet="Hashtag" />
+            <End Role="PostToHashtag" EntitySet="PostToHashtag" />
+          </AssociationSet>
+          <AssociationSet Name="FKPostToHashtag_PostT" Association="Self.FKPostToHashtag_PostT">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="PostToHashtag" EntitySet="PostToHashtag" />
+          </AssociationSet>
+          <AssociationSet Name="FKRePost_PersonT" Association="Self.FKRePost_PersonT">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="RePost" EntitySet="RePost" />
+          </AssociationSet>
+          <AssociationSet Name="FKRePost_PostT" Association="Self.FKRePost_PostT">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="RePost" EntitySet="RePost" />
+          </AssociationSet>
+          <AssociationSet Name="FKThumbnail_PostT" Association="Self.FKThumbnail_PostT">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="Thumbnail" EntitySet="Thumbnail" />
+          </AssociationSet>
+          <AssociationSet Name="FKUserToList_ListT" Association="Self.FKUserToList_ListT">
+            <End Role="List" EntitySet="List" />
+            <End Role="UserToList" EntitySet="UserToList" />
+          </AssociationSet>
+          <AssociationSet Name="FKUserToList_PersonT" Association="Self.FKUserToList_PersonT">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="UserToList" EntitySet="UserToList" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MiniBirdModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Hashtag">
+          <Key>
+            <PropertyRef Name="HashtagID" />
+          </Key>
+          <Property Name="HashtagID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Post" Relationship="Self.PostToHashtag" FromRole="Hashtag" ToRole="Post" />
+          <Property Name="UseCount" Type="Int32" />
+        </EntityType>
+        <EntityType Name="LikePost">
+          <Key>
+            <PropertyRef Name="LikePostID" />
+          </Key>
+          <Property Name="LikePostID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateOfAction" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ID_Post" Type="Int32" Nullable="false" />
+          <Property Name="ID_PersonThatLikesPost" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Person" Relationship="Self.FKLikePost_PersonT" FromRole="LikePost" ToRole="Person" />
+          <NavigationProperty Name="Post" Relationship="Self.FKLikePost_PostT" FromRole="LikePost" ToRole="Post" />
+        </EntityType>
+        <EntityType Name="List">
+          <Key>
+            <PropertyRef Name="ListID" />
+          </Key>
+          <Property Name="ListID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IsPrivate" Type="Boolean" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ID_Person" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Person" Relationship="Self.FKList_PersonT" FromRole="List" ToRole="Person" />
+          <NavigationProperty Name="Person1" Relationship="Self.UserToList" FromRole="List" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="PersonID" />
+          </Key>
+          <Property Name="PersonID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NickName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PersonalDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="WebSiteURL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Birthdate" Type="DateTime" Precision="3" />
+          <Property Name="ProfileAvatar" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="ProfileAvatar_MimeType" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="ProfileHeader" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="ProfileHeader_MimeType" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="RegistrationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="LikePost" Relationship="Self.FKLikePost_PersonT" FromRole="Person" ToRole="LikePost" />
+          <NavigationProperty Name="List" Relationship="Self.FKList_PersonT" FromRole="Person" ToRole="List" />
+          <NavigationProperty Name="Post" Relationship="Self.FKPost_PersonT" FromRole="Person" ToRole="Post" />
+          <NavigationProperty Name="RePost" Relationship="Self.FKRePost_PersonT" FromRole="Person" ToRole="RePost" />
+          <NavigationProperty Name="Person1" Relationship="Self.Block" FromRole="Person" ToRole="Person1" />
+          <NavigationProperty Name="Person2" Relationship="Self.Block" FromRole="Person1" ToRole="Person" />
+          <NavigationProperty Name="Person11" Relationship="Self.Follow" FromRole="Person" ToRole="Person1" />
+          <NavigationProperty Name="Person3" Relationship="Self.Follow" FromRole="Person1" ToRole="Person" />
+          <NavigationProperty Name="Person12" Relationship="Self.Mute" FromRole="Person" ToRole="Person1" />
+          <NavigationProperty Name="Person4" Relationship="Self.Mute" FromRole="Person1" ToRole="Person" />
+          <NavigationProperty Name="List1" Relationship="Self.UserToList" FromRole="Person" ToRole="List" />
+          <Property Name="PersonCryptID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="PostID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Comment" Type="String" MaxLength="280" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GIFImage" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="VideoFile" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="PublicationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="InReplyTo" Type="Int32" />
+          <Property Name="ID_Person" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="LikePost" Relationship="Self.FKLikePost_PostT" FromRole="Post" ToRole="LikePost" />
+          <NavigationProperty Name="Person" Relationship="Self.FKPost_PersonT" FromRole="Post" ToRole="Person" />
+          <NavigationProperty Name="Post1" Relationship="Self.FKPost_PostT" FromRole="Post" ToRole="Post1" />
+          <NavigationProperty Name="Post2" Relationship="Self.FKPost_PostT" FromRole="Post1" ToRole="Post" />
+          <NavigationProperty Name="RePost" Relationship="Self.FKRePost_PostT" FromRole="Post" ToRole="RePost" />
+          <NavigationProperty Name="Thumbnail" Relationship="Self.FKThumbnail_PostT" FromRole="Post" ToRole="Thumbnail" />
+          <NavigationProperty Name="Hashtag" Relationship="Self.PostToHashtag" FromRole="Post" ToRole="Hashtag" />
+        </EntityType>
+        <EntityType Name="RePost">
+          <Key>
+            <PropertyRef Name="RePostID" />
+          </Key>
+          <Property Name="RePostID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Comment" Type="String" MaxLength="280" FixedLength="false" Unicode="true" />
+          <Property Name="PublicationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ID_Post" Type="Int32" Nullable="false" />
+          <Property Name="ID_PersonThatRePost" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Person" Relationship="Self.FKRePost_PersonT" FromRole="RePost" ToRole="Person" />
+          <NavigationProperty Name="Post" Relationship="Self.FKRePost_PostT" FromRole="RePost" ToRole="Post" />
+        </EntityType>
+        <EntityType Name="Thumbnail">
+          <Key>
+            <PropertyRef Name="ThumbnailID" />
+          </Key>
+          <Property Name="ThumbnailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ImagePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ID_Post" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Post" Relationship="Self.FKThumbnail_PostT" FromRole="Thumbnail" ToRole="Post" />
+        </EntityType>
+        <Association Name="FKLikePost_PersonT">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="LikePost" Type="Self.LikePost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="LikePost">
+              <PropertyRef Name="ID_PersonThatLikesPost" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKLikePost_PostT">
+          <End Role="Post" Type="Self.Post" Multiplicity="1" />
+          <End Role="LikePost" Type="Self.LikePost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="LikePost">
+              <PropertyRef Name="ID_Post" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKList_PersonT">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="List" Type="Self.List" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="List">
+              <PropertyRef Name="ID_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKPost_PersonT">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="ID_Person" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKRePost_PersonT">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="RePost" Type="Self.RePost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="PersonID" />
+            </Principal>
+            <Dependent Role="RePost">
+              <PropertyRef Name="ID_PersonThatRePost" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKPost_PostT">
+          <End Role="Post" Type="Self.Post" Multiplicity="0..1" />
+          <End Role="Post1" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="Post1">
+              <PropertyRef Name="InReplyTo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKRePost_PostT">
+          <End Role="Post" Type="Self.Post" Multiplicity="1" />
+          <End Role="RePost" Type="Self.RePost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="RePost">
+              <PropertyRef Name="ID_Post" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKThumbnail_PostT">
+          <End Role="Post" Type="Self.Post" Multiplicity="1" />
+          <End Role="Thumbnail" Type="Self.Thumbnail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="Thumbnail">
+              <PropertyRef Name="ID_Post" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Block">
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <End Role="Person1" Type="Self.Person" Multiplicity="*" />
+        </Association>
+        <Association Name="Follow">
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <End Role="Person1" Type="Self.Person" Multiplicity="*" />
+        </Association>
+        <Association Name="Mute">
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+          <End Role="Person1" Type="Self.Person" Multiplicity="*" />
+        </Association>
+        <Association Name="PostToHashtag">
+          <End Role="Hashtag" Type="Self.Hashtag" Multiplicity="*" />
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
+        </Association>
+        <Association Name="UserToList">
+          <End Role="List" Type="Self.List" Multiplicity="*" />
+          <End Role="Person" Type="Self.Person" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="MiniBirdEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Hashtag" EntityType="Self.Hashtag" />
+          <EntitySet Name="LikePost" EntityType="Self.LikePost" />
+          <EntitySet Name="List" EntityType="Self.List" />
+          <EntitySet Name="Person" EntityType="Self.Person" />
+          <EntitySet Name="Post" EntityType="Self.Post" />
+          <EntitySet Name="RePost" EntityType="Self.RePost" />
+          <EntitySet Name="Thumbnail" EntityType="Self.Thumbnail" />
+          <AssociationSet Name="FKLikePost_PersonT" Association="Self.FKLikePost_PersonT">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="LikePost" EntitySet="LikePost" />
+          </AssociationSet>
+          <AssociationSet Name="FKLikePost_PostT" Association="Self.FKLikePost_PostT">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="LikePost" EntitySet="LikePost" />
+          </AssociationSet>
+          <AssociationSet Name="FKList_PersonT" Association="Self.FKList_PersonT">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="List" EntitySet="List" />
+          </AssociationSet>
+          <AssociationSet Name="FKPost_PersonT" Association="Self.FKPost_PersonT">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="FKRePost_PersonT" Association="Self.FKRePost_PersonT">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="RePost" EntitySet="RePost" />
+          </AssociationSet>
+          <AssociationSet Name="FKPost_PostT" Association="Self.FKPost_PostT">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="Post1" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="FKRePost_PostT" Association="Self.FKRePost_PostT">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="RePost" EntitySet="RePost" />
+          </AssociationSet>
+          <AssociationSet Name="FKThumbnail_PostT" Association="Self.FKThumbnail_PostT">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="Thumbnail" EntitySet="Thumbnail" />
+          </AssociationSet>
+          <AssociationSet Name="Block" Association="Self.Block">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Person1" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="Follow" Association="Self.Follow">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Person1" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="Mute" Association="Self.Mute">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Person1" EntitySet="Person" />
+          </AssociationSet>
+          <AssociationSet Name="PostToHashtag" Association="Self.PostToHashtag">
+            <End Role="Hashtag" EntitySet="Hashtag" />
+            <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="UserToList" Association="Self.UserToList">
+            <End Role="List" EntitySet="List" />
+            <End Role="Person" EntitySet="Person" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MiniBirdModelStoreContainer" CdmEntityContainer="MiniBirdEntities">
+          <EntitySetMapping Name="Hashtag">
+            <EntityTypeMapping TypeName="MiniBirdModel.Hashtag">
+              <MappingFragment StoreEntitySet="Hashtag">
+                <ScalarProperty Name="UseCount" ColumnName="UseCount" />
+                <ScalarProperty Name="HashtagID" ColumnName="HashtagID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LikePost">
+            <EntityTypeMapping TypeName="MiniBirdModel.LikePost">
+              <MappingFragment StoreEntitySet="LikePost">
+                <ScalarProperty Name="LikePostID" ColumnName="LikePostID" />
+                <ScalarProperty Name="DateOfAction" ColumnName="DateOfAction" />
+                <ScalarProperty Name="ID_Post" ColumnName="ID_Post" />
+                <ScalarProperty Name="ID_PersonThatLikesPost" ColumnName="ID_PersonThatLikesPost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="List">
+            <EntityTypeMapping TypeName="MiniBirdModel.List">
+              <MappingFragment StoreEntitySet="List">
+                <ScalarProperty Name="ListID" ColumnName="ListID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsPrivate" ColumnName="IsPrivate" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="ID_Person" ColumnName="ID_Person" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Person">
+            <EntityTypeMapping TypeName="MiniBirdModel.Person">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="PersonCryptID" ColumnName="PersonCryptID" />
+                <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="NickName" ColumnName="NickName" />
+                <ScalarProperty Name="PersonalDescription" ColumnName="PersonalDescription" />
+                <ScalarProperty Name="WebSiteURL" ColumnName="WebSiteURL" />
+                <ScalarProperty Name="Birthdate" ColumnName="Birthdate" />
+                <ScalarProperty Name="ProfileAvatar" ColumnName="ProfileAvatar" />
+                <ScalarProperty Name="ProfileAvatar_MimeType" ColumnName="ProfileAvatar_MimeType" />
+                <ScalarProperty Name="ProfileHeader" ColumnName="ProfileHeader" />
+                <ScalarProperty Name="ProfileHeader_MimeType" ColumnName="ProfileHeader_MimeType" />
+                <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Post">
+            <EntityTypeMapping TypeName="MiniBirdModel.Post">
+              <MappingFragment StoreEntitySet="Post">
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="GIFImage" ColumnName="GIFImage" />
+                <ScalarProperty Name="VideoFile" ColumnName="VideoFile" />
+                <ScalarProperty Name="PublicationDate" ColumnName="PublicationDate" />
+                <ScalarProperty Name="InReplyTo" ColumnName="InReplyTo" />
+                <ScalarProperty Name="ID_Person" ColumnName="ID_Person" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RePost">
+            <EntityTypeMapping TypeName="MiniBirdModel.RePost">
+              <MappingFragment StoreEntitySet="RePost">
+                <ScalarProperty Name="RePostID" ColumnName="RePostID" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="PublicationDate" ColumnName="PublicationDate" />
+                <ScalarProperty Name="ID_Post" ColumnName="ID_Post" />
+                <ScalarProperty Name="ID_PersonThatRePost" ColumnName="ID_PersonThatRePost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Thumbnail">
+            <EntityTypeMapping TypeName="MiniBirdModel.Thumbnail">
+              <MappingFragment StoreEntitySet="Thumbnail">
+                <ScalarProperty Name="ThumbnailID" ColumnName="ThumbnailID" />
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+                <ScalarProperty Name="ID_Post" ColumnName="ID_Post" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Block" TypeName="MiniBirdModel.Block" StoreEntitySet="Block">
+            <EndProperty Name="Person">
+              <ScalarProperty Name="PersonID" ColumnName="ID_PersonBlocked" />
+            </EndProperty>
+            <EndProperty Name="Person1">
+              <ScalarProperty Name="PersonID" ColumnName="ID_Person" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="Follow" TypeName="MiniBirdModel.Follow" StoreEntitySet="Follow">
+            <EndProperty Name="Person">
+              <ScalarProperty Name="PersonID" ColumnName="ID_PersonFollowed" />
+            </EndProperty>
+            <EndProperty Name="Person1">
+              <ScalarProperty Name="PersonID" ColumnName="ID_Person" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="Mute" TypeName="MiniBirdModel.Mute" StoreEntitySet="Mute">
+            <EndProperty Name="Person">
+              <ScalarProperty Name="PersonID" ColumnName="ID_PersonMuted" />
+            </EndProperty>
+            <EndProperty Name="Person1">
+              <ScalarProperty Name="PersonID" ColumnName="ID_Person" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="PostToHashtag" TypeName="MiniBirdModel.PostToHashtag" StoreEntitySet="PostToHashtag">
+            <EndProperty Name="Hashtag">
+              <ScalarProperty Name="HashtagID" ColumnName="ID_Hashtag" />
+            </EndProperty>
+            <EndProperty Name="Post">
+              <ScalarProperty Name="PostID" ColumnName="ID_Post" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="UserToList" TypeName="MiniBirdModel.UserToList" StoreEntitySet="UserToList">
+            <EndProperty Name="List">
+              <ScalarProperty Name="ListID" ColumnName="ID_List" />
+            </EndProperty>
+            <EndProperty Name="Person">
+              <ScalarProperty Name="PersonID" ColumnName="ID_Person" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -128,7 +128,7 @@ namespace MiniBird.Controllers
             if (!ModelState.IsValid)
                 return Content("Fallaron las validaciones.");
 
-            if (Account.CreateNewPostSL(model.Comment, model.GifImage, model.VideoFile, model.ImagesUploaded, ActiveSession.GetPersonID(), model.InReplyTo))
+            if (Account.CreateNewPostSL(model, ActiveSession.GetPersonID(), Server))
             {
                 TempData["message"] = "El post se ha publicado.";
                 return RedirectToAction("Timeline", "Account");
@@ -288,20 +288,14 @@ namespace MiniBird.Controllers
             if (!ModelState.IsValid)
                 return Content("Fallaron las validaciones.");
 
-            if (Account.CreateNewReplySL(model, ActiveSession.GetPersonID()))
+            if (Account.CreateNewReplySL(model, ActiveSession.GetPersonID(), Server))
             {
                 var newModel = Account.ViewPostCollectionDataSL(Convert.ToInt32(model.InReplyTo));
                 return PartialView("_RepliesToPost", newModel.RepliesToPost);
             }
 
             return RedirectToAction("Timeline", "Account");
-        }
-
-        [HttpGet]
-        public PartialViewResult Search()
-        {
-            return PartialView("_Search");
-        }
+        }        
 
         #endregion
 

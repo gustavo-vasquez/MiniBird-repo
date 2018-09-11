@@ -64,48 +64,36 @@
     <Compile Include="DTO\ViewPostDTO.cs" />
     <Compile Include="Enum\Privacy.cs" />
     <Compile Include="Hashtag.cs">
-      <DependentUpon>MiniBirdDB.tt</DependentUpon>
+      <DependentUpon>MiniBirdDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="LikePost.cs">
-      <DependentUpon>MiniBirdDB.tt</DependentUpon>
+      <DependentUpon>MiniBirdDatabase.tt</DependentUpon>
     </Compile>
-    <Compile Include="MiniBirdDB.cs">
+    <Compile Include="List.cs">
+      <DependentUpon>MiniBirdDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MiniBirdDatabase.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MiniBirdDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MyList.cs">
-      <DependentUpon>MiniBirdDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="NotificationAlert.cs">
-      <DependentUpon>MiniBirdDB.tt</DependentUpon>
+      <DependentUpon>MiniBirdDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="Person.cs">
-      <DependentUpon>MiniBirdDB.tt</DependentUpon>
+      <DependentUpon>MiniBirdDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="Post.cs">
-      <DependentUpon>MiniBirdDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="PrivateMessage.cs">
-      <DependentUpon>MiniBirdDB.tt</DependentUpon>
+      <DependentUpon>MiniBirdDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RecipientsOfPM.cs">
-      <DependentUpon>MiniBirdDB.tt</DependentUpon>
-    </Compile>
     <Compile Include="RePost.cs">
-      <DependentUpon>MiniBirdDB.tt</DependentUpon>
+      <DependentUpon>MiniBirdDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="SessionInformation.cs" />
+    <Compile Include="Thumbnail.cs">
+      <DependentUpon>MiniBirdDatabase.tt</DependentUpon>
+    </Compile>
     <Compile Include="Validations\RangeBirthMonthAttribute.cs" />
     <Compile Include="Validations\RangeBirthYearAttribute.cs" />
     <Compile Include="Validations\StartsWithProtocolAttribute.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="MiniBirdDB.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MiniBirdDB.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -113,6 +101,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MiniBirdDatabase.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MiniBirdDatabase.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

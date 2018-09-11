@@ -14,20 +14,12 @@ namespace Domain_Layer
     
     public partial class LikePost
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public LikePost()
-        {
-            this.NotificationAlert = new HashSet<NotificationAlert>();
-        }
-    
         public int LikePostID { get; set; }
+        public System.DateTime DateOfAction { get; set; }
         public int ID_Post { get; set; }
         public int ID_PersonThatLikesPost { get; set; }
-        public System.DateTime DateOfAction { get; set; }
     
         public virtual Person Person { get; set; }
         public virtual Post Post { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NotificationAlert> NotificationAlert { get; set; }
     }
 }

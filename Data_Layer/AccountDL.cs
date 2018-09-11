@@ -112,7 +112,7 @@ namespace Data_Layer
             }
         }
 
-        public bool CreateNewPostDL(string comment, byte[] gifImage, byte[] videoFile, string[] imagesUploaded, int personID, int? inReplyTo)
+        public bool CreateNewPostDL(NewPostDTO model, int personID, HttpServerUtilityBase localServer)
         {
             try
             {
@@ -121,47 +121,35 @@ namespace Data_Layer
                     if(context.Person.Any(p => p.PersonID == personID))
                     {
                         var post = new Post();
-                        post.Comment = comment;
-                        if (imagesUploaded != null && imagesUploaded.Length != 0)
-                        {
-                            for(int i = 0; i < imagesUploaded.Length; i++)
-                            {
-                                switch(i)
-                                {
-                                    case 0:
-                                        post.ImageFirstSlot = imgBase64ToByteArray(imagesUploaded[i]);
-                                        post.ImageFirstSlot_MimeType = ExtractMimeType(imagesUploaded[i]);
-                                        break;
-                                    case 1:
-                                        post.ImageSecondSlot = imgBase64ToByteArray(imagesUploaded[i]);
-                                        post.ImageSecondSlot_MimeType = ExtractMimeType(imagesUploaded[i]);
-                                        break;
-                                    case 2:
-                                        post.ImageThirdSlot = imgBase64ToByteArray(imagesUploaded[i]);
-                                        post.ImageThirdSlot_MimeType = ExtractMimeType(imagesUploaded[i]);
-                                        break;
-                                    case 3:
-                                        post.ImageFourthSlot = imgBase64ToByteArray(imagesUploaded[i]);
-                                        post.ImageFourthSlot_MimeType = ExtractMimeType(imagesUploaded[i]);
-                                        break;
-                                }
-                            }
-                        }
-
+                        post.Comment = model.Comment;                        
                         post.PublicationDate = DateTime.Now;
                         post.ID_Person = personID;
 
-                        if (inReplyTo != null && inReplyTo != 0)
-                            post.InReplyTo = inReplyTo;
+                        if (model.InReplyTo != null && model.InReplyTo > 0)
+                            post.InReplyTo = model.InReplyTo;
 
-                        var hashtags = DiscoverHashtag(comment);
+                        List<Hashtag> hashtags = DiscoverHashtag(model.Comment, context);
 
-                        if(hashtags.Count() > 0)                        
-                            foreach(var hashtag in hashtags)                            
+                        if (hashtags.Count > 0)
+                            foreach (var hashtag in hashtags)
                                 post.Hashtag.Add(hashtag);
 
+                        //var hash = context.Hashtag.First(h => h.Name == "#UnaFrase");
+                        //post.Hashtag.Add(hash);
                         context.Post.Add(post);
                         context.SaveChanges();
+
+                        if (model.ImagesUploaded != null && model.ImagesUploaded.Length > 0)
+                        {
+                            int iteration = 1;
+
+                            foreach (string image in model.ImagesUploaded)
+                            {
+                                context.Thumbnail.Add(new Thumbnail() { ImagePath = SaveThumbnailInFolder(image, post.PostID, localServer, iteration), ID_Post = post.PostID });
+                                context.SaveChanges();
+                                iteration++;
+                            }                            
+                        }
 
                         return true;
                     }
@@ -192,11 +180,12 @@ namespace Data_Layer
                     profileScreenDTO.ProfileInformation.RegistrationDate = person.RegistrationDate;
                     profileScreenDTO.ProfileInformation.ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar;
                     profileScreenDTO.ProfileInformation.ProfileHeader = (person.ProfileHeader != null) ? ByteArrayToBase64(person.ProfileHeader, person.ProfileHeader_MimeType) : defaultHeader;
+                    profileScreenDTO.TopTrendings = TopTrendings();
                     profileScreenDTO.StatisticsBar.PostsCount = context.Post.Where(ps => ps.ID_Person == person.PersonID).Count();
                     profileScreenDTO.StatisticsBar.FollowingCount = person.Person3.Count;
                     profileScreenDTO.StatisticsBar.FollowersCount = person.Person11.Count;
                     profileScreenDTO.StatisticsBar.LikesCount = context.LikePost.Where(lp => lp.ID_PersonThatLikesPost == person.PersonID).Count();
-                    profileScreenDTO.StatisticsBar.ListsCount = context.MyList.Where(ml => ml.ID_Person == person.PersonID).Count();
+                    profileScreenDTO.StatisticsBar.ListsCount = context.List.Where(ml => ml.ID_Person == person.PersonID).Count();
 
                     switch(v)
                     {
@@ -207,13 +196,13 @@ namespace Data_Layer
                         case "likes":
                             break;
                         case "lists":
-                            var myLists = context.MyList.Where(ml => ml.ID_Person == person.PersonID);
+                            var myLists = context.List.Where(ml => ml.ID_Person == person.PersonID);
 
                             foreach(var list in myLists)
                             {
                                 profileScreenDTO.MyLists.Add(new ListDTO()
                                 {
-                                    MyListID = list.MyListID,
+                                    MyListID = list.ListID,
                                     Name = list.Name,
                                     Description = list.Description,
                                     Privacy = (list.IsPrivate != true) ? Privacy.Public : Privacy.Private,
@@ -237,10 +226,7 @@ namespace Data_Layer
                                     Comment = postReposted.Comment,
                                     GIFImage = postReposted.GIFImage,
                                     VideoFile = postReposted.VideoFile,
-                                    ImageFirstSlot = ByteArrayToBase64(postReposted.ImageFirstSlot, postReposted.ImageFirstSlot_MimeType),
-                                    ImageSecondSlot = ByteArrayToBase64(postReposted.ImageSecondSlot, postReposted.ImageSecondSlot_MimeType),
-                                    ImageThirdSlot = ByteArrayToBase64(postReposted.ImageThirdSlot, postReposted.ImageThirdSlot_MimeType),
-                                    ImageFourthSlot = ByteArrayToBase64(postReposted.ImageFourthSlot, postReposted.ImageFourthSlot_MimeType),
+                                    Thumbnails = GetPostedThumbnails(postReposted.PostID),                                    
                                     PublicationDate = repost.PublicationDate,
                                     CreatedBy = createdBy.PersonID,
                                     NickName = createdBy.NickName,
@@ -260,10 +246,7 @@ namespace Data_Layer
                                     Comment = post.Comment,
                                     GIFImage = post.GIFImage,
                                     VideoFile = post.VideoFile,
-                                    ImageFirstSlot = ByteArrayToBase64(post.ImageFirstSlot, post.ImageFirstSlot_MimeType),
-                                    ImageSecondSlot = ByteArrayToBase64(post.ImageSecondSlot, post.ImageSecondSlot_MimeType),
-                                    ImageThirdSlot = ByteArrayToBase64(post.ImageThirdSlot, post.ImageThirdSlot_MimeType),
-                                    ImageFourthSlot = ByteArrayToBase64(post.ImageFourthSlot, post.ImageFourthSlot_MimeType),
+                                    Thumbnails = GetPostedThumbnails(post.PostID),                                    
                                     PublicationDate = post.PublicationDate,
                                     CreatedBy = person.PersonID,
                                     NickName = person.NickName,
@@ -326,7 +309,7 @@ namespace Data_Layer
                     if (string.IsNullOrWhiteSpace(data.Year) && string.IsNullOrWhiteSpace(data.Month) && string.IsNullOrWhiteSpace(data.Day))
                     {
                         person.Birthdate = null;
-                        data.Birthdate = null;                        
+                        data.Birthdate = null;
                     }                        
                     else
                     {
@@ -392,10 +375,7 @@ namespace Data_Layer
                                     Comment = post.Comment,
                                     GIFImage = post.GIFImage,
                                     VideoFile = post.VideoFile,
-                                    ImageFirstSlot = ByteArrayToBase64(post.ImageFirstSlot, post.ImageFirstSlot_MimeType),
-                                    ImageSecondSlot = ByteArrayToBase64(post.ImageSecondSlot, post.ImageSecondSlot_MimeType),
-                                    ImageThirdSlot = ByteArrayToBase64(post.ImageThirdSlot, post.ImageThirdSlot_MimeType),
-                                    ImageFourthSlot = ByteArrayToBase64(post.ImageFourthSlot, post.ImageFourthSlot_MimeType),
+                                    Thumbnails = GetPostedThumbnails(post.PostID),                                    
                                     PublicationDate = repost.PublicationDate,
                                     CreatedBy = createdBy.PersonID,
                                     NickName = createdBy.NickName,
@@ -413,10 +393,7 @@ namespace Data_Layer
                             Comment = post.Comment,
                             GIFImage = post.GIFImage,
                             VideoFile = post.VideoFile,
-                            ImageFirstSlot = ByteArrayToBase64(post.ImageFirstSlot, post.ImageFirstSlot_MimeType),
-                            ImageSecondSlot = ByteArrayToBase64(post.ImageSecondSlot, post.ImageSecondSlot_MimeType),
-                            ImageThirdSlot = ByteArrayToBase64(post.ImageThirdSlot, post.ImageThirdSlot_MimeType),
-                            ImageFourthSlot = ByteArrayToBase64(post.ImageFourthSlot, post.ImageFourthSlot_MimeType),
+                            Thumbnails = GetPostedThumbnails(post.PostID),                            
                             PublicationDate = post.PublicationDate,
                             CreatedBy = createdBy.PersonID,
                             NickName = createdBy.NickName,
@@ -515,7 +492,7 @@ namespace Data_Layer
         {
             using(var context = new MiniBirdEntities())
             {
-                context.MyList.Add(new MyList()
+                context.List.Add(new List()
                 {
                     Name = data.Name,
                     Description = data.Description,
@@ -533,21 +510,21 @@ namespace Data_Layer
             {
                 using (var context = new MiniBirdEntities())
                 {
-                    var currentList = context.MyList.Where(ml => ml.MyListID == listID).First();
+                    var currentList = context.List.Where(l => l.ListID == listID).First();
 
                     var listScreenDTO = new ListScreenDTO();
-                    listScreenDTO.CurrentListSection.MyListID = currentList.MyListID;
+                    listScreenDTO.CurrentListSection.MyListID = currentList.ListID;
                     listScreenDTO.CurrentListSection.Name = currentList.Name;
                     listScreenDTO.CurrentListSection.Description = currentList.Description;
                     listScreenDTO.CurrentListSection.MembersCount = currentList.Person1.Count;
 
-                    var myLists = context.MyList.Where(ml => ml.ID_Person == personID);
+                    var myLists = context.List.Where(ml => ml.ID_Person == personID);
 
                     foreach (var list in myLists)
                     {
                         listScreenDTO.MyListsSection.Add(new ListDTO()
                         {
-                            MyListID = list.MyListID,
+                            MyListID = list.ListID,
                             Name = list.Name,
                             Description = list.Description,
                             Privacy = (list.IsPrivate != true) ? Privacy.Public : Privacy.Private
@@ -569,10 +546,7 @@ namespace Data_Layer
                                 Comment = post.Comment,
                                 GIFImage = post.GIFImage,
                                 VideoFile = post.VideoFile,
-                                ImageFirstSlot = ByteArrayToBase64(post.ImageFirstSlot, post.ImageFirstSlot_MimeType),
-                                ImageSecondSlot = ByteArrayToBase64(post.ImageSecondSlot, post.ImageSecondSlot_MimeType),
-                                ImageThirdSlot = ByteArrayToBase64(post.ImageThirdSlot, post.ImageThirdSlot_MimeType),
-                                ImageFourthSlot = ByteArrayToBase64(post.ImageFourthSlot, post.ImageFourthSlot_MimeType),
+                                Thumbnails = GetPostedThumbnails(post.PostID),                                
                                 PublicationDate = post.PublicationDate,
                                 CreatedBy = createdBy.PersonID,
                                 NickName = createdBy.NickName,
@@ -598,7 +572,7 @@ namespace Data_Layer
             {
                 using (var context = new MiniBirdEntities())
                 {
-                    var list = context.MyList.Find(data.MyListID);
+                    var list = context.List.Find(data.MyListID);
                     list.Name = data.Name;
                     list.Description = data.Description;
                     list.IsPrivate = (data.Privacy != Privacy.Public) ? true : false;
@@ -617,14 +591,14 @@ namespace Data_Layer
             {
                 using (var context = new MiniBirdEntities())
                 {
-                    var listToRemove = context.MyList.Find(listID);                    
+                    var listToRemove = context.List.Find(listID);                    
 
                     foreach(var p in context.Person)
                     {
-                        if(p.MyList1.Any(ml => ml.MyListID == listID))
-                            p.MyList1.Remove(listToRemove);
+                        if(p.List1.Any(l => l.ListID == listID))
+                            p.List1.Remove(listToRemove);
                     }
-                    context.MyList.Remove(listToRemove);
+                    context.List.Remove(listToRemove);
                     context.SaveChanges();
                 }
             }
@@ -648,10 +622,7 @@ namespace Data_Layer
                     ViewPost.PostSection.Comment = post.Comment;
                     ViewPost.PostSection.GIFImage = post.GIFImage;
                     ViewPost.PostSection.VideoFile = post.VideoFile;
-                    ViewPost.PostSection.ImageFirstSlot = ByteArrayToBase64(post.ImageFirstSlot, post.ImageFirstSlot_MimeType);
-                    ViewPost.PostSection.ImageSecondSlot = ByteArrayToBase64(post.ImageSecondSlot, post.ImageSecondSlot_MimeType);
-                    ViewPost.PostSection.ImageThirdSlot = ByteArrayToBase64(post.ImageThirdSlot, post.ImageThirdSlot_MimeType);
-                    ViewPost.PostSection.ImageFourthSlot = ByteArrayToBase64(post.ImageFourthSlot, post.ImageFourthSlot_MimeType);
+                    ViewPost.PostSection.Thumbnails = GetPostedThumbnails(post.PostID);                    
                     ViewPost.PostSection.PublicationDate = post.PublicationDate;
                     ViewPost.PostSection.CreatedBy = createdBy.PersonID;
                     ViewPost.PostSection.NickName = createdBy.NickName;
@@ -671,10 +642,7 @@ namespace Data_Layer
                             Comment = reply.Comment,
                             GIFImage = reply.GIFImage,
                             VideoFile = reply.VideoFile,
-                            ImageFirstSlot = ByteArrayToBase64(reply.ImageFirstSlot, reply.ImageFirstSlot_MimeType),
-                            ImageSecondSlot = ByteArrayToBase64(reply.ImageSecondSlot, reply.ImageSecondSlot_MimeType),
-                            ImageThirdSlot = ByteArrayToBase64(reply.ImageThirdSlot, reply.ImageThirdSlot_MimeType),
-                            ImageFourthSlot = ByteArrayToBase64(reply.ImageFourthSlot, reply.ImageFourthSlot_MimeType),
+                            Thumbnails = GetPostedThumbnails(reply.PostID),                            
                             PublicationDate = reply.PublicationDate,
                             CreatedBy = replyCreatedBy.PersonID,
                             NickName = replyCreatedBy.NickName,
@@ -723,7 +691,7 @@ namespace Data_Layer
             }
         }
 
-        public bool CreateNewReplyDL(NewPostDTO data, int personID)
+        public bool CreateNewReplyDL(NewPostDTO model, int personID, HttpServerUtilityBase localServer)
         {
             try
             {
@@ -732,36 +700,33 @@ namespace Data_Layer
                     if (context.Person.Any(p => p.PersonID == personID))
                     {
                         var post = new Post();
-                        post.Comment = data.Comment;
-                        if (data.ImagesUploaded != null && data.ImagesUploaded.Length != 0)
+                        post.Comment = model.Comment;
+
+                        if (model.ImagesUploaded != null && model.ImagesUploaded.Length > 0)
                         {
-                            for (int i = 0; i < data.ImagesUploaded.Length; i++)
+                            int iteration = 1;
+
+                            foreach (string image in model.ImagesUploaded)
                             {
-                                switch (i)
-                                {
-                                    case 0:
-                                        post.ImageFirstSlot = imgBase64ToByteArray(data.ImagesUploaded[i]);
-                                        post.ImageFirstSlot_MimeType = ExtractMimeType(data.ImagesUploaded[i]);
-                                        break;
-                                    case 1:
-                                        post.ImageSecondSlot = imgBase64ToByteArray(data.ImagesUploaded[i]);
-                                        post.ImageSecondSlot_MimeType = ExtractMimeType(data.ImagesUploaded[i]);
-                                        break;
-                                    case 2:
-                                        post.ImageThirdSlot = imgBase64ToByteArray(data.ImagesUploaded[i]);
-                                        post.ImageThirdSlot_MimeType = ExtractMimeType(data.ImagesUploaded[i]);
-                                        break;
-                                    case 3:
-                                        post.ImageFourthSlot = imgBase64ToByteArray(data.ImagesUploaded[i]);
-                                        post.ImageFourthSlot_MimeType = ExtractMimeType(data.ImagesUploaded[i]);
-                                        break;
-                                }
+                                context.Thumbnail.Add(new Thumbnail() { ImagePath = SaveThumbnailInFolder(image, post.PostID, localServer, iteration), ID_Post = post.PostID });
+                                context.SaveChanges();
+                                iteration++;
                             }
                         }
+
                         post.PublicationDate = DateTime.Now;
-                        if (data.InReplyTo != null && data.InReplyTo != 0)
-                            post.InReplyTo = data.InReplyTo;
+
+                        if (model.InReplyTo != null && model.InReplyTo != 0)
+                            post.InReplyTo = model.InReplyTo;
+
                         post.ID_Person = personID;
+
+                        List<Hashtag> hashtags = DiscoverHashtag(model.Comment, context);
+
+                        if (hashtags.Count > 0)
+                            foreach (var hashtag in hashtags)
+                                post.Hashtag.Add(hashtag);
+
                         context.Post.Add(post);
                         context.SaveChanges();
 
@@ -882,27 +847,28 @@ namespace Data_Layer
             return "Nació el " + birthDate.Value.Day + " de " + birthDate.Value.ToString("MMMM") + " de " + birthDate.Value.Year;
         }
 
-        private IEnumerable<Hashtag> DiscoverHashtag(string comment)
+        private List<Hashtag> DiscoverHashtag(string comment, MiniBirdEntities context)
         {
             string[] words = comment.Split(' ');
             List<Hashtag> hashtags = new List<Hashtag>();
-
-            using(var context = new MiniBirdEntities())
+            
+            foreach (string word in words)
             {
-                foreach (string word in words)
+                if (word.Length >= 3)
                 {
-                    if (word.Length >= 3)
+                    if (word.StartsWith("#") && word.IndexOf('#', 1) < 1)
                     {
-                        if (word.StartsWith("#") && word.IndexOf('#', 1) < 1)
+                        if (!context.Hashtag.Any(h => h.Name == word))
+                            hashtags.Add(new Hashtag() { Name = word, CreationDate = DateTime.Now, UseCount = 1 });
+                        else
                         {
-                            if (!context.Hashtag.Any(h => h.Name == word))
-                                hashtags.Add(new Hashtag() { Name = word, CreationDate = DateTime.Now, Assiduity = 1 });
-                            else
-                            {
-                                Hashtag hashtag = context.Hashtag.SingleOrDefault(h => h.Name == word);
-                                hashtag.Assiduity = hashtag.Assiduity + 1;
-                                context.SaveChanges();
-                            }
+                            Hashtag existingHashtag = context.Hashtag.Single(h => h.Name == word);
+
+                            if (!hashtags.Any(hs => hs.Name == word))
+                                hashtags.Add(existingHashtag);
+
+                            existingHashtag.UseCount = existingHashtag.UseCount + 1;
+                            context.SaveChanges();
                         }
                     }
                 }
@@ -915,82 +881,113 @@ namespace Data_Layer
         {
             using (var context = new MiniBirdEntities())
             {
-                IQueryable<Hashtag> topTrendings = context.Hashtag.OrderByDescending(h => h.Assiduity).Take(10);
+                IQueryable<Hashtag> topTrendings = context.Hashtag.OrderByDescending(h => h.UseCount).Take(10);
                 List<TopTrendingsDTO> topTrendingsDTO = new List<TopTrendingsDTO>();
 
-                if(topTrendings.Count() > 0)
+                if (topTrendings.Count() > 0)
                 {
                     foreach (var trending in topTrendings)
                     {
                         topTrendingsDTO.Add(new TopTrendingsDTO()
                         {
                             Name = trending.Name,
-                            Assiduity = trending.Assiduity
+                            UseCount = trending.UseCount
                         });
                     }
                 }
 
                 return topTrendingsDTO;
-            }
+            }            
         }
 
 
-        public string TemporaryPostImageDL(HttpPostedFile tempImage, HttpServerUtilityBase localServer, int personID)
+        public string SaveThumbnailInFolder(string imgBase64, int postID, HttpServerUtilityBase localServer, int iteration)
         {
             try
             {
-                if (tempImage == null)
+                if (string.IsNullOrWhiteSpace(imgBase64))
                     throw new ArgumentNullException("Debe elegir una imágen.");
 
-                string imgDir;
-                using (var context = new MiniBirdEntities())
-                {
-                    imgDir = "/Content/images/temporary" + context.Person.Where(p => p.PersonID == personID).Single().UserName;                    
-                }
+                string thumbnailsPath = "/Content/thumbnails/" + postID;
 
-                Directory.CreateDirectory(localServer.MapPath(imgDir));
-                string imgFullPath = localServer.MapPath(imgDir) + "/" + tempImage.FileName;
+                if (!Directory.Exists(thumbnailsPath))
+                    Directory.CreateDirectory(localServer.MapPath(thumbnailsPath));
+
+                //Directory.CreateDirectory(localServer.MapPath(imgDir));
+                //string imgFullPath = localServer.MapPath(imgDir) + "/" + tempImage.FileName;
 
                 // Get file data
-                byte[] data = new byte[] { };
-                using (var binaryReader = new BinaryReader(tempImage.InputStream))
-                {
-                    data = binaryReader.ReadBytes(tempImage.ContentLength);
-                }
+                byte[] bytes = imgBase64ToByteArray(imgBase64);
+                string ext = GetExtensionFromImgBase64(imgBase64);
+                string pathToNewFile = thumbnailsPath + "/posted_thumbnail_" + iteration + '.' + ext;
 
                 // Guardar imagen en el servidor
-                using (FileStream image = File.Create(imgFullPath, data.Length))
+                using (FileStream image = File.Create(localServer.MapPath(pathToNewFile), bytes.Length))
                 {
-                    image.Write(data, 0, data.Length);
+                    image.Write(bytes, 0, bytes.Length);
+                    image.Flush();
                 }
 
                 // Verifica si la imágen cumple las condiciones de validación
-                const int _maxSize = 2 * 1024 * 1024;
-                const int _maxWidth = 1000;
-                const int _maxHeight = 1000;
-                List<string> _fileTypes = new List<string>() { "jpg", "jpeg", "gif", "png" };
-                string fileExt = Path.GetExtension(tempImage.FileName);
+                //const int _maxSize = 2 * 1024 * 1024;
+                //const int _maxWidth = 1000;
+                //const int _maxHeight = 1000;
+                //List<string> _fileTypes = new List<string>() { "jpg", "jpeg", "gif", "png" };
+                //string fileExt = Path.GetExtension(tempImage.FileName);
 
-                if (new FileInfo(imgFullPath).Length > _maxSize)
-                    throw new FormatException("El avatar no debe superar los 2mb.");
+                //if (new FileInfo(imgFullPath).Length > _maxSize)
+                //    throw new FormatException("El avatar no debe superar los 2mb.");
 
-                if (!_fileTypes.Contains(fileExt.Substring(1), StringComparer.OrdinalIgnoreCase))
-                    throw new FormatException("Para el avatar solo se admiten imágenes JPG, JPEG, GIF Y PNG.");
+                //if (!_fileTypes.Contains(fileExt.Substring(1), StringComparer.OrdinalIgnoreCase))
+                //    throw new FormatException("Para el avatar solo se admiten imágenes JPG, JPEG, GIF Y PNG.");
 
-                using (Image img = Image.FromFile(imgFullPath))
-                {
-                    if (img.Width > _maxWidth || img.Height > _maxHeight)
-                        throw new FormatException("El avatar admite hasta una resolución de 1000x1000.");
-                }
+                //using (Image img = Image.FromFile(imgFullPath))
+                //{
+                //    if (img.Width > _maxWidth || img.Height > _maxHeight)
+                //        throw new FormatException("El avatar admite hasta una resolución de 1000x1000.");
+                //}
 
-                return imgDir + "/" + tempImage.FileName;
+                return pathToNewFile;
             }
             catch
             {
+                using (var context = new MiniBirdEntities())
+                {
+                    Post post = context.Post.Find(postID);
+                    context.Post.Remove(post);
+                    context.SaveChanges();
+                }
+
                 throw;
             }
-        }        
+        }
 
-        #endregion        
+        public string GetExtensionFromImgBase64(string imgBase64)
+        {
+            const string startWord = "data:image/";
+            const string endWord = ";base64,";
+            int start = imgBase64.IndexOf(startWord) + startWord.Length;
+            int end = imgBase64.IndexOf(endWord);
+
+            return imgBase64.Substring(start, end - start);
+        }
+
+        public List<string> GetPostedThumbnails(int postID)
+        {
+            using (var context = new MiniBirdEntities())
+            {
+                List<string> postedThumbnails = new List<string>();
+                var thumbnails = context.Thumbnail.Where(t => t.ID_Post == postID);
+
+                foreach(var thumbnail in thumbnails)
+                {
+                    postedThumbnails.Add(thumbnail.ImagePath);
+                }
+
+                return postedThumbnails;
+            }
+        }
+
+        #endregion
     }
 }

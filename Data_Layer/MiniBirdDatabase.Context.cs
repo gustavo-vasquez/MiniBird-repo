@@ -27,12 +27,10 @@ namespace Domain_Layer
     
         public virtual DbSet<Hashtag> Hashtag { get; set; }
         public virtual DbSet<LikePost> LikePost { get; set; }
-        public virtual DbSet<MyList> MyList { get; set; }
-        public virtual DbSet<NotificationAlert> NotificationAlert { get; set; }
+        public virtual DbSet<List> List { get; set; }
         public virtual DbSet<Person> Person { get; set; }
         public virtual DbSet<Post> Post { get; set; }
-        public virtual DbSet<PrivateMessage> PrivateMessage { get; set; }
-        public virtual DbSet<RecipientsOfPM> RecipientsOfPM { get; set; }
         public virtual DbSet<RePost> RePost { get; set; }
+        public virtual DbSet<Thumbnail> Thumbnail { get; set; }
     }
 }

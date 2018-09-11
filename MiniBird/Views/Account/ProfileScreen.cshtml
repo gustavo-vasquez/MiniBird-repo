@@ -20,16 +20,10 @@
             <h5>
                 @if (Model.TopTrendings.Count > 0)
                 {
-                    <a class="mr-3" href="#">#LaChingadaTopic</a>
-                    <a class="mr-3" href="#">#LaChingadaTopic</a>
-                    <a class="mr-3" href="#">#LaChingadaTopic</a>
-                    <a class="mr-3" href="#">#LaChingadaTopic</a>
-                    <a class="mr-3" href="#">#LaChingadaTopic</a>
-                    <a class="mr-3" href="#">#LaChingadaTopic</a>
-                    <a class="mr-3" href="#">#LaChingadaTopic</a>
-                    <a class="mr-3" href="#">#LaChingadaTopic</a>
-                    <a class="mr-3" href="#">#LaChingadaTopic</a>
-                    <a class="mr-3" href="#">#LaChingadaTopic</a>
+                    foreach (var trending in Model.TopTrendings)
+                    {
+                        <a class="mr-3" href="@Url.Action("Search", "Home", new { q = trending.Name })">@trending.Name</a>
+                    }
                 }
                 else
                 {

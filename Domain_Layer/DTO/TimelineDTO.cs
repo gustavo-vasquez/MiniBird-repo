@@ -34,7 +34,7 @@ namespace Domain_Layer.DTO
     public class TopTrendingsDTO
     {
         public string Name { get; set; }
-        public int? Assiduity { get; set; }
+        public int? UseCount { get; set; }
     }
 
     public class PostSectionDTO
@@ -43,10 +43,11 @@ namespace Domain_Layer.DTO
         public string Comment { get; set; }
         public byte[] GIFImage { get; set; }
         public byte[] VideoFile { get; set; }
-        public string ImageFirstSlot { get; set; }
-        public string ImageSecondSlot { get; set; }
-        public string ImageThirdSlot { get; set; }
-        public string ImageFourthSlot { get; set; }
+        public List<string> Thumbnails { get; set; }
+        //public string ImageFirstSlot { get; set; }
+        //public string ImageSecondSlot { get; set; }
+        //public string ImageThirdSlot { get; set; }
+        //public string ImageFourthSlot { get; set; }
         public DateTime PublicationDate { get; set; }
         public int InReplyTo { get; set; }
         public int ID_Person { get; set; }
@@ -59,7 +60,8 @@ namespace Domain_Layer.DTO
 
         public PostSectionDTO()
         {
-            this.InteractButtons = new InteractButtonsDTO();
+            this.Thumbnails = new List<string>();
+            this.InteractButtons = new InteractButtonsDTO();            
         }
     }
 

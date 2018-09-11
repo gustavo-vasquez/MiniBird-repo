@@ -94,8 +94,11 @@ namespace MiniBird.Controllers
 
             return View();
         }
-
-
+        
+        public PartialViewResult Search()
+        {
+            return PartialView("_Search");
+        }
 
 
         #region TAREAS AUXILIARES

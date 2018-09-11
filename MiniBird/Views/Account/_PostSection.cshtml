@@ -35,7 +35,86 @@
                     <div class="col-md-10">
                         <p class="card-text text-comment">@post.Comment</p>
 
-                        @if (post.ImageFirstSlot != null && post.ImageSecondSlot == null && post.ImageThirdSlot == null && post.ImageFourthSlot == null)
+                        @switch (post.Thumbnails.Count)
+                        {
+                            case 1:
+                                <div class="card post-images one-thumbnail ovh">
+                                    <img src="@post.Thumbnails[0]" alt="posted_image">
+                                </div>
+                            break;
+                            case 2:
+                                <div class="card post-images two-thumbnails">
+                                    <div class="row no-gutters">
+                                        <div class="col tpr">
+                                            <div class="ovh">
+                                                <img src="@post.Thumbnails[0]" alt="posted_image">
+                                            </div>
+                                        </div>
+                                        <div class="col tpl">
+                                            <div class="ovh">
+                                                <img src="@post.Thumbnails[1]" alt="posted_image" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            break;
+                            case 3:
+                                <div class="card post-images three-thumbnails">
+                                    <div class="row no-gutters">
+                                        <div class="col-md-8 tpr">
+                                            <div class="ovh">
+                                                <img src="@post.Thumbnails[0]" alt="posted_image">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 tpl">
+                                            <div class="row tpb">
+                                                <div class="col">
+                                                    <div class="ovh">
+                                                        <img class="mini-thumbnail" src="@post.Thumbnails[1]" alt="posted_image" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="ovh">
+                                                        <img class="mini-thumbnail" src="@post.Thumbnails[2]" alt="posted_image" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            break;
+                            case 4:
+                                <div class="card post-images four-thumbnails">
+                                    <div class="row no-gutters">
+                                        <div class="col-md-6 tpr">
+                                            <div class="ovh">
+                                                <img src="@post.Thumbnails[0]" alt="posted_image">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 tpl">
+                                            <div class="ovh">
+                                                <img src="@post.Thumbnails[1]" alt="posted_image">
+                                            </div>
+                                        </div>
+                                        <div class="w-100 tpb"></div>
+                                        <div class="col-md-6 tpr">
+                                            <div class="ovh">
+                                                <img src="@post.Thumbnails[2]" alt="posted_image" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 tpl">
+                                            <div class="ovh">
+                                                <img src="@post.Thumbnails[3]" alt="posted_image" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            break;
+                        }
+
+                        @*@if (post.ImageFirstSlot != null && post.ImageSecondSlot == null && post.ImageThirdSlot == null && post.ImageFourthSlot == null)
                         {
                             <div class="card post-images one-thumbnail ovh">
                                 <img src="@post.ImageFirstSlot" alt="posted_image">
@@ -113,8 +192,7 @@
                                     </div>
                                 </div>
                             </div>
-                        }
-
+                        }*@
                     </div>
                 </div>
                 <div class="row mt-4 justify-content-center">

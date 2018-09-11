@@ -34,9 +34,9 @@ namespace Service_Layer
             return Account.CreateSessionFromCookieDL(hash);
         }
 
-        public bool CreateNewPostSL(string comment, byte[] gifImage, byte[] videoFile, string[] imagesUploaded, int personID, int? inReplyTo)
+        public bool CreateNewPostSL(NewPostDTO model, int personID, HttpServerUtilityBase localServer)
         {            
-            return Account.CreateNewPostDL(comment, gifImage, videoFile, imagesUploaded, personID, inReplyTo);
+            return Account.CreateNewPostDL(model, personID, localServer);
         }
 
         public ProfileScreenDTO ProfileScreenCollectionDataSL(int personID, string v)
@@ -114,9 +114,9 @@ namespace Service_Layer
             return Account.FullViewPostCollectionDataDL(postID);
         }
 
-        public bool CreateNewReplySL(NewPostDTO data, int personID)
+        public bool CreateNewReplySL(NewPostDTO data, int personID, HttpServerUtilityBase localServer)
         {
-            return Account.CreateNewReplyDL(data, personID);
+            return Account.CreateNewReplyDL(data, personID, localServer);
         }
 
 
@@ -133,10 +133,10 @@ namespace Service_Layer
             return Account.EncryptCookieValueDL(email);
         }
 
-        public string TemporaryPostImageSL(HttpPostedFile tempImage, HttpServerUtilityBase localServer, int personID)
-        {
-            return Account.TemporaryPostImageDL(tempImage, localServer, personID);
-        }
+        //public string TemporaryPostImageSL(HttpPostedFile tempImage, HttpServerUtilityBase localServer, int personID)
+        //{
+        //    return Account.TemporaryPostImageDL(tempImage, localServer, personID);
+        //}
 
         #endregion
     }

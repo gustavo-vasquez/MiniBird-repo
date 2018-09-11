@@ -18,9 +18,9 @@ namespace Domain_Layer
         public Post()
         {
             this.LikePost = new HashSet<LikePost>();
-            this.NotificationAlert = new HashSet<NotificationAlert>();
             this.Post1 = new HashSet<Post>();
             this.RePost = new HashSet<RePost>();
+            this.Thumbnail = new HashSet<Thumbnail>();
             this.Hashtag = new HashSet<Hashtag>();
         }
     
@@ -28,28 +28,20 @@ namespace Domain_Layer
         public string Comment { get; set; }
         public byte[] GIFImage { get; set; }
         public byte[] VideoFile { get; set; }
-        public byte[] ImageFirstSlot { get; set; }
-        public byte[] ImageSecondSlot { get; set; }
-        public byte[] ImageThirdSlot { get; set; }
-        public byte[] ImageFourthSlot { get; set; }
         public System.DateTime PublicationDate { get; set; }
         public Nullable<int> InReplyTo { get; set; }
         public int ID_Person { get; set; }
-        public string ImageFirstSlot_MimeType { get; set; }
-        public string ImageSecondSlot_MimeType { get; set; }
-        public string ImageThirdSlot_MimeType { get; set; }
-        public string ImageFourthSlot_MimeType { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LikePost> LikePost { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NotificationAlert> NotificationAlert { get; set; }
         public virtual Person Person { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Post> Post1 { get; set; }
         public virtual Post Post2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RePost> RePost { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Thumbnail> Thumbnail { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Hashtag> Hashtag { get; set; }
     }

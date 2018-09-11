@@ -12,14 +12,12 @@ namespace Domain_Layer
     using System;
     using System.Collections.Generic;
     
-    public partial class RecipientsOfPM
+    public partial class Thumbnail
     {
-        public int RecipientsOfPMID { get; set; }
-        public int ID_PrivateMessage { get; set; }
-        public int ID_Recipient { get; set; }
-        public Nullable<bool> IsRead { get; set; }
+        public int ThumbnailID { get; set; }
+        public string ImagePath { get; set; }
+        public int ID_Post { get; set; }
     
-        public virtual Person Person { get; set; }
-        public virtual PrivateMessage PrivateMessage { get; set; }
+        public virtual Post Post { get; set; }
     }
 }
