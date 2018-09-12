@@ -761,7 +761,7 @@ namespace Data_Layer
                 return String.Concat("data:", mimeType, ";base64,", Convert.ToBase64String(profileAvatar));
 
             return null;
-        }        
+        }
 
         public bool UserNameExistsDL(string username)
         {

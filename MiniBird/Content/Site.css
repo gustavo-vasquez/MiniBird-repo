@@ -9,7 +9,7 @@ body {
     font-family: Arimo;
 }
 
-.card, .btn, input[type=text], textarea, input[type=password] {
+.card, .btn, input[type=text], textarea, input[type=password], .modal-content {
     border-radius: 1rem !important;
 }
 

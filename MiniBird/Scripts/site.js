@@ -45,7 +45,7 @@
         copyLinkToClipboard($(this));
     });
 
-    $('#search').on('click', search);    
+    $('#search').on('click', search);
 });
 
 
@@ -307,6 +307,23 @@ function search() {
 
             $('#searchModal').on('hidden.bs.modal', function () {
                 $(this).remove();
+            });
+
+            $('#wordToSearch').on('keyup', function () {
+                $.ajax({
+                    url: "/Home/FindMatches",
+                    method: "GET",
+                    data: "q=" + $(this).val(),                    
+                    success: function (data) {
+                        $('#searchModal .modal-footer').remove();
+
+                        if (data != null)
+                            $('#searchModal .modal-content').append(data);
+                    },
+                    error: function () {
+                        alert("Ups!");
+                    }
+                });
             });
         },
         error: function () {

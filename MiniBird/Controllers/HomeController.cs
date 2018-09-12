@@ -12,7 +12,8 @@ namespace MiniBird.Controllers
 {
     public class HomeController : Controller
     {
-        static AccountSL Account = new AccountSL();        
+        static AccountSL Account = new AccountSL();
+        static HomeSL home = new HomeSL();
                 
         public ActionResult Welcome()
         {
@@ -98,6 +99,22 @@ namespace MiniBird.Controllers
         public PartialViewResult Search()
         {
             return PartialView("_Search");
+        }
+
+        public ActionResult FindMatches(string q)
+        {
+            try
+            {
+                var matchesFound = home.FindMatchesSL(q);
+                if (matchesFound != null)
+                    return PartialView("_Suggestions", matchesFound);
+                else
+                    return null;
+            }
+            catch(Exception ex)
+            {
+                return ProcessError(ex);
+            }
         }
 
 

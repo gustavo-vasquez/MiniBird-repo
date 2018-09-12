@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActiveSession.cs" />
+    <Compile Include="DTO\MatchesFoundDTO.cs" />
     <Compile Include="DTO\ListScreenDTO.cs" />
     <Compile Include="DTO\ListDTO.cs" />
     <Compile Include="DTO\NewPostDTO.cs" />
