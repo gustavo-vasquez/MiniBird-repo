@@ -1,0 +1,77 @@
+﻿@model Domain_Layer.DTO.SearchDTO
+
+@{
+    ViewBag.Title = "Búsqueda";
+}
+
+<h2 class="text-center mt-4 mb-3">Búsqueda de hashtags o perfiles</h2>
+
+<div class="row">
+    <div class="col">
+        @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { id = "searchForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="input-group">
+                @Html.TextBoxFor(m => m.WordToSearch, new { @class = "form-control", placeholder = "ej: @usuario / #hashtag", autofocus = true })
+                <div class="input-group-append">
+                    <button class="btn btn-outline-primary" type="submit" title="Realizar búsqueda"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@if (Model != null)
+{
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+            @if (Model.MatchesFound.hashtagMatches.Count > 0)
+            {
+                <div class="list-group w-100">
+                    @foreach (var hashtag in Model.MatchesFound.hashtagMatches)
+                    {
+                        <a href="@Url.Action("Search", "Home", new { q = hashtag.HashtagName })" class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <span>@hashtag.HashtagName</span>
+                            </div>
+                        </a>
+                    }
+                </div>
+            }
+            else
+            {
+                @Html.Partial("~/Views/Account/_EmptyCard.cshtml")
+            }
+        </div>
+        <div class="col-md-6">
+            @if (Model.MatchesFound.profileMatches.Count > 0)
+            {
+                <div class="list-group w-100">
+                    @foreach (var profile in Model.MatchesFound.profileMatches)
+                    {
+                        <a href="@Url.Action("ProfileScreen", "Account", new { id = profile.PersonID })" class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="row">
+                                <div class="col-3 col-md-2 text-center">
+                                    <img src="@profile.ProfileAvatar" width="48" height="48" alt="profile_image" />
+                                </div>
+                                <div class="col-9 col-md-10 pl-0">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">@profile.NickName</h6>
+                                        <small class="text-success font-weight-bold">Siguiendo</small>
+                                    </div>
+                                    <small class="mb-1">@profile.UserName</small>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                </div>
+            }
+            else
+            {
+                @Html.Partial("~/Views/Account/_EmptyCard.cshtml")
+            }
+        </div>
+    </div>
+}

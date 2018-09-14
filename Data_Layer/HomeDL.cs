@@ -43,14 +43,51 @@ namespace Data_Layer
                                     UserName = profile.UserName,
                                     ProfileAvatar = (profile.ProfileAvatar != null) ? ByteArrayToBase64(profile.ProfileAvatar, profile.ProfileAvatar_MimeType) : "/Content/images/defaultAvatar.png"
                                 });
-                            }
-
-                            return matchesFound;
+                            }                            
                         }
                     }
                 }
-                
-                return null;
+
+                return matchesFound;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public HashtagDTO GetPostsUsingHashtagDL(string name)
+        {
+            try
+            {
+                using(var context = new MiniBirdEntities())
+                {
+                    IQueryable<Post> posts = context.Post.Where(p => p.Hashtag.Any(h => h.Name == name));
+                    HashtagDTO hashtagDTO = new HashtagDTO();
+                    hashtagDTO.Name = name;
+
+                    foreach(var post in posts)
+                    {
+                        var createdBy = context.Person.Find(post.ID_Person);
+
+                        hashtagDTO.PostSection.Add(new PostSectionDTO()
+                        {
+                            PostID = post.PostID,
+                            Comment = post.Comment,
+                            GIFImage = post.GIFImage,
+                            VideoFile = post.VideoFile,
+                            Thumbnails = new AccountDL().GetPostedThumbnails(post.PostID),
+                            PublicationDate = post.PublicationDate,
+                            CreatedBy = createdBy.PersonID,
+                            NickName = createdBy.NickName,
+                            UserName = createdBy.UserName,
+                            ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : "/Content/images/defaultAvatar.png",
+                            InteractButtons = new AccountDL().GetInteractsCountDL(post.PostID),
+                        });
+                    }
+
+                    return hashtagDTO;
+                }
             }
             catch
             {

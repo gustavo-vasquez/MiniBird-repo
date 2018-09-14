@@ -275,7 +275,7 @@ function scanSpecialWords() {
             // search hashtags
             if ($words[i].length >= 3) {
                 if ($words[i].startsWith('#') && $words[i].indexOf('#', 1) < 1) {
-                    $words[i] = '<a href="/Home/Search?q=' + encodeURIComponent($words[i]) + '">' + $words[i] + '</a>';
+                    $words[i] = '<a href="/Home/Hashtag?name=' + encodeURIComponent($words[i]) + '">' + $words[i] + '</a>';
                 }
             }
         }
@@ -295,23 +295,23 @@ function copyLinkToClipboard($element) {
 
 function search() {
     $.ajax({
-        url: "/Home/Search",
+        url: "/Home/DrawSearch",
         method: "GET",
         success: function (data) {
             $('body').append(data);
             $('#searchModal').modal('show');
 
             $('#searchModal').on('shown.bs.modal', function () {
-                $('#wordToSearch').focus();
+                $('#WordToSearch').focus();
             });            
 
             $('#searchModal').on('hidden.bs.modal', function () {
                 $(this).remove();
             });
 
-            $('#wordToSearch').on('keyup', function () {
+            $('#WordToSearch').on('keyup', function () {
                 $.ajax({
-                    url: "/Home/FindMatches",
+                    url: "/Home/Search",
                     method: "GET",
                     data: "q=" + $(this).val(),                    
                     success: function (data) {

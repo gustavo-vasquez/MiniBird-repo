@@ -16,5 +16,10 @@ namespace Service_Layer
         {
             return home.FindMatchesDL(queryString);
         }
+
+        public HashtagDTO GetPostsUsingHashtagSL(string name)
+        {
+            return home.GetPostsUsingHashtagDL(name);
+        }
     }
 }

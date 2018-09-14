@@ -1,4 +1,5 @@
 ﻿using Domain_Layer;
+using Domain_Layer.DTO;
 using MiniBird.DTO;
 using Service_Layer;
 using System;
@@ -95,27 +96,81 @@ namespace MiniBird.Controllers
 
             return View();
         }
-        
-        public PartialViewResult Search()
-        {
-            return PartialView("_Search");
-        }
 
-        public ActionResult FindMatches(string q)
+        public ActionResult Search(string q)
         {
             try
             {
                 var matchesFound = home.FindMatchesSL(q);
-                if (matchesFound != null)
+
+                if (Request.IsAjaxRequest())
                     return PartialView("_Suggestions", matchesFound);
                 else
-                    return null;
+                {
+                    SearchDTO model = new SearchDTO();
+                    model.WordToSearch = q;
+                    model.MatchesFound = matchesFound;
+                    return View(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                return ProcessError(ex);
+            }            
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Search(SearchDTO model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            model.MatchesFound = home.FindMatchesSL(model.WordToSearch);            
+
+            return View(model);
+        }
+
+        public ActionResult Hashtag(string name)
+        {
+            try
+            {
+                return View(home.GetPostsUsingHashtagSL(name));
             }
             catch(Exception ex)
             {
                 return ProcessError(ex);
-            }
+            }            
         }
+
+
+
+        #region PETICIONES AJAX
+
+        public PartialViewResult DrawSearch()
+        {
+            return PartialView("_Search");
+        }
+
+        //public ActionResult FindMatches(string q)
+        //{
+        //    try
+        //    {
+        //        var matchesFound = home.FindMatchesSL(q);
+        //        if (matchesFound != null)
+        //            return PartialView("_Suggestions", matchesFound);
+        //        else
+        //            return null;
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        return ProcessError(ex);
+        //    }
+        //}
+
+        #endregion
+
+
 
 
         #region TAREAS AUXILIARES

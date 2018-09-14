@@ -1,4 +1,6 @@
-﻿<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+﻿@model Domain_Layer.DTO.SearchDTO
+
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -10,14 +12,15 @@
             <div class="modal-body">
                 @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { id = "searchForm" }))
                 {
+                    @Html.AntiForgeryToken()
                     <div class="input-group">
-                        <input id="wordToSearch" name="wordToSearch" type="text" class="form-control" placeholder="ej: &#64;usuario / #hashtag" aria-label="ej: &#64;usuario / #hashtag">
+                        @Html.TextBoxFor(m => m.WordToSearch, new { @class = "form-control", placeholder = "ej: @usuario / #hashtag" })
                         <div class="input-group-append">
                             <button class="btn btn-outline-primary" type="submit" title="Realizar búsqueda"><i class="fas fa-search"></i></button>
                         </div>
                     </div>
                 }
-            </div>            
+            </div>
         </div>
     </div>
 </div>

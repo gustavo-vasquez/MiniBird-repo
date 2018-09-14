@@ -1,0 +1,21 @@
+﻿@model Domain_Layer.DTO.HashtagDTO
+
+@{
+    ViewBag.Title = "Resultados de " + Model.Name;
+}
+
+<div class="row mt-4 mb-3">
+    <div class="col">
+        <div class="card text-white bg-success">            
+            <div class="card-body">
+                <h2 class="text-center">@Model.Name</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        @Html.Partial("~/Views/Account/_PostSection.cshtml", Model.PostSection)
+    </div>
+</div>
