@@ -14,11 +14,11 @@ namespace MiniBird
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "ProfileTabs",
-                url: "Account/ProfileScreen/{v}",
-                defaults: new { controller = "Account", action = "ProfileScreen" }
-                //constraints: new { username = new UserNameConstraint() }
-            );
+                name: "ProfileIdTabs",
+                url: "Account/ProfileScreen/{id}/{v}",
+                defaults: new { controller = "Account", action = "ProfileScreen", v = UrlParameter.Optional }
+                //constraints: new { id = new UserNameConstraint() }
+            );            
 
             routes.MapRoute(
                 name: "ViewPost",
@@ -31,7 +31,7 @@ namespace MiniBird
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Welcome", id = UrlParameter.Optional }
             );
-        }
+        }        
 
         //public class UserNameConstraint : IRouteConstraint
         //{

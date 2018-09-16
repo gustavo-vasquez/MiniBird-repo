@@ -16,6 +16,7 @@ namespace Domain_Layer.DTO
         public List<PostSectionDTO> PostsSection { get; set; }
         public StatisticsBar StatisticsBar { get; set; }
         public List<ListDTO> MyLists { get; set; }
+        public bool Following { get; set; }
 
         public ProfileScreenDTO()
         {
@@ -29,6 +30,7 @@ namespace Domain_Layer.DTO
 
     public class ProfileInformationDTO
     {
+        public int PersonID { get; set; }
         public string UserName { get; set; }
         public string NickName { get; set; }
         public string PersonalDescription { get; set; }

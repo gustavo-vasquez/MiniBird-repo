@@ -136,8 +136,33 @@
             options.messages['rangebirthmonth'] = options.message;
         });
 
-    $('body').on('keyup', '#Day, #Month, #Year', isValidDate);    
+    $('body').on('keyup', '#Day, #Month, #Year', isValidDate);
+
+    $('#followBtn').on('click', function () {
+        var $this = $(this);
+
+        $.ajax({
+            url: "/Account/FollowUser",
+            method: "GET",
+            data: "follow=" + $this.data('follow'),
+            success: function (data) {
+                $this.text(data.buttonText);
+
+                if ($this.hasClass('btn-success'))
+                    $this.removeClass('btn-success');
+                else
+                    $this.removeClass('btn-danger');
+
+                $this.addClass(data.className);
+            },
+            error: function () {
+                alert("Ups!");
+            }
+        });
+    });
 });
+
+
 
 function changeDetails(data) {
     $('#personDescription span').text(data.personalDescription);

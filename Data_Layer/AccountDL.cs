@@ -169,9 +169,10 @@ namespace Data_Layer
             {
                 using(var context = new MiniBirdEntities())
                 {
-                    var person = context.Person.Where(p => p.PersonID == personID).First();                    
+                    Person person = context.Person.Find(personID);
 
                     var profileScreenDTO = new ProfileScreenDTO();
+                    profileScreenDTO.ProfileInformation.PersonID = person.PersonID;
                     profileScreenDTO.ProfileInformation.UserName = person.UserName;
                     profileScreenDTO.ProfileInformation.NickName = person.NickName;
                     profileScreenDTO.ProfileInformation.PersonalDescription = person.PersonalDescription;
@@ -186,6 +187,12 @@ namespace Data_Layer
                     profileScreenDTO.StatisticsBar.FollowersCount = person.Person11.Count;
                     profileScreenDTO.StatisticsBar.LikesCount = context.LikePost.Where(lp => lp.ID_PersonThatLikesPost == person.PersonID).Count();
                     profileScreenDTO.StatisticsBar.ListsCount = context.List.Where(ml => ml.ID_Person == person.PersonID).Count();
+
+                    if(ActiveSession.GetPersonID() != person.PersonID)
+                    {
+                        Person activeUser = context.Person.Find(ActiveSession.GetPersonID());
+                        profileScreenDTO.Following = activeUser.Person3.Any(p => p.PersonID == person.PersonID);
+                    }                        
 
                     switch(v)
                     {
@@ -333,10 +340,11 @@ namespace Data_Layer
             {
                 using(var context = new MiniBirdEntities())
                 {
-                    var person = context.Person.Where(p => p.PersonID == personID).First();
+                    var person = context.Person.Find(personID);
                     var posts = context.Post.Where(ps => ps.ID_Person == personID && ps.InReplyTo == null).ToList();
 
                     var timelineDTO = new TimelineDTO();
+                    timelineDTO.ProfileSection.PersonID = person.PersonID;
                     timelineDTO.ProfileSection.UserName = person.UserName;
                     timelineDTO.ProfileSection.NickName = person.NickName;
                     timelineDTO.ProfileSection.ProfileHeader = (person.ProfileHeader != null) ? ByteArrayToBase64(person.ProfileHeader, person.ProfileHeader_MimeType) : defaultHeader;
@@ -742,6 +750,36 @@ namespace Data_Layer
             }
         }
 
+
+        public bool FollowUserDL(int personID, int follow)
+        {
+            try
+            {
+                using (var context = new MiniBirdEntities())
+                {
+                    var person = context.Person.Find(personID);
+                    var personToFollow = context.Person.Find(follow);
+
+                    if (person.Person3.Any(f => f.PersonID == follow))
+                    {
+                        person.Person3.Remove(personToFollow);
+                        context.SaveChanges();
+                        return false;
+                    }
+                        
+                    else
+                    {
+                        person.Person3.Add(personToFollow);
+                        context.SaveChanges();
+                        return true;
+                    }                        
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
 
 
 

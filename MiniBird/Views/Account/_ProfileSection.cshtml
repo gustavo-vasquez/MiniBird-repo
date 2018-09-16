@@ -6,7 +6,7 @@
         <div class="col">
             <img class="profile-section-avatar" src="@Model.ProfileAvatar" alt="avatar_image" />
             <h5 class="text-center">@Model.NickName</h5>
-            <a class="text-center text-muted" href="@Url.Action("ProfileScreen", "Account")"><h6>@Model.UserName</h6></a>
+            <a class="text-center text-muted" href="@Url.Action("ProfileScreen", "Account", new { id = Model.PersonID })"><h6>@Model.UserName</h6></a>
         </div>
     </div>
     <div class="row mt-3">

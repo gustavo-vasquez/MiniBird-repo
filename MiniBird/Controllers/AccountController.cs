@@ -101,11 +101,19 @@ namespace MiniBird.Controllers
             return RedirectToAction("Welcome", "Home");
         }
         
-        public ActionResult ProfileScreen(string v)
+        public ActionResult ProfileScreen(int id, string v)
         {
-            var model = Account.ProfileScreenCollectionDataSL(ActiveSession.GetPersonID(), v);
-            ViewBag.Tab = v;
-            return View(model);
+            try
+            {
+                var model = Account.ProfileScreenCollectionDataSL(id, v);
+                ViewBag.Tab = v;
+
+                return View(model);
+            }
+            catch(Exception ex)
+            {
+                return ProcessError(ex);
+            }
         }
 
         public ActionResult Timeline()
@@ -190,11 +198,15 @@ namespace MiniBird.Controllers
             {
                 return ProcessError(ex);
             }
-        }
+        }        
+
+
 
         #region TAREAS AUXILIARES        
 
         #endregion
+
+
 
 
         #region PETICIONES AJAX
@@ -295,7 +307,15 @@ namespace MiniBird.Controllers
             }
 
             return RedirectToAction("Timeline", "Account");
-        }        
+        }
+
+        public JsonResult FollowUser(int follow)
+        {
+            if (Account.FollowUserSL(ActiveSession.GetPersonID(), follow))
+                return Json(new { buttonText = "Dejar de seguir", className = "btn-danger" }, JsonRequestBehavior.AllowGet);
+            else
+                return Json(new { buttonText = "Seguir", className = "btn-success" }, JsonRequestBehavior.AllowGet);
+        }
 
         #endregion
 

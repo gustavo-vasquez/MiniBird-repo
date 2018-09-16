@@ -120,6 +120,12 @@ namespace Service_Layer
         }
 
 
+        public bool FollowUserSL(int personID, int follow)
+        {
+            return Account.FollowUserDL(personID, follow);
+        }
+
+
 
         #region TAREAS AUXILIARES
 
