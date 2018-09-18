@@ -66,41 +66,44 @@
         }        
         <div class="row mt-3">
             <div id="profileDetails" class="col">                
-                    <p id="personDescription" class="mt-2">
-                        <i class="far fa-comment-dots"></i>
-                        @if (!string.IsNullOrEmpty(Model.ProfileInformation.PersonalDescription))
-                        {
-                            <span>@Model.ProfileInformation.PersonalDescription</span>
-                        }
-                        else
-                        {
-                            <span></span>
-                        }
-                    </p>                                
-                    <p id="websiteUrl">
-                        <i class="fas fa-link"></i>
-                        @if (!string.IsNullOrEmpty(Model.ProfileInformation.WebSiteURL))
-                        {
-                            <a href="@Model.ProfileInformation.WebSiteURL">@Model.ProfileInformation.WebSiteURL</a>
-                        }
-                        else
-                        {
-                            <a></a>
-                        }
-                    </p>                                
-                    <p id="birthday" class="text-muted">
-                        <i class="fas fa-birthday-cake"></i>
-                        @if (!string.IsNullOrEmpty(Model.ProfileInformation.Birthdate))
-                        {
-                            <span> @Model.ProfileInformation.Birthdate</span>
-                        }
-                        else
-                        {
-                            <span></span>
-                        }
-                    </p>
+                <p id="personDescription" class="mt-2">
+                    <i class="far fa-comment-dots"></i>
+                    @if (!string.IsNullOrEmpty(Model.ProfileInformation.PersonalDescription))
+                    {
+                        <span>@Model.ProfileInformation.PersonalDescription</span>
+                    }
+                    else
+                    {
+                        <span></span>
+                    }
+                </p>                                
+                <p id="websiteUrl">
+                    <i class="fas fa-link"></i>
+                    @if (!string.IsNullOrEmpty(Model.ProfileInformation.WebSiteURL))
+                    {
+                        <a href="@Model.ProfileInformation.WebSiteURL">@Model.ProfileInformation.WebSiteURL</a>
+                    }
+                    else
+                    {
+                        <a></a>
+                    }
+                </p>                                
+                <p id="birthday" class="text-muted">
+                    <i class="fas fa-birthday-cake"></i>
+                    @if (!string.IsNullOrEmpty(Model.ProfileInformation.Birthdate))
+                    {
+                        <span> @Model.ProfileInformation.Birthdate</span>
+                    }
+                    else
+                    {
+                        <span></span>
+                    }
+                </p>
                 <p class="text-muted"><i class="far fa-calendar-alt"></i> Se unió en @Model.ProfileInformation.RegistrationDate.ToString("y")</p>
-                <button id="editDetails" type="button" class="btn btn-outline-primary">Editar</button>
+                @if (Domain_Layer.ActiveSession.GetPersonID() == Model.ProfileInformation.PersonID)
+                {
+                    <button id="editDetails" type="button" class="btn btn-outline-primary">Editar</button>
+                }                
             </div>
         </div>        
     </div>
@@ -109,7 +112,7 @@
             <div class="col">
                 <ul id="profileScreen-nav" class="nav nav-pills" data-tab="@ViewBag.Tab">
                     <li class="nav-item mr-1">
-                        <a class="nav-link" href="@Url.Action("ProfileScreen", "Account")">Posts <span class="badge badge-primary badge-pill">@Model.StatisticsBar.PostsCount</span></a>
+                        <a class="nav-link" href="@Url.Action("ProfileScreen", "Account", new { id = Model.ProfileInformation.PersonID })">Posts <span class="badge badge-primary badge-pill">@Model.StatisticsBar.PostsCount</span></a>
                     </li>
                     <li class="nav-item mr-1">
                         <a class="nav-link" href="@Url.Action("ProfileScreen", "Account", new { v = "following" })">Siguiendo <span class="badge badge-primary badge-pill">@Model.StatisticsBar.FollowingCount</span></a>
@@ -167,51 +170,53 @@
                             @Html.Partial("~/Views/Account/_EmptyCard.cshtml")
                         }
                         break;
+
                     case "followers":
 
-                        <div class="card mb-1">
-                            <div class="card-body">
-                                <h4 class="card-title">Soy follower</h4>
-                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>
+                        if (Model.Followers.Count > 0)
+                        {
+                            <div class="row">
+                                @foreach (var follower in Model.Followers)
+                                {
+                                    <div class="col-md-4">
+                                        <div class="card mb-3">
+                                            <div class="card-body text-center">
+                                                <img class="post-profile-img" src="@follower.ProfileAvatar" alt="image_profile" />
+                                                <h5 class="card-title mt-2 mb-2">@follower.NickName</h5>
+                                                <a href="@Url.Action("ProfileScreen", "Account", new { id = follower.PersonID })" class="text-muted"><h6>@follower.UserName</h6></a>
+                                                <small class="card-text mt-3 mb-2 d-block">@follower.Description</small>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <a href="@Url.Action("ProfileScreen", "Account", new { id = follower.PersonID, v = "following" })" class="text-muted d-block"><small>@follower.FollowingCount siguiendo</small></a>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <a href="@Url.Action("ProfileScreen", "Account", new { id = follower.PersonID, v = "followers" })" class="text-muted d-block"><small>@follower.FollowersCount seguidores</small></a>
+                                                    </div>
+                                                </div>
+                                                @if (Domain_Layer.ActiveSession.GetPersonID() == Model.ProfileInformation.PersonID)
+                                                {
+                                                    <button class="btn btn-sm btn-outline-danger mt-3 follow-btn" data-follow="@follower.PersonID">Dejar de seguir</button>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
                             </div>
-                        </div>
-                        <div class="card mb-1">
-                            <div class="card-body">
-                                <h4 class="card-title">Soy follower</h4>
-                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>
-                            </div>
-                        </div>
-
+                        }
+                        else
+                        {
+                            @Html.Partial("~/Views/Account/_EmptyCard.cshtml")
+                        }
                         break;
+
                     case "likes":
 
-                        <div class="card mb-1">
-                            <div class="card-body">
-                                <h4 class="card-title">Soy like</h4>
-                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>
-                            </div>
-                        </div>
-                        <div class="card mb-1">
-                            <div class="card-body">
-                                <h4 class="card-title">Soy like</h4>
-                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>
-                            </div>
-                        </div>
+                        @Html.Partial("~/Views/Account/_PostSection.cshtml", Model.LikesSection)                        
 
                         break;
+
                     case "lists":
+
                         <button type="button" class="btn btn-block btn-outline-primary mb-2" data-toggle="modal" data-target="#myListModal"><i class="fas fa-plus"></i> Agregar nueva lista</button>
 
                         if(Model.MyLists.Count > 0)
@@ -237,6 +242,7 @@
                         @Html.Partial("~/Views/Account/_CreateList.cshtml", new Domain_Layer.DTO.ListDTO())
 
                         break;
+
                     default:
                         @Html.Partial("~/Views/Account/_PostSection.cshtml", Model.PostsSection)
                         break;

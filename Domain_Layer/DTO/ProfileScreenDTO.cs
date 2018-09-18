@@ -14,9 +14,11 @@ namespace Domain_Layer.DTO
         public ProfileInformationDTO ProfileInformation { get; set; }
         public List<TopTrendingsDTO> TopTrendings { get; set; }
         public List<PostSectionDTO> PostsSection { get; set; }
-        public StatisticsBar StatisticsBar { get; set; }
-        public List<ListDTO> MyLists { get; set; }
+        public StatisticsBar StatisticsBar { get; set; }        
         public List<FollowingDTO> Followings { get; set; }
+        public List<FollowingDTO> Followers { get; set; }
+        public List<PostSectionDTO> LikesSection { get; set; }
+        public List<ListDTO> MyLists { get; set; }
         public bool Following { get; set; }
 
         public ProfileScreenDTO()
@@ -24,9 +26,11 @@ namespace Domain_Layer.DTO
             this.ProfileInformation = new ProfileInformationDTO();
             this.TopTrendings = new List<TopTrendingsDTO>();
             this.PostsSection = new List<PostSectionDTO>();
-            this.StatisticsBar = new StatisticsBar();
-            this.MyLists = new List<ListDTO>();
+            this.StatisticsBar = new StatisticsBar();            
             this.Followings = new List<FollowingDTO>();
+            this.Followers = new List<FollowingDTO>();
+            this.LikesSection = new List<PostSectionDTO>();
+            this.MyLists = new List<ListDTO>();
         }
     }
 

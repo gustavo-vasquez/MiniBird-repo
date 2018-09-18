@@ -213,9 +213,48 @@ namespace Data_Layer
 
                             break;
                         case "followers":
+                            foreach (var p in person.Person11)
+                            {
+                                profileScreenDTO.Followers.Add(new FollowingDTO()
+                                {
+                                    PersonID = p.PersonID,
+                                    NickName = p.NickName,
+                                    UserName = p.UserName,
+                                    ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar,
+                                    Description = p.PersonalDescription,
+                                    FollowingCount = p.Person3.Count,
+                                    FollowersCount = p.Person11.Count
+                                });
+                            }
+
                             break;
                         case "likes":
+
+                            var myLikes = context.LikePost.Where(lp => lp.ID_PersonThatLikesPost == person.PersonID);
+
+                            foreach(var like in myLikes)
+                            {
+                                var postLiked = context.Post.Find(like.ID_Post);
+                                var createdBy = context.Person.Find(postLiked.ID_Person);
+
+                                profileScreenDTO.LikesSection.Add(new PostSectionDTO()
+                                {
+                                    PostID = postLiked.PostID,
+                                    Comment = postLiked.Comment,
+                                    GIFImage = postLiked.GIFImage,
+                                    VideoFile = postLiked.VideoFile,
+                                    Thumbnails = GetPostedThumbnails(postLiked.PostID),
+                                    PublicationDate = postLiked.PublicationDate,
+                                    CreatedBy = createdBy.PersonID,
+                                    NickName = createdBy.NickName,
+                                    UserName = createdBy.UserName,
+                                    ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
+                                    InteractButtons = GetInteractsCountDL(postLiked.PostID)                                    
+                                });
+                            }
+
                             break;
+
                         case "lists":
                             var myLists = context.List.Where(ml => ml.ID_Person == person.PersonID);
 
