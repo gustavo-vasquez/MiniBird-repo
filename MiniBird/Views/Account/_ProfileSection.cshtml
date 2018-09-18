@@ -11,19 +11,19 @@
     </div>
     <div class="row mt-3">
         <div class="col-4 col-md-4">
-            <a href="#" class="legends">
+            <a href="@Url.Action("ProfileScreen", "Account", new { id = Model.PersonID })" class="legends">
                 <span>Posts</span>
                 <span>@Model.PostCount</span>
             </a>
         </div>
         <div class="col-4 col-md-4">
-            <a href="#" class="legends">
+            <a href="@Url.Action("ProfileScreen", "Account", new { id = Model.PersonID, v = "following" })" class="legends">
                 <span>Siguiendo</span>
                 <span>@Model.FollowingCount</span>
             </a>
         </div>
         <div class="col-4 col-md-4">
-            <a href="#" class="legends">
+            <a href="@Url.Action("ProfileScreen", "Account", new { id = Model.PersonID, v = "followers" })" class="legends">
                 <span>Seguidores</span>
                 <span>@Model.FollowerCount</span>
             </a>

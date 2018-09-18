@@ -138,7 +138,7 @@
 
     $('body').on('keyup', '#Day, #Month, #Year', isValidDate);
 
-    $('#followBtn').on('click', function () {
+    $('.follow-btn').on('click', function () {
         var $this = $(this);
 
         $.ajax({

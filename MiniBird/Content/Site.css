@@ -23,7 +23,16 @@ body {
     border-radius: 0.5rem;    
 }
 
-.input-group input {
+.input-group-text {
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+}
+
+#linkText {
+    border-radius: unset !important;
+}
+
+.input-group input {    
     border-top-right-radius: unset !important;
     border-bottom-right-radius: unset !important;
 }

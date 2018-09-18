@@ -54,13 +54,13 @@
             if (Model.Following)
             {
                 <div class="row mt-3">
-                    <button id="followBtn" type="button" class="btn btn-block btn-danger" data-follow="@Model.ProfileInformation.PersonID">Dejar de seguir</button>
+                    <button type="button" class="btn btn-block btn-danger follow-btn" data-follow="@Model.ProfileInformation.PersonID">Dejar de seguir</button>
                 </div>
             }
             else
             {
                 <div class="row mt-3">
-                    <button id="followBtn" type="button" class="btn btn-block btn-success" data-follow="@Model.ProfileInformation.PersonID">Seguir</button>
+                    <button type="button" class="btn btn-block btn-success follow-btn" data-follow="@Model.ProfileInformation.PersonID">Seguir</button>
                 </div>
             }
         }        
@@ -132,25 +132,40 @@
                 {
                     case "following":
 
-                        <div class="card mb-1">
-                            <div class="card-body">
-                                <h4 class="card-title">Soy following</h4>
-                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>
+                        if(Model.Followings.Count > 0)
+                        {
+                            <div class="row">
+                                @foreach (var follow in Model.Followings)
+                                {
+                                    <div class="col-md-4">
+                                        <div class="card mb-3">
+                                            <div class="card-body text-center">
+                                                <img class="post-profile-img" src="@follow.ProfileAvatar" alt="image_profile" />
+                                                <h5 class="card-title mt-2 mb-2">@follow.NickName</h5>
+                                                <a href="@Url.Action("ProfileScreen", "Account", new { id = follow.PersonID })" class="text-muted"><h6>@follow.UserName</h6></a>
+                                                <small class="card-text mt-3 mb-2 d-block">@follow.Description</small>                                                
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <a href="@Url.Action("ProfileScreen", "Account", new { id = follow.PersonID, v = "following" })" class="text-muted d-block"><small>@follow.FollowingCount siguiendo</small></a>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <a href="@Url.Action("ProfileScreen", "Account", new { id = follow.PersonID, v = "followers" })" class="text-muted d-block"><small>@follow.FollowersCount seguidores</small></a>                                                
+                                                    </div>
+                                                </div>
+                                                @if (Domain_Layer.ActiveSession.GetPersonID() == Model.ProfileInformation.PersonID)
+                                                {
+                                                    <button class="btn btn-sm btn-outline-danger mt-3 follow-btn" data-follow="@follow.PersonID">Dejar de seguir</button>
+                                                }                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
                             </div>
-                        </div>
-                        <div class="card mb-1">
-                            <div class="card-body">
-                                <h4 class="card-title">Soy following</h4>
-                                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>
-                            </div>
-                        </div>
-
+                        }
+                        else
+                        {
+                            @Html.Partial("~/Views/Account/_EmptyCard.cshtml")
+                        }
                         break;
                     case "followers":
 

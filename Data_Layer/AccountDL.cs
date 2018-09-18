@@ -197,6 +197,20 @@ namespace Data_Layer
                     switch(v)
                     {
                         case "following":
+                            foreach(var p in person.Person3)
+                            {
+                                profileScreenDTO.Followings.Add(new FollowingDTO()
+                                {
+                                    PersonID = p.PersonID,
+                                    NickName = p.NickName,
+                                    UserName = p.UserName,
+                                    ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar,
+                                    Description = p.PersonalDescription,
+                                    FollowingCount = p.Person3.Count,
+                                    FollowersCount = p.Person11.Count
+                                });
+                            }
+
                             break;
                         case "followers":
                             break;

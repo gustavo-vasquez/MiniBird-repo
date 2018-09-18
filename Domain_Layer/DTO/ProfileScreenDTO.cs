@@ -16,6 +16,7 @@ namespace Domain_Layer.DTO
         public List<PostSectionDTO> PostsSection { get; set; }
         public StatisticsBar StatisticsBar { get; set; }
         public List<ListDTO> MyLists { get; set; }
+        public List<FollowingDTO> Followings { get; set; }
         public bool Following { get; set; }
 
         public ProfileScreenDTO()
@@ -25,6 +26,7 @@ namespace Domain_Layer.DTO
             this.PostsSection = new List<PostSectionDTO>();
             this.StatisticsBar = new StatisticsBar();
             this.MyLists = new List<ListDTO>();
+            this.Followings = new List<FollowingDTO>();
         }
     }
 
