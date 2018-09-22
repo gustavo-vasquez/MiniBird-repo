@@ -13,13 +13,12 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>                                
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">                         
-                            @Html.ValidationMessageFor(m => m.Comment, null, new { @class = "badge badge-danger mb-1" })
-                            @Html.TextAreaFor(m => m.Comment, new { @class = "form-control", placeholder = "¿Que tienes para decir?", rows = 1 })                            
-                        </div>
-                    </form>
+                <div class="modal-body">                    
+                    <div class="form-group">
+                        @Html.ValidationMessageFor(m => m.Comment, null, new { @class = "badge badge-danger mb-1" })
+                        @Html.TextAreaFor(m => m.Comment, new { @class = "form-control", placeholder = "¿Que tienes para decir?", rows = 1 })                            
+                    </div>
+                    <div id="comen" class="form-control" style="height: unset;" contenteditable="true"></div>
                     <div class="form-group text-center d-none">                        
                         <div id="imgThumbnailsRow" class="row no-gutters"></div>                        
                     </div>

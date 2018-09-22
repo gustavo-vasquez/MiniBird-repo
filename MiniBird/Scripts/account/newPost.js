@@ -7,7 +7,34 @@
     $('body').on('click', '#newLinkBtn', addLinkToPost);
     $('body').on('keydown', '#Comment', calculateChars);
     eventsforUploadImages();
+
+    $('#comen').on('blur', function () {
+        console.log("sssdfsdf");
+    });
 });
+
+//function addLinkToPost() {
+//    if ($('#linkGroup').length <= 0) {
+//        $('#NewPostForm .modal-body, #NewReplyForm .modal-body').append('<div id="linkGroup" class="input-group"><div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-link"></i></span></div><input type="text" class="form-control" id="linkText" placeholder="Ingresa una dirección web"><div class="input-group-append"><button id="addLinkBtn" class="btn btn-outline-primary btn-primary" type="button" title="Añadir"><i class="fas fa-plus"></i></button></div></div>');
+//        $('#linkText').focus();
+
+//        $('#addLinkBtn').on('click', function () {
+//            $Comment = $('#Comment');
+//            $LinkToAdd = $('#linkText').val();
+
+//            if ($LinkToAdd.startsWith("http://") || $LinkToAdd.startsWith("https://")) {
+//                if ($Comment.val().length > 0)
+//                    $Comment.val($Comment.val() + ' ' + $LinkToAdd);
+//                else
+//                    $Comment.val($Comment.val() + $LinkToAdd);
+                                
+//                $('#linkGroup').remove();
+//                $Comment.focus();
+//                calculateChars();
+//            }
+//        });
+//    }
+//}
 
 function addLinkToPost() {
     if ($('#linkGroup').length <= 0) {
@@ -15,17 +42,15 @@ function addLinkToPost() {
         $('#linkText').focus();
 
         $('#addLinkBtn').on('click', function () {
-            $Comment = $('#Comment');
+            $Comment = $('#comen');
             $LinkToAdd = $('#linkText').val();
 
-            if ($LinkToAdd.startsWith("http://") || $LinkToAdd.startsWith("https://")) {
-                if ($Comment.val().length > 0)
-                    $Comment.val($Comment.val() + ' ' + $LinkToAdd + ' ');
-                else
-                    $Comment.val($Comment.val() + $LinkToAdd + ' ');
-                                
-                $('#linkGroup').remove();
-                $Comment.focus();
+            if ($LinkToAdd.startsWith("http://") || $LinkToAdd.startsWith("https://")) {                
+                $anchor = $("<a>", { "href": $LinkToAdd, "target": "_blank", "rel": "noopener noreferrer", "contenteditable": "false" });
+                $anchor.text($LinkToAdd);
+                $Comment.append($anchor);
+                $Comment.append('&nbsp;');
+                $('#linkGroup').remove();                
                 calculateChars();
             }
         });

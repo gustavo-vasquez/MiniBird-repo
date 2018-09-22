@@ -18,7 +18,7 @@
         var src = $(this).attr('src');
         var images = $(this).closest('.post-images').find('img');
         var srcArray = images.map(function () {
-            return this.src;
+            return this.getAttribute("src");
         }).get();
 
         loadImagePreview(srcArray, src);
@@ -263,25 +263,46 @@ function sendARepost(containerDiv) {
 }
 
 function scanSpecialWords() {
+    var $words;
+
     $.each($('.text-comment'), function (index, value) {
-        var $words = $(value).text().split(' ');
+        //var separators = ['\r', '\n', ' '];
+        //var $words = $(value).text().split(new RegExp(separators.join('|'), 'g'));
+        $words = $(value).text().split('\n');
+
         for (i in $words) {
-
-            // search urls
-            if ($words[i].startsWith('http://') || $words[i].startsWith('https://')) {
-                $words[i] = '<a target="_blank" rel="noopener noreferrer" href="' + $words[i] + '">' + $words[i] + '</a>';
-            }
-
-            // search hashtags
             if ($words[i].length >= 3) {
-                if ($words[i].startsWith('#') && $words[i].indexOf('#', 1) < 1) {
+                // search urls
+                if ($words[i].startsWith('http://') || $words[i].startsWith('https://')) {
+                    $words[i] = '<a target="_blank" rel="noopener noreferrer" href="' + $words[i] + '">' + $words[i] + '</a>';
+                }
+                else if ($words[i].startsWith('#') && $words[i].indexOf('#', 1) < 1) {
+                    // search hashtags
                     $words[i] = '<a href="/Home/Hashtag?name=' + encodeURIComponent($words[i]) + '">' + $words[i] + '</a>';
                 }
             }
         }
+                
+        $words = $words.join('\n');
 
+        var $words = $words.split(' ');
+        var newText = '';
+
+        for (i in $words) {
+            if ($words[i].length >= 3) {
+                // search urls
+                if ($words[i].startsWith('http://') || $words[i].startsWith('https://')) {
+                    $words[i] = '<a target="_blank" rel="noopener noreferrer" href="' + $words[i] + '">' + $words[i] + '</a>';
+                }
+                else if ($words[i].startsWith('#') && $words[i].indexOf('#', 1) < 1) {
+                    // search hashtags
+                    $words[i] = '<a href="/Home/Hashtag?name=' + encodeURIComponent($words[i]) + '">' + $words[i] + '</a>';
+                }
+            }
+        }
+        
         $(value).html($words.join(' '));
-    });
+    });    
 }
 
 function copyLinkToClipboard($element) {

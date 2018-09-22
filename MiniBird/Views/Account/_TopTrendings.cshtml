@@ -4,7 +4,7 @@
     @foreach (var trending in Model)
     {
         <li>
-            <a href="@Url.Action("Search", "Home", new { q = trending.Name })" class="card-link">
+            <a href="@Url.Action("Hashtag", "Home", new { name = trending.Name })" class="card-link">
                 <span class="trend-name">@trending.Name</span>
                 <div class="trend-stats">@trending.UseCount posts</div>
             </a>
