@@ -189,14 +189,14 @@ body {
 
 .img-remove-newPost {
     position: absolute !important;
-    top: 3px !important;
-    right: 5px !important;
+    top: 4px !important;
+    right: 8px !important;
     z-index: 3 !important;
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 50%;
     border: none;
     color: white;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 .img-remove-newPost:hover {

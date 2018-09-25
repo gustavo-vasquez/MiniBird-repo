@@ -6,35 +6,21 @@
     $('#Comment').magicsize();
     $('body').on('click', '#newLinkBtn', addLinkToPost);
     $('body').on('keydown', '#Comment', calculateChars);
-    eventsforUploadImages();
+    eventsforUploadImages();    
 
-    $('#comen').on('blur', function () {
-        console.log("sssdfsdf");
-    });
+    //$.validator.addMethod('miau', function (value, element, params) {
+    //    return value.length == params.ancho;
+    //});
+
+    //$.validator.unobtrusive.adapters.add(
+    //    'startswithprotocol', ['ancho'], function (options) {
+    //        var params = {
+    //            ancho: options.params.ancho
+    //        };
+    //        options.rules['miau'] = params;
+    //        options.messages['miau'] = "errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr";
+    //    });
 });
-
-//function addLinkToPost() {
-//    if ($('#linkGroup').length <= 0) {
-//        $('#NewPostForm .modal-body, #NewReplyForm .modal-body').append('<div id="linkGroup" class="input-group"><div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-link"></i></span></div><input type="text" class="form-control" id="linkText" placeholder="Ingresa una dirección web"><div class="input-group-append"><button id="addLinkBtn" class="btn btn-outline-primary btn-primary" type="button" title="Añadir"><i class="fas fa-plus"></i></button></div></div>');
-//        $('#linkText').focus();
-
-//        $('#addLinkBtn').on('click', function () {
-//            $Comment = $('#Comment');
-//            $LinkToAdd = $('#linkText').val();
-
-//            if ($LinkToAdd.startsWith("http://") || $LinkToAdd.startsWith("https://")) {
-//                if ($Comment.val().length > 0)
-//                    $Comment.val($Comment.val() + ' ' + $LinkToAdd);
-//                else
-//                    $Comment.val($Comment.val() + $LinkToAdd);
-                                
-//                $('#linkGroup').remove();
-//                $Comment.focus();
-//                calculateChars();
-//            }
-//        });
-//    }
-//}
 
 function addLinkToPost() {
     if ($('#linkGroup').length <= 0) {
@@ -42,15 +28,17 @@ function addLinkToPost() {
         $('#linkText').focus();
 
         $('#addLinkBtn').on('click', function () {
-            $Comment = $('#comen');
+            $Comment = $('#Comment');
             $LinkToAdd = $('#linkText').val();
 
-            if ($LinkToAdd.startsWith("http://") || $LinkToAdd.startsWith("https://")) {                
-                $anchor = $("<a>", { "href": $LinkToAdd, "target": "_blank", "rel": "noopener noreferrer", "contenteditable": "false" });
-                $anchor.text($LinkToAdd);
-                $Comment.append($anchor);
-                $Comment.append('&nbsp;');
-                $('#linkGroup').remove();                
+            if ($LinkToAdd.startsWith("http://") || $LinkToAdd.startsWith("https://")) {
+                //if ($Comment.val().length > 0)
+                //    $Comment.val($Comment.val() + ' ' + $LinkToAdd);
+                //else
+                //    $Comment.val($Comment.val() + $LinkToAdd);                
+                $Comment.val($Comment.val() + $LinkToAdd);
+                $('#linkGroup').remove();
+                $Comment.focus();
                 calculateChars();
             }
         });
@@ -73,15 +61,21 @@ function eventsforUploadImages() {
     });
 
     //Check File API support
-    if (window.File && window.FileList && window.FileReader) {
+    if (window.File && window.FileList && window.FileReader) {        
         var filesInput = document.getElementById("UploadImage");
+        var fi = $('#UploadImage');
 
         var $imgThumbnailsRow = $('#imgThumbnailsRow');
 
-        filesInput.addEventListener("change", function (event) {
-
+        filesInput.addEventListener("change", function (event) {            
             var files = event.target.files; //FileList object
             var output = document.getElementById("imgThumbnailsRow");
+
+            if ($('input[name=ImagesUploaded]').length > 3 || files.length > 4) {
+                if($('.max-length-msg').length <= 0)
+                    $('.modal-body').append('<div class="form-group text-center"><small class="text-danger max-length-msg">Máximo 4 imágenes</small></div>');
+                return false;
+            }
 
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
@@ -93,8 +87,7 @@ function eventsforUploadImages() {
                 var picReader = new FileReader();
                 picReader.fileName = file.name;
 
-                picReader.addEventListener("load", function (event) {
-
+                picReader.addEventListener("load", function (event) {                    
                     var picFile = event.target;
 
                     var div = document.createElement("div");
@@ -112,7 +105,7 @@ function eventsforUploadImages() {
                         $(this).parent("figure").parent("div").remove();
 
                         if ($imgThumbnailsRow.is(':empty'))
-                            $imgThumbnailsRow.parent("div").addClass('d-none');
+                            $imgThumbnailsRow.parent("div").addClass('d-none');                        
                     });
                 });
 
@@ -126,7 +119,7 @@ function eventsforUploadImages() {
         });
     }
     else {
-        console.log("Your browser does not support File API");
+        console.log("Tu navegador no soporta File API");
     }
 }
 

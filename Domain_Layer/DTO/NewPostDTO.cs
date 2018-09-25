@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain_Layer.Validations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,8 +16,8 @@ namespace Domain_Layer.DTO
         [MaxLength(280, ErrorMessage = "Límite: 280 caracteres")]
         public string Comment { get; set; }
         public byte[] GifImage { get; set; }
-        public byte[] VideoFile { get; set; }
-        public string[] ImagesUploaded { get; set; }
+        public byte[] VideoFile { get; set; }        
+        public string[] ImagesUploaded { get; set; }        
         public int? InReplyTo { get; set; }
-    }
+    }    
 }

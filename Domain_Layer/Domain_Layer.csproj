@@ -95,6 +95,7 @@
     <Compile Include="Thumbnail.cs">
       <DependentUpon>MiniBirdDatabase.tt</DependentUpon>
     </Compile>
+    <Compile Include="Validations\ArrayLengthAttribute.cs" />
     <Compile Include="Validations\RangeBirthMonthAttribute.cs" />
     <Compile Include="Validations\RangeBirthYearAttribute.cs" />
     <Compile Include="Validations\StartsWithProtocolAttribute.cs" />
