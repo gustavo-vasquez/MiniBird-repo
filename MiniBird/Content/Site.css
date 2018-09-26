@@ -187,6 +187,14 @@ body {
     object-fit: cover;
 }
 
+.gif-upload-thumbnail {
+    width: 220px;
+    height: 220px;
+    border-radius: 5px;
+    border: 2px solid rgba(146, 146, 146, 0.32);
+    object-fit: cover;
+}
+
 .img-remove-newPost {
     position: absolute !important;
     top: 4px !important;
@@ -199,7 +207,19 @@ body {
     font-size: 0.8rem;
 }
 
-.img-remove-newPost:hover {
+.gif-remove-thumbnail {
+    position: absolute !important;
+    top: 5px !important;
+    right: 17px !important;
+    z-index: 3 !important;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    border: none;
+    color: white;
+    font-size: 0.9rem;
+}
+
+.img-remove-newPost:hover, .gif-remove-thumbnail:hover {
     background-color: red;
     cursor: pointer;
     border-color: black;

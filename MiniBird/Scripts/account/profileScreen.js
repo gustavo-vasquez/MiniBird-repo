@@ -90,7 +90,7 @@
                 console.log("Ocurrió un error.");
             }
         });
-    });
+    });    
 
     // Valida que el valor tenga como inicio el protocolo http o https
     $.validator.addMethod('startswithprotocol', function (value, element, params) {

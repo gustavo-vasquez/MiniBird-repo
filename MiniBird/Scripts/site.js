@@ -45,7 +45,7 @@
         copyLinkToClipboard($(this));
     });
 
-    $('#search').on('click', search);
+    $('#search').on('click', search);    
 });
 
 
