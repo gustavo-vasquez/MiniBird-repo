@@ -35,6 +35,20 @@
                     <div class="col-md-10">
                         <p class="card-text text-comment">@post.Comment</p>
 
+                        @if (!string.IsNullOrWhiteSpace(post.GIFImage))
+                        {
+                            <div class="card post-images one-thumbnail ovh">
+                                <img src="@post.GIFImage" alt="posted_image">
+                            </div>
+                        }
+
+                        @if(post.VideoFile != null)
+                        {
+                            <div class="card post-images one-thumbnail ovh">
+                                <video src="@post.VideoFile"></video>
+                            </div>
+                        }
+
                         @switch (post.Thumbnails.Count)
                         {
                             case 1:

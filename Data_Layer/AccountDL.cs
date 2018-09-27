@@ -139,13 +139,18 @@ namespace Data_Layer
                         context.Post.Add(post);
                         context.SaveChanges();
 
-                        if (model.ImagesUploaded != null && model.ImagesUploaded.Length > 0)
+                        if(model.GifImage != null && model.GifImage.ContentLength > 0)
+                        {
+                            post.GIFImage = SaveGifOnServer(post.PostID, model.GifImage, localServer);
+                            context.SaveChanges();
+                        }
+                        else if (model.ImagesUploaded != null && model.ImagesUploaded.Length > 0)
                         {
                             int iteration = 1;
 
                             foreach (string image in model.ImagesUploaded)
                             {
-                                context.Thumbnail.Add(new Thumbnail() { ImagePath = SaveThumbnailInFolder(image, post.PostID, localServer, iteration), ID_Post = post.PostID });
+                                context.Thumbnail.Add(new Thumbnail() { ImagePath = SaveThumbnailOnServer(image, post.PostID, localServer, iteration), ID_Post = post.PostID });
                                 context.SaveChanges();
                                 iteration++;
                             }                            
@@ -769,7 +774,7 @@ namespace Data_Layer
 
                             foreach (string image in model.ImagesUploaded)
                             {
-                                context.Thumbnail.Add(new Thumbnail() { ImagePath = SaveThumbnailInFolder(image, post.PostID, localServer, iteration), ID_Post = post.PostID });
+                                context.Thumbnail.Add(new Thumbnail() { ImagePath = SaveThumbnailOnServer(image, post.PostID, localServer, iteration), ID_Post = post.PostID });
                                 context.SaveChanges();
                                 iteration++;
                             }
@@ -991,8 +996,50 @@ namespace Data_Layer
             }            
         }
 
+        private string SaveGifOnServer(int postID, HttpPostedFileBase gifImage, HttpServerUtilityBase localServer)
+        {
+            try
+            {
+                if (gifImage == null && gifImage.ContentLength <= 0)
+                    throw new ArgumentException("Ninguna imágen seleccionada");
 
-        public string SaveThumbnailInFolder(string imgBase64, int postID, HttpServerUtilityBase localServer, int iteration)
+                string thumbnailsPath = "/Content/thumbnails/" + postID;
+
+                if (!Directory.Exists(thumbnailsPath))
+                    Directory.CreateDirectory(localServer.MapPath(thumbnailsPath));
+
+                // Obtiene datos del archivo
+                byte[] data = new byte[] { };
+                using (var binaryReader = new BinaryReader(gifImage.InputStream))
+                {
+                    data = binaryReader.ReadBytes(gifImage.ContentLength);
+                }
+
+                // Guarda imagen en el servidor
+                string pathToNewFile = thumbnailsPath + "/" + gifImage.FileName;
+                using (FileStream image = System.IO.File.Create(localServer.MapPath(pathToNewFile), data.Length))
+                {
+                    image.Write(data, 0, data.Length);
+                    image.Flush();
+                }
+
+                return pathToNewFile;
+            }
+            catch
+            {
+                using (var context = new MiniBirdEntities())
+                {
+                    Post post = context.Post.Find(postID);
+                    context.Post.Remove(post);
+                    context.SaveChanges();
+                }
+
+                throw;
+            }            
+        }
+
+
+        public string SaveThumbnailOnServer(string imgBase64, int postID, HttpServerUtilityBase localServer, int iteration)
         {
             try
             {
@@ -1002,10 +1049,7 @@ namespace Data_Layer
                 string thumbnailsPath = "/Content/thumbnails/" + postID;
 
                 if (!Directory.Exists(thumbnailsPath))
-                    Directory.CreateDirectory(localServer.MapPath(thumbnailsPath));
-
-                //Directory.CreateDirectory(localServer.MapPath(imgDir));
-                //string imgFullPath = localServer.MapPath(imgDir) + "/" + tempImage.FileName;
+                    Directory.CreateDirectory(localServer.MapPath(thumbnailsPath));                
 
                 // Get file data
                 byte[] bytes = imgBase64ToByteArray(imgBase64);

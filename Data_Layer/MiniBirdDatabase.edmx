@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="MiniBirdModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="MiniBirdModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Block">
           <Key>
             <PropertyRef Name="ID_Person" />
@@ -83,7 +83,7 @@
           </Key>
           <Property Name="PostID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Comment" Type="nvarchar" MaxLength="280" Nullable="false" />
-          <Property Name="GIFImage" Type="varbinary(max)" />
+          <Property Name="GIFImage" Type="nvarchar(max)" />
           <Property Name="VideoFile" Type="varbinary(max)" />
           <Property Name="PublicationDate" Type="datetime" Nullable="false" />
           <Property Name="InReplyTo" Type="int" />
@@ -425,7 +425,8 @@
             <End Role="UserToList" EntitySet="UserToList" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MiniBirdModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -436,8 +437,8 @@
           <Property Name="HashtagID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Post" Relationship="Self.PostToHashtag" FromRole="Hashtag" ToRole="Post" />
           <Property Name="UseCount" Type="Int32" />
+          <NavigationProperty Name="Post" Relationship="Self.PostToHashtag" FromRole="Hashtag" ToRole="Post" />
         </EntityType>
         <EntityType Name="LikePost">
           <Key>
@@ -480,6 +481,7 @@
           <Property Name="ProfileHeader" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="ProfileHeader_MimeType" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="RegistrationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PersonCryptID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="LikePost" Relationship="Self.FKLikePost_PersonT" FromRole="Person" ToRole="LikePost" />
           <NavigationProperty Name="List" Relationship="Self.FKList_PersonT" FromRole="Person" ToRole="List" />
           <NavigationProperty Name="Post" Relationship="Self.FKPost_PersonT" FromRole="Person" ToRole="Post" />
@@ -491,7 +493,6 @@
           <NavigationProperty Name="Person12" Relationship="Self.Mute" FromRole="Person" ToRole="Person1" />
           <NavigationProperty Name="Person4" Relationship="Self.Mute" FromRole="Person1" ToRole="Person" />
           <NavigationProperty Name="List1" Relationship="Self.UserToList" FromRole="Person" ToRole="List" />
-          <Property Name="PersonCryptID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Post">
           <Key>
@@ -499,7 +500,7 @@
           </Key>
           <Property Name="PostID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Comment" Type="String" MaxLength="280" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="GIFImage" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="GIFImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="VideoFile" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="PublicationDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="InReplyTo" Type="Int32" />
@@ -719,10 +720,10 @@
           <EntitySetMapping Name="Hashtag">
             <EntityTypeMapping TypeName="MiniBirdModel.Hashtag">
               <MappingFragment StoreEntitySet="Hashtag">
-                <ScalarProperty Name="UseCount" ColumnName="UseCount" />
                 <ScalarProperty Name="HashtagID" ColumnName="HashtagID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="UseCount" ColumnName="UseCount" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -751,7 +752,6 @@
           <EntitySetMapping Name="Person">
             <EntityTypeMapping TypeName="MiniBirdModel.Person">
               <MappingFragment StoreEntitySet="Person">
-                <ScalarProperty Name="PersonCryptID" ColumnName="PersonCryptID" />
                 <ScalarProperty Name="PersonID" ColumnName="PersonID" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
@@ -765,6 +765,7 @@
                 <ScalarProperty Name="ProfileHeader" ColumnName="ProfileHeader" />
                 <ScalarProperty Name="ProfileHeader_MimeType" ColumnName="ProfileHeader_MimeType" />
                 <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
+                <ScalarProperty Name="PersonCryptID" ColumnName="PersonCryptID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

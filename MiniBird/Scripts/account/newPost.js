@@ -34,7 +34,7 @@
     });
 
     $.validator.addMethod('imageextensions', function (value, element, params) {
-        var extension = value.substring(value.lastIndexOf(".") + 1).toLowerCase();        
+        var extension = value.substring(value.lastIndexOf(".") + 1).toLowerCase();
         return $.inArray(extension, params.extensions) != -1;
     });
         

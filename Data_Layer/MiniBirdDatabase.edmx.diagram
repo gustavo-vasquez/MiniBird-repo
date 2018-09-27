@@ -4,8 +4,8 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d98fcc9246d74779a62cf5ef03ae01e4" Name="Diagram1">
-        <EntityTypeShape EntityType="MiniBirdModel.Hashtag" Width="1.5" PointX="6" PointY="1.25" IsExpanded="true" />
+      <Diagram DiagramId="0d44a73292934f1e902ea4b9ef28d1f8" Name="Diagram1">
+        <EntityTypeShape EntityType="MiniBirdModel.Hashtag" Width="1.5" PointX="6" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MiniBirdModel.LikePost" Width="1.5" PointX="5.25" PointY="4" IsExpanded="true" />
         <EntityTypeShape EntityType="MiniBirdModel.List" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
         <EntityTypeShape EntityType="MiniBirdModel.Person" Width="1.5" PointX="3" PointY="2.25" IsExpanded="true" />
