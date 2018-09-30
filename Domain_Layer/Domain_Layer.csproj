@@ -99,11 +99,12 @@
       <DependentUpon>MiniBirdDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="Validations\ArrayLengthAttribute.cs" />
-    <Compile Include="Validations\ImageExtensionsAttribute.cs" />
-    <Compile Include="Validations\ImageSizeAttribute.cs" />
+    <Compile Include="Validations\FileValidExtensionAttribute.cs" />
+    <Compile Include="Validations\FileMaxSizeAttribute.cs" />
     <Compile Include="Validations\RangeBirthMonthAttribute.cs" />
     <Compile Include="Validations\RangeBirthYearAttribute.cs" />
     <Compile Include="Validations\StartsWithProtocolAttribute.cs" />
+    <Compile Include="Validations\VideoSizeAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

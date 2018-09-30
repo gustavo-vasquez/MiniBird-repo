@@ -43,7 +43,7 @@ namespace Domain_Layer.DTO
         public int PostID { get; set; }
         public string Comment { get; set; }
         public string GIFImage { get; set; }
-        public byte[] VideoFile { get; set; }
+        public string VideoFile { get; set; }
         public List<string> Thumbnails { get; set; }
         //public string ImageFirstSlot { get; set; }
         //public string ImageSecondSlot { get; set; }

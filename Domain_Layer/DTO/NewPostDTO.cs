@@ -17,10 +17,13 @@ namespace Domain_Layer.DTO
         [MaxLength(280, ErrorMessage = "Límite: 280 caracteres")]        
         public string Comment { get; set; }
 
-        [ImageSize(30720)]
-        [ImageExtensions("gif")]
+        [FileMaxSize(30*1024)]
+        [FileValidExtension("gif")]
         public HttpPostedFileBase GifImage { get; set; }
-        public byte[] VideoFile { get; set; }        
+
+        [FileMaxSize(10*1024*1024)]
+        [FileValidExtension("mp4")]
+        public HttpPostedFileBase VideoFile { get; set; }
         public string[] ImagesUploaded { get; set; }        
         public int? InReplyTo { get; set; }
     }    

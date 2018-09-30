@@ -10,32 +10,36 @@
         ignore: ""
     })
 
-    $.validator.unobtrusive.adapters.add('imagesize', ['maxsize'], function (options) {
+    $.validator.unobtrusive.adapters.add('filemaxsize', ['maxsize'], function (options) {
         var params = {
             maxSize: options.params.maxsize
         };
-        options.rules['imagesize'] = params;
-        options.messages['imagesize'] = options.message;
+        options.rules['filemaxsize'] = params;
+        options.messages['filemaxsize'] = options.message;
     });
 
-    $.validator.addMethod('imagesize', function (value, element, params) {        
+    $.validator.addMethod('filemaxsize', function (value, element, params) {
         if (element.files.length > 0)
             return element.files[0].size <= params.maxSize;
         else
             return true;
     });
 
-    $.validator.unobtrusive.adapters.add('imageextensions', ['extensions'], function (options) {
+    $.validator.unobtrusive.adapters.add('filevalidextension', ['extensions'], function (options) {
         var params = {
             extensions: JSON.parse(options.params.extensions)
         };
-        options.rules['imageextensions'] = params;
-        options.messages['imageextensions'] = options.message;
+        options.rules['filevalidextension'] = params;
+        options.messages['filevalidextension'] = options.message;
     });
 
-    $.validator.addMethod('imageextensions', function (value, element, params) {
-        var extension = value.substring(value.lastIndexOf(".") + 1).toLowerCase();
-        return $.inArray(extension, params.extensions) != -1;
+    $.validator.addMethod('filevalidextension', function (value, element, params) {
+        if (element.files.length > 0) {
+            var extension = value.substring(value.lastIndexOf(".") + 1).toLowerCase();
+            return $.inArray(extension, params.extensions) != -1;
+        }
+        else
+            return true;
     });
         
     $.validator.unobtrusive.parse($('#NewPostForm, #NewReplyForm'));
@@ -108,6 +112,11 @@ function eventsforUploadImages() {
     $('#newGifBtn').on('click', function () {
         if (!$(this).hasClass('disabled'))
             $('#GifImage').click();
+    });
+
+    $('#newVideoBtn').on('click', function () {
+        if (!$(this).hasClass('disabled'))
+            $('#VideoFile').click();
     });
 
     //Check File API support

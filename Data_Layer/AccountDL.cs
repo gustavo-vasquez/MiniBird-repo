@@ -138,13 +138,8 @@ namespace Data_Layer
                         //post.Hashtag.Add(hash);
                         context.Post.Add(post);
                         context.SaveChanges();
-
-                        if(model.GifImage != null && model.GifImage.ContentLength > 0)
-                        {
-                            post.GIFImage = SaveGifOnServer(post.PostID, model.GifImage, localServer);
-                            context.SaveChanges();
-                        }
-                        else if (model.ImagesUploaded != null && model.ImagesUploaded.Length > 0)
+                        
+                        if (model.ImagesUploaded != null && model.ImagesUploaded.Length > 0)
                         {
                             int iteration = 1;
 
@@ -153,7 +148,17 @@ namespace Data_Layer
                                 context.Thumbnail.Add(new Thumbnail() { ImagePath = SaveThumbnailOnServer(image, post.PostID, localServer, iteration), ID_Post = post.PostID });
                                 context.SaveChanges();
                                 iteration++;
-                            }                            
+                            }
+                        }
+                        else if (model.GifImage != null && model.GifImage.ContentLength > 0)
+                        {
+                            post.GIFImage = SaveGifOnServer(post.PostID, model.GifImage, localServer);
+                            context.SaveChanges();
+                        }
+                        else if(model.VideoFile != null && model.VideoFile.ContentLength > 0)
+                        {
+                            post.VideoFile = SaveGifOnServer(post.PostID, model.VideoFile, localServer);
+                            context.SaveChanges();
                         }
 
                         return true;
@@ -235,7 +240,7 @@ namespace Data_Layer
                             break;
                         case "likes":
 
-                            var myLikes = context.LikePost.Where(lp => lp.ID_PersonThatLikesPost == person.PersonID);
+                            var myLikes = context.LikePost.Where(lp => lp.ID_PersonThatLikesPost == person.PersonID).OrderByDescending(lp => lp.DateOfAction);
 
                             foreach(var like in myLikes)
                             {

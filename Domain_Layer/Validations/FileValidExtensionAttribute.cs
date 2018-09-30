@@ -6,25 +6,29 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace Domain_Layer.Validations
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class ImageSizeAttribute : ValidationAttribute, IClientValidatable
+    public class FileValidExtensionAttribute : ValidationAttribute, IClientValidatable
     {
-        private readonly int _maxSize;
-        private const string defaultErrorMessage = "La imágen es superior a {1}kb";
+        private readonly string[] _extensions;
+        private const string defaultErrorMessage = "Extensiones soportadas: {1}";
 
-        public ImageSizeAttribute(int maxSize)
+        public FileValidExtensionAttribute(params string[] extensions)
         {
-            this._maxSize = maxSize;
+            this._extensions = extensions.Select(s => s.ToLower()).ToArray();
         }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if(value != null)
+            if (value != null)
             {
-                if ((value as HttpPostedFileBase).ContentLength <= _maxSize)
+                string fileName = (value as HttpPostedFileBase).FileName;
+                string extension = fileName.Substring(fileName.LastIndexOf('.') + 1).ToLower();
+
+                if (_extensions.Contains(extension))
                     return ValidationResult.Success;
                 else
                     return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
@@ -37,11 +41,11 @@ namespace Domain_Layer.Validations
         {
             var rule = new ModelClientValidationRule()
             {
-                ValidationType = "imagesize",
+                ValidationType = "filevalidextension",
                 ErrorMessage = FormatErrorMessage(metadata.GetDisplayName()),
             };
-
-            rule.ValidationParameters.Add("maxsize", _maxSize);            
+            
+            rule.ValidationParameters.Add("extensions", new JavaScriptSerializer().Serialize(_extensions));
 
             yield return rule;
         }
@@ -49,7 +53,7 @@ namespace Domain_Layer.Validations
         public override string FormatErrorMessage(string name)
         {
             if (string.IsNullOrWhiteSpace(base.ErrorMessage))
-                return string.Format(defaultErrorMessage, name, _maxSize/1024);
+                return string.Format(defaultErrorMessage, name, string.Join(",", _extensions));
 
             return string.Format(base.ErrorMessage, name);
         }

@@ -56,7 +56,7 @@ namespace Domain_Layer.DTO
         [MaxLength(100, ErrorMessage = "Máximo 100 caracteres")]
         public string WebSiteURL { get; set; }
 
-        [ImageSize(8, ErrorMessage = "Ha fallado el gif")]
+        [FileMaxSize(8, ErrorMessage = "Ha fallado el gif")]
         public System.Web.HttpPostedFileBase GifImage { get; set; }
 
         public string Birthdate { get; set; }        

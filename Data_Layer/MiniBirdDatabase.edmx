@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MiniBirdModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MiniBirdModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Block">
           <Key>
             <PropertyRef Name="ID_Person" />
@@ -84,7 +84,7 @@
           <Property Name="PostID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Comment" Type="nvarchar" MaxLength="280" Nullable="false" />
           <Property Name="GIFImage" Type="nvarchar(max)" />
-          <Property Name="VideoFile" Type="varbinary(max)" />
+          <Property Name="VideoFile" Type="nvarchar(max)" />
           <Property Name="PublicationDate" Type="datetime" Nullable="false" />
           <Property Name="InReplyTo" Type="int" />
           <Property Name="ID_Person" Type="int" Nullable="false" />
@@ -425,8 +425,7 @@
             <End Role="UserToList" EntitySet="UserToList" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MiniBirdModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -501,7 +500,7 @@
           <Property Name="PostID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Comment" Type="String" MaxLength="280" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="GIFImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="VideoFile" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="VideoFile" Type="String" Unicode="true" />
           <Property Name="PublicationDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="InReplyTo" Type="Int32" />
           <Property Name="ID_Person" Type="Int32" Nullable="false" />

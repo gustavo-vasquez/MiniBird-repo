@@ -17,16 +17,18 @@
                     <div class="form-group">
                         @Html.ValidationMessageFor(m => m.Comment, null, new { @class = "text-danger mb-1" })
                         @Html.TextAreaFor(m => m.Comment, new { @class = "form-control", placeholder = "¿Que tienes para decir?", rows = 1 })                            
-                    </div>                    
+                    </div>
                     <div id="imgThumbnailsRow" class="row no-gutters text-center justify-content-center d-none"></div>
                     @Html.ValidationMessageFor(m => m.GifImage, null, new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(m => m.VideoFile, null, new { @class = "text-danger" })
                 </div>
                 <div class="modal-footer">                    
                     <div class="w-100 justify-content-start">
-                        <input type="file" id="UploadImage" name="imgUploaded[]" class="d-none" accept="image/jpeg,image/png" multiple />
-                        @Html.TextBoxFor(m => m.GifImage, new { type = "file", @class = "d-none", accept = "image/gif" })                        
+                        <input type="file" id="UploadImage" name="imgUploaded[]" class="d-none" accept="image/jpeg,image/png" multiple />                        
                         <button id="newImageBtn" type="button" class="btn btn-secondary" title="Agregar imágenes"><i class="fas fa-images"></i></button>
+                        @Html.TextBoxFor(m => m.GifImage, new { type = "file", @class = "d-none", accept = "image/gif" })
                         <button id="newGifBtn" type="button" class="btn btn-secondary" title="Agregar una imágen GIF"><i class="fab fa-gofore"></i></button>                        
+                        @Html.TextBoxFor(m => m.VideoFile, new { type = "file", @class = "d-none", accept = "video/mp4,video/avi" })
                         <button id="newVideoBtn" type="button" class="btn btn-secondary" title="Agregar un video"><i class="fas fa-video"></i></button>
                         <button id="newLinkBtn" type="button" class="btn btn-secondary" title="Agregar un enlace"><i class="fas fa-link"></i></button>                        
                     </div>

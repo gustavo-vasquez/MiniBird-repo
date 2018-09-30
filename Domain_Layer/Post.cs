@@ -27,7 +27,7 @@ namespace Domain_Layer
         public int PostID { get; set; }
         public string Comment { get; set; }
         public string GIFImage { get; set; }
-        public byte[] VideoFile { get; set; }
+        public string VideoFile { get; set; }
         public System.DateTime PublicationDate { get; set; }
         public Nullable<int> InReplyTo { get; set; }
         public int ID_Person { get; set; }
