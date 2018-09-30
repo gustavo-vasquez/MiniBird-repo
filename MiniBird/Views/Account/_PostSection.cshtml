@@ -21,12 +21,12 @@
                         <div class="dropdown post-actions-menu">
                             <a id="menuLinkActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-caret-square-down ml-2"></i></a>
                             <div class="dropdown-menu" aria-labelledby="menuLinkActions">
-                                <a class="dropdown-item copy-link" href="javascript:void(0);" data-copyurl="@(Request.Url.Authority + "/Account/ProfileScreen/ViewPost/" + post.PostID)"><i class="far fa-copy"></i> Copiar enlace del post</a>                                
+                                <a class="dropdown-item copy-link" href="javascript:void(0);" data-copyurl="@(Request.Url.Authority + "/Account/ProfileScreen/" + post.CreatedBy + "/ViewPost/" + post.PostID)"><i class="far fa-copy"></i> Copiar enlace del post</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#"><i class="fas fa-microphone-alt-slash"></i> Silenciar a @@usuario</a>
                                 <a class="dropdown-item" href="#"><i class="fas fa-lock"></i> Bloquear a @@usuario</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="@Url.Action("ViewPost", "Account", new { postID = post.PostID })" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> Abrir en una pestaña nueva</a>
+                                <a class="dropdown-item" href="@Url.Action("ViewPost", "Account", new { id = post.CreatedBy, postID = post.PostID })" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> Abrir en una pestaña nueva</a>
                             </div>
                         </div>
                     </div>

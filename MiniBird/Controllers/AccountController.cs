@@ -185,12 +185,12 @@ namespace MiniBird.Controllers
             {
                 if (Request.IsAjaxRequest())
                 {
-                    var model = Account.ViewPostCollectionDataSL(postID);                    
+                    var model = Account.ViewPostAjaxCollectionDataSL(postID);                    
                     return PartialView("_ViewPost", model);
                 }
                 else
                 {
-                    var model = Account.FullViewPostCollectionDataSL(postID);                    
+                    var model = Account.ViewPostCollectionDataSL(postID);                    
                     return View(model);
                 }
             }

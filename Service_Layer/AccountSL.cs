@@ -104,14 +104,14 @@ namespace Service_Layer
             Account.RemoveListDL(listID, personID);
         }
 
-        public ViewPostDTO ViewPostCollectionDataSL(int postID)
+        public ViewPostDTO ViewPostAjaxCollectionDataSL(int postID)
         {
-            return Account.ViewPostCollectionDataDL(postID);
+            return Account.ViewPostAjaxCollectionDataDL(postID);
         }
 
-        public FullViewPostDTO FullViewPostCollectionDataSL(int postID)
+        public FullViewPostDTO ViewPostCollectionDataSL(int postID)
         {
-            return Account.FullViewPostCollectionDataDL(postID);
+            return Account.ViewPostCollectionDataDL(postID);
         }
 
         public bool CreateNewReplySL(NewPostDTO data, int personID, HttpServerUtilityBase localServer)

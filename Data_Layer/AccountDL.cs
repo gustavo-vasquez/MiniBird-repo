@@ -679,7 +679,7 @@ namespace Data_Layer
             }            
         }
 
-        public ViewPostDTO ViewPostCollectionDataDL(int postID)
+        public ViewPostDTO ViewPostAjaxCollectionDataDL(int postID)
         {
             try
             {
@@ -732,12 +732,12 @@ namespace Data_Layer
             }
         }
 
-        public FullViewPostDTO FullViewPostCollectionDataDL(int postID)
+        public FullViewPostDTO ViewPostCollectionDataDL(int postID)
         {
             try
             {
                 var fullViewPost = new FullViewPostDTO();
-                ViewPostDTO viewPost = this.ViewPostCollectionDataDL(postID);
+                ViewPostDTO viewPost = this.ViewPostAjaxCollectionDataDL(postID);
                 fullViewPost.PostSection = viewPost.PostSection;
                 fullViewPost.RepliesToPost = viewPost.RepliesToPost;
 
