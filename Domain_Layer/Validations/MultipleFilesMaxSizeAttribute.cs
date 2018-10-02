@@ -10,24 +10,33 @@ using System.Web.Mvc;
 namespace Domain_Layer.Validations
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class FileMaxSizeAttribute : ValidationAttribute, IClientValidatable
+    public class MultipleFilesMaxSizeAttribute : ValidationAttribute, IClientValidatable
     {
         private readonly int _maxSize;
-        private const string _defaultErrorMessage = "La imágen es superior a {1}kb";
+        private string _defaultErrorMessage = "El peso total de imágenes supera los {1}kb";
 
-        public FileMaxSizeAttribute(int maxSize)
+        public MultipleFilesMaxSizeAttribute(int maxSize)
         {
             this._maxSize = maxSize;
         }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if(value != null)
+            int totalSize = 0;
+
+            if (value != null && value is IEnumerable<HttpPostedFileBase>)
             {
-                if ((value as HttpPostedFileBase).ContentLength <= _maxSize)
-                    return ValidationResult.Success;
-                else
-                    return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                foreach(HttpPostedFileBase file in value as IEnumerable<HttpPostedFileBase>)
+                {
+                    if (file.ContentLength > _maxSize)
+                        return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+
+                    totalSize = totalSize + file.ContentLength;
+                }
+
+                if(totalSize > _maxSize)                                    
+                    return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));                
+
             }
 
             return ValidationResult.Success;
@@ -37,11 +46,11 @@ namespace Domain_Layer.Validations
         {
             var rule = new ModelClientValidationRule()
             {
-                ValidationType = "filemaxsize",
+                ValidationType = "multiplefilesmaxsize",
                 ErrorMessage = FormatErrorMessage(metadata.GetDisplayName()),
             };
 
-            rule.ValidationParameters.Add("maxsize", _maxSize);            
+            rule.ValidationParameters.Add("maxsize", _maxSize);
 
             yield return rule;
         }
@@ -49,7 +58,7 @@ namespace Domain_Layer.Validations
         public override string FormatErrorMessage(string name)
         {
             if (string.IsNullOrWhiteSpace(base.ErrorMessage))
-                return string.Format(_defaultErrorMessage, name, _maxSize/1024);
+                return string.Format(_defaultErrorMessage, name, _maxSize / 1024);
 
             return string.Format(base.ErrorMessage, name);
         }

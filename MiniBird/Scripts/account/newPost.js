@@ -18,14 +18,40 @@
         options.messages['filemaxsize'] = options.message;
     });
 
-    $.validator.addMethod('filemaxsize', function (value, element, params) {
+    $.validator.addMethod('filemaxsize', function (value, element, params) {        
         if (element.files.length > 0)
             return element.files[0].size <= params.maxSize;
         else
             return true;
     });
 
-    $.validator.unobtrusive.adapters.add('filevalidextension', ['extensions'], function (options) {
+    $.validator.unobtrusive.adapters.add('multiplefilesmaxsize', ['maxsize'], function (options) {
+        var params = {
+            maxSize: options.params.maxsize
+        };
+        options.rules['multiplefilesmaxsize'] = params;
+        options.messages['multiplefilesmaxsize'] = options.message;
+    });
+
+    $.validator.addMethod('multiplefilesmaxsize', function (value, element, params) {
+        var totalSize = 0;
+
+        if (element.files.length > 0) {
+            for (var i = 0; i < element.files.length; i++) {
+                if (element.files[i].size > params.maxSize)
+                    return false;
+
+                totalSize = totalSize + element.files[i].size;
+            }
+
+            if (totalSize > params.maxSize)
+                return false;
+        }
+
+        return true;
+    });
+
+    $.validator.unobtrusive.adapters.add('filevalidextension', ['extensions'], function (options) {        
         var params = {
             extensions: JSON.parse(options.params.extensions)
         };
@@ -35,7 +61,7 @@
 
     $.validator.addMethod('filevalidextension', function (value, element, params) {
         if (element.files.length > 0) {
-            var extension = value.substring(value.lastIndexOf(".") + 1).toLowerCase();
+            var extension = value.substring(value.lastIndexOf(".") + 1).toLowerCase();            
             return $.inArray(extension, params.extensions) != -1;
         }
         else
@@ -106,7 +132,8 @@ function imageErrorMsg(type) {
 function eventsforUploadImages() {
     $('#newImageBtn').on('click', function () {
         if(!$(this).hasClass('disabled'))
-            $('#UploadImage').click();
+            $('#ImageFiles').click();
+            //$('#UploadImage').click();
     });
 
     $('#newGifBtn').on('click', function () {
@@ -182,70 +209,133 @@ function eventsforUploadImages() {
     }
 
     //Check File API support
-    if (window.File && window.FileList && window.FileReader) {        
-        var filesInput = document.getElementById("UploadImage");
+    if (window.File && window.FileList && window.FileReader) {
+        var filesInput = document.getElementById("VideoFile");
         var $imgThumbnailsRow = $('#imgThumbnailsRow');
 
-        filesInput.addEventListener("change", function (event) {            
-            var files = event.target.files; //FileList object
-            var output = document.getElementById("imgThumbnailsRow");
-            var allowExt = ["jpg", "jpeg", "png"];
-            var filesTotalSize = 0;
+        filesInput.addEventListener("change", function (event) {
+            if ($(this).valid()) {
+                var file = event.target.files[0]; //FileList object
+                var output = document.getElementById("imgThumbnailsRow");                
 
-            if ($('input[name=ImagesUploaded]').length > 3 || files.length > 4) {                
-                return imageErrorMsg("length");                
-            }
-
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                var fileExt = file.name.substring(file.name.lastIndexOf('.') + 1);
-                filesTotalSize = filesTotalSize + files[i].size;
-
-                if (filesTotalSize > 2097152) {
-                    // Permitido hasta 2MB
-                    return imageErrorMsg("size");
-                }
+                $('#newImageBtn, #newGifBtn').addClass("disabled");
 
                 //Only pics
-                if (!file.type.match('image'))
-                    continue;                
-
-                if ($.inArray(fileExt, allowExt) == -1) {
-                    return imageErrorMsg("extension");
-                }
+                if (!file.type.match('video'))
+                    return;
 
                 var picReader = new FileReader();
                 picReader.fileName = file.name;
 
-                picReader.addEventListener("load", function (event) {                    
+                picReader.addEventListener("load", function (event) {
                     var picFile = event.target;
+                    console.log(picFile.fileName);
 
-                    var div = document.createElement("div");
-                    div.classList.add("col");
-                    div.classList.add("col-md-3");
-                    var figure = document.createElement("figure");
+                    if ($('#videoToUpload').length > 0) {
+                        $('#videoToUpload').attr({ src: picFile.result, title: picFile.fileName });
+                    }
+                    else {
+                        var div = document.createElement("div");
+                        div.classList.add("col");                        
+                        var figure = document.createElement("figure");                        
+                        figure.innerHTML = "<div class='card embed-responsive embed-responsive-16by9'><video id='videoToUpload' src=" + picFile.result + " class='embed-responsive-item' controls autoplay></video></div><button class='gif-remove-thumbnail' type='button' title='Eliminar'>&times;</button>";
 
-                    figure.innerHTML = "<input type='hidden' name='ImagesUploaded' value='" + picFile.result + "' /><img class='img-upload-newPost' src='" + picFile.result + "'" +
-                            "title='" + picFile.fileName + "'/><button class='img-remove-newPost' type='button' title='Eliminar'>&times;</button>";
+                        div.insertBefore(figure, null);
+                        output.insertBefore(div, null);
+                    }
 
-                    div.insertBefore(figure, null);
-                    output.insertBefore(div, null);
-
-                    $('.img-remove-newPost').on('click', function () {
+                    $('.gif-remove-thumbnail').on('click', function () {
                         $(this).parent("figure").parent("div").remove();
 
                         if ($imgThumbnailsRow.is(':empty'))
-                            $imgThumbnailsRow.addClass('d-none');                        
+                            $imgThumbnailsRow.addClass('d-none');
+
+                        $('#newImageBtn, #newGifBtn').removeClass("disabled");
+                        $('#VideoFile').val(null);
                     });
                 });
 
                 //Read the image
                 picReader.readAsDataURL(file);
-            }
 
-            if ($imgThumbnailsRow.hasClass('d-none')) {
-                $imgThumbnailsRow.removeClass('d-none');
+                if ($imgThumbnailsRow.hasClass('d-none')) {
+                    $imgThumbnailsRow.removeClass('d-none');
+                }
             }
+        });
+    }
+    else {
+        console.log("Tu navegador no soporta File API");
+    }
+
+    //Check File API support
+    if (window.File && window.FileList && window.FileReader) {        
+        //var filesInput = document.getElementById("UploadImage");
+        var filesInput = document.getElementById("ImageFiles");
+        var $imgThumbnailsRow = $('#imgThumbnailsRow');
+
+        filesInput.addEventListener("change", function (event) {
+            if ($(this).valid()) {
+                var files = event.target.files; //FileList object
+                var output = document.getElementById("imgThumbnailsRow");
+                //var allowExt = ["jpg", "jpeg", "png"];
+                //var filesTotalSize = 0;
+
+                //if ($('input[name=ImagesUploaded]').length > 3 || files.length > 4) {                
+                //    return imageErrorMsg("length");                
+                //}
+
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    //var fileExt = file.name.substring(file.name.lastIndexOf('.') + 1);
+                    //filesTotalSize = filesTotalSize + files[i].size;
+
+                    //if (filesTotalSize > 2097152) {
+                    //    // Permitido hasta 2MB
+                    //    return imageErrorMsg("size");
+                    //}
+
+                    //Only pics
+                    if (!file.type.match('image'))
+                        continue;
+
+                    //if ($.inArray(fileExt, allowExt) == -1) {
+                    //    return imageErrorMsg("extension");
+                    //}
+
+                    var picReader = new FileReader();
+                    picReader.fileName = file.name;
+
+                    picReader.addEventListener("load", function (event) {
+                        var picFile = event.target;
+
+                        var div = document.createElement("div");
+                        div.classList.add("col");
+                        div.classList.add("col-md-3");
+                        var figure = document.createElement("figure");
+
+                        figure.innerHTML = "<input type='hidden' name='ImagesUploaded' value='" + picFile.result + "' /><img class='img-upload-newPost' src='" + picFile.result + "'" +
+                                "title='" + picFile.fileName + "'/><button class='img-remove-newPost' type='button' title='Eliminar'>&times;</button>";
+
+                        div.insertBefore(figure, null);
+                        output.insertBefore(div, null);
+
+                        $('.img-remove-newPost').on('click', function () {
+                            $(this).parent("figure").parent("div").remove();
+
+                            if ($imgThumbnailsRow.is(':empty'))
+                                $imgThumbnailsRow.addClass('d-none');
+                        });
+                    });
+
+                    //Read the image
+                    picReader.readAsDataURL(file);
+                }
+
+                if ($imgThumbnailsRow.hasClass('d-none')) {
+                    $imgThumbnailsRow.removeClass('d-none');
+                }
+            }            
         });
     }
     else {

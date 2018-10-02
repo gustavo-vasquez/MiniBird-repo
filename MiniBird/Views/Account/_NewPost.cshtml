@@ -19,12 +19,14 @@
                         @Html.TextAreaFor(m => m.Comment, new { @class = "form-control", placeholder = "¿Que tienes para decir?", rows = 1 })                            
                     </div>
                     <div id="imgThumbnailsRow" class="row no-gutters text-center justify-content-center d-none"></div>
+                    @Html.ValidationMessageFor(m => m.ImageFiles, null, new { @class = "text-danger" })
                     @Html.ValidationMessageFor(m => m.GifImage, null, new { @class = "text-danger" })
                     @Html.ValidationMessageFor(m => m.VideoFile, null, new { @class = "text-danger" })
                 </div>
                 <div class="modal-footer">                    
                     <div class="w-100 justify-content-start">
-                        <input type="file" id="UploadImage" name="imgUploaded[]" class="d-none" accept="image/jpeg,image/png" multiple />                        
+                        @Html.TextBoxFor(m => m.ImageFiles, new { name = "imgUploaded", type = "file", @class = "d-none", accept = "image/jpeg", multiple = "multiple" })
+                        @*<input type="file" id="UploadImage" name="imgUploaded" class="d-none" accept="image/jpeg,image/png" multiple />*@
                         <button id="newImageBtn" type="button" class="btn btn-secondary" title="Agregar imágenes"><i class="fas fa-images"></i></button>
                         @Html.TextBoxFor(m => m.GifImage, new { type = "file", @class = "d-none", accept = "image/gif" })
                         <button id="newGifBtn" type="button" class="btn btn-secondary" title="Agregar una imágen GIF"><i class="fab fa-gofore"></i></button>                        

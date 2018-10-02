@@ -33,7 +33,7 @@
     });
 
     $('body').on('click', '.post, .answers', function (event) {
-        var filterList = ".post-images img, .repost, .repost i, .repost span, .like, .like i, .like span, .card-link, .card-link img, .post-actions-menu a, .post-actions-menu i, .post-actions-menu .dropdown-menu";
+        var filterList = ".post a, .post b, .post img, .post-images img, .repost, .repost i, .repost span, .like, .like i, .like span, .card-link, .card-link img, .post-actions-menu a, .post-actions-menu i, .post-actions-menu .dropdown-menu";
         if (!$(event.target).is(filterList))
             loadPost($(this).data('postid'));
     });

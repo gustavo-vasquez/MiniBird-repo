@@ -14,7 +14,7 @@ namespace Domain_Layer.Validations
     public class FileValidExtensionAttribute : ValidationAttribute, IClientValidatable
     {
         private readonly string[] _extensions;
-        private const string defaultErrorMessage = "Extensiones soportadas: {1}";
+        private const string _defaultErrorMessage = "Sólo archivos {1}";
 
         public FileValidExtensionAttribute(params string[] extensions)
         {
@@ -53,7 +53,7 @@ namespace Domain_Layer.Validations
         public override string FormatErrorMessage(string name)
         {
             if (string.IsNullOrWhiteSpace(base.ErrorMessage))
-                return string.Format(defaultErrorMessage, name, string.Join(",", _extensions));
+                return string.Format(_defaultErrorMessage, name, string.Join(",", _extensions));
 
             return string.Format(base.ErrorMessage, name);
         }
