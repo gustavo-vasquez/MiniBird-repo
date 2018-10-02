@@ -98,7 +98,7 @@
     <Compile Include="Thumbnail.cs">
       <DependentUpon>MiniBirdDatabase.tt</DependentUpon>
     </Compile>
-    <Compile Include="Validations\ArrayLengthAttribute.cs" />
+    <Compile Include="Validations\CollectionMaxLengthAttribute.cs" />
     <Compile Include="Validations\FileValidExtensionAttribute.cs" />
     <Compile Include="Validations\FileMaxSizeAttribute.cs" />
     <Compile Include="Validations\MultipleFilesMaxSizeAttribute.cs" />

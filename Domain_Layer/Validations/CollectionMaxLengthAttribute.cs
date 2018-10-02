@@ -9,29 +9,29 @@ using System.Web.Mvc;
 namespace Domain_Layer.Validations
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class ArrayLengthAttribute : ValidationAttribute, IClientValidatable
+    public class CollectionMaxLengthAttribute : ValidationAttribute, IClientValidatable
     {
         private readonly int _maxLength;        
-        private const string DefaultErrorMessage = "Máximo: {1} imágenes";
+        private const string _defaultErrorMessage = "Máximo {1} imágenes";
         
-        public ArrayLengthAttribute(int maxLength)
+        public CollectionMaxLengthAttribute(int maxLength)
         {
             this._maxLength = maxLength;
         }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if (((System.Collections.ICollection)value).Count <= _maxLength)            
-                return ValidationResult.Success;
-            else            
-                return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));                        
+            if ((value as System.Collections.ICollection).Count > _maxLength)
+                return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+
+            return ValidationResult.Success;
         }
 
         public IEnumerable<ModelClientValidationRule> GetClientValidationRules(ModelMetadata metadata, ControllerContext context)
         {
             var rule = new ModelClientValidationRule()
             {
-                ValidationType = "arraylength",
+                ValidationType = "collectionmaxlength",
                 ErrorMessage = FormatErrorMessage(metadata.GetDisplayName()),
             };
 
@@ -43,7 +43,7 @@ namespace Domain_Layer.Validations
         public override string FormatErrorMessage(string name)
         {
             if (string.IsNullOrWhiteSpace(base.ErrorMessage))
-                return string.Format(DefaultErrorMessage, name, _maxLength);            
+                return string.Format(_defaultErrorMessage, name, _maxLength);            
 
             return string.Format(base.ErrorMessage, name, _maxLength);
         }

@@ -51,6 +51,18 @@
         return true;
     });
 
+    $.validator.unobtrusive.adapters.add('collectionmaxlength', ['maxlength'], function (options) {
+        var params = {
+            maxLength: options.params.maxlength
+        };
+        options.rules['collectionmaxlength'] = params;
+        options.messages['collectionmaxlength'] = options.message;
+    });
+
+    $.validator.addMethod('collectionmaxlength', function (value, element, params) {        
+        return element.files.length <= params.maxLength;
+    });
+
     $.validator.unobtrusive.adapters.add('filevalidextension', ['extensions'], function (options) {        
         var params = {
             extensions: JSON.parse(options.params.extensions)
@@ -115,7 +127,7 @@ function imageErrorMsg(type) {
             message = "Sólo imágenes jpg, jpeg, png";
             break;
         case "size":
-            message = "Permitido hasta 4MB";
+            message = "El peso total de imágenes supera los 200kb";
             break;
         default:
             return false;
@@ -273,27 +285,33 @@ function eventsforUploadImages() {
         //var filesInput = document.getElementById("UploadImage");
         var filesInput = document.getElementById("ImageFiles");
         var $imgThumbnailsRow = $('#imgThumbnailsRow');
+        var filesTotalSize = 0;
 
         filesInput.addEventListener("change", function (event) {
             if ($(this).valid()) {
                 var files = event.target.files; //FileList object
                 var output = document.getElementById("imgThumbnailsRow");
-                //var allowExt = ["jpg", "jpeg", "png"];
-                //var filesTotalSize = 0;
+                //var allowExt = ["jpg", "jpeg", "png"];                
+                var filesCount = $('input[name=ImagesUploaded]').length + files.length;
 
-                //if ($('input[name=ImagesUploaded]').length > 3 || files.length > 4) {                
-                //    return imageErrorMsg("length");                
-                //}
+                if (filesCount > 4)
+                    return imageErrorMsg("length");
+                else
+                    $('.image-error-msg').remove();
 
                 for (var i = 0; i < files.length; i++) {
                     var file = files[i];
                     //var fileExt = file.name.substring(file.name.lastIndexOf('.') + 1);
-                    //filesTotalSize = filesTotalSize + files[i].size;
+                    filesTotalSize = filesTotalSize + files[i].size;
+                    console.log(filesTotalSize);
 
-                    //if (filesTotalSize > 2097152) {
-                    //    // Permitido hasta 2MB
-                    //    return imageErrorMsg("size");
-                    //}
+                    if (filesTotalSize > 200*1024) {
+                        // Permitido hasta 2MB
+                        filesTotalSize = filesTotalSize - files[i].size;
+                        return imageErrorMsg("size");
+                    }
+                    else
+                        $('.image-error-msg').remove();
 
                     //Only pics
                     if (!file.type.match('image'))
@@ -324,7 +342,7 @@ function eventsforUploadImages() {
                             $(this).parent("figure").parent("div").remove();
 
                             if ($imgThumbnailsRow.is(':empty'))
-                                $imgThumbnailsRow.addClass('d-none');
+                                $imgThumbnailsRow.addClass('d-none');                                                       
                         });
                     });
 

@@ -17,7 +17,8 @@ namespace Domain_Layer.DTO
         [MaxLength(280, ErrorMessage = "Límite: 280 caracteres")]        
         public string Comment { get; set; }
         
-        [MultipleFilesMaxSize(30*1024)]
+        [MultipleFilesMaxSize(200*1024)]
+        [CollectionMaxLength(4)]
         //[FileValidExtension("jpg","jpeg")]
         public IEnumerable<HttpPostedFileBase> ImageFiles { get; set; }
 
