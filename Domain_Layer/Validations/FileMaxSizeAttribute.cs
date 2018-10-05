@@ -13,7 +13,7 @@ namespace Domain_Layer.Validations
     public class FileMaxSizeAttribute : ValidationAttribute, IClientValidatable
     {
         private readonly int _maxSize;
-        private const string _defaultErrorMessage = "La imágen es superior a {1}kb";
+        private const string _defaultErrorMessage = "El archivo es superior a {1}kb";
 
         public FileMaxSizeAttribute(int maxSize)
         {
@@ -24,9 +24,7 @@ namespace Domain_Layer.Validations
         {
             if(value != null)
             {
-                if ((value as HttpPostedFileBase).ContentLength <= _maxSize)
-                    return ValidationResult.Success;
-                else
+                if ((value as HttpPostedFileBase).ContentLength > _maxSize)
                     return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             }
 

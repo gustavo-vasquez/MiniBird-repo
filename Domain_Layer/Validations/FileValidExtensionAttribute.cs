@@ -28,9 +28,7 @@ namespace Domain_Layer.Validations
                 string fileName = (value as HttpPostedFileBase).FileName;
                 string extension = fileName.Substring(fileName.LastIndexOf('.') + 1).ToLower();
 
-                if (_extensions.Contains(extension))
-                    return ValidationResult.Success;
-                else
+                if (!_extensions.Contains(extension))
                     return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
             }
 

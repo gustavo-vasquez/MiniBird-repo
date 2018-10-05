@@ -12,7 +12,7 @@ namespace Domain_Layer.Validations
     public class CollectionMaxLengthAttribute : ValidationAttribute, IClientValidatable
     {
         private readonly int _maxLength;        
-        private const string _defaultErrorMessage = "Máximo {1} imágenes";
+        private const string _defaultErrorMessage = "Máximo {1} archivos";
         
         public CollectionMaxLengthAttribute(int maxLength)
         {

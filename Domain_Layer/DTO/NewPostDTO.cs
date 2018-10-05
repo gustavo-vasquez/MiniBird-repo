@@ -16,18 +16,18 @@ namespace Domain_Layer.DTO
         [Required(ErrorMessage = "Primero cuéntanos que quieres decir")]
         [MaxLength(280, ErrorMessage = "Límite: 280 caracteres")]        
         public string Comment { get; set; }
-        
-        [MultipleFilesMaxSize(200*1024)]
+
         [CollectionMaxLength(4)]
-        //[FileValidExtension("jpg","jpeg")]
+        [MultipleFilesValidExtension("jpg", "jpeg")]
+        [MultipleFilesMaxSize(200*1024)]                
         public IEnumerable<HttpPostedFileBase> ImageFiles { get; set; }
 
         [FileMaxSize(1*1024*1024)]
         [FileValidExtension("gif")]
         public HttpPostedFileBase GifImage { get; set; }
 
-        [FileMaxSize(5*1024*1024)]
-        [FileValidExtension("mp4","avi")]
+        [FileMaxSize(8*1024*1024)]
+        [FileValidExtension("mp4")]
         public HttpPostedFileBase VideoFile { get; set; }
         public string[] ImagesUploaded { get; set; }        
         public int? InReplyTo { get; set; }

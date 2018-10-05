@@ -102,10 +102,10 @@
     <Compile Include="Validations\FileValidExtensionAttribute.cs" />
     <Compile Include="Validations\FileMaxSizeAttribute.cs" />
     <Compile Include="Validations\MultipleFilesMaxSizeAttribute.cs" />
+    <Compile Include="Validations\MultipleFilesValidExtensionAttribute.cs" />
     <Compile Include="Validations\RangeBirthMonthAttribute.cs" />
     <Compile Include="Validations\RangeBirthYearAttribute.cs" />
     <Compile Include="Validations\StartsWithProtocolAttribute.cs" />
-    <Compile Include="Validations\VideoSizeAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

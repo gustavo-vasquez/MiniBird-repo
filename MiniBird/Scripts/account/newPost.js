@@ -10,20 +10,20 @@
         ignore: ""
     })
 
-    $.validator.unobtrusive.adapters.add('filemaxsize', ['maxsize'], function (options) {
-        var params = {
-            maxSize: options.params.maxsize
-        };
-        options.rules['filemaxsize'] = params;
-        options.messages['filemaxsize'] = options.message;
-    });
+    //$.validator.unobtrusive.adapters.add('filemaxsize', ['maxsize'], function (options) {
+    //    var params = {
+    //        maxSize: options.params.maxsize
+    //    };
+    //    options.rules['filemaxsize'] = params;
+    //    options.messages['filemaxsize'] = options.message;
+    //});
 
-    $.validator.addMethod('filemaxsize', function (value, element, params) {        
-        if (element.files.length > 0)
-            return element.files[0].size <= params.maxSize;
-        else
-            return true;
-    });
+    //$.validator.addMethod('filemaxsize', function (value, element, params) {        
+    //    if (element.files.length > 0)
+    //        return element.files[0].size <= params.maxSize;
+    //    else
+    //        return true;
+    //});
 
     $.validator.unobtrusive.adapters.add('multiplefilesmaxsize', ['maxsize'], function (options) {
         var params = {
@@ -63,21 +63,41 @@
         return element.files.length <= params.maxLength;
     });
 
-    $.validator.unobtrusive.adapters.add('filevalidextension', ['extensions'], function (options) {        
+    //$.validator.unobtrusive.adapters.add('filevalidextension', ['extensions'], function (options) {        
+    //    var params = {
+    //        extensions: JSON.parse(options.params.extensions)
+    //    };
+    //    options.rules['filevalidextension'] = params;
+    //    options.messages['filevalidextension'] = options.message;
+    //});
+
+    //$.validator.addMethod('filevalidextension', function (value, element, params) {
+    //    if (element.files.length > 0) {
+    //        var extension = value.substring(value.lastIndexOf(".") + 1).toLowerCase();            
+    //        return $.inArray(extension, params.extensions) != -1;
+    //    }
+    //    else
+    //        return true;
+    //});
+
+    $.validator.unobtrusive.adapters.add('multiplefilesvalidextension', ['extensions'], function (options) {
         var params = {
             extensions: JSON.parse(options.params.extensions)
         };
-        options.rules['filevalidextension'] = params;
-        options.messages['filevalidextension'] = options.message;
+        options.rules['multiplefilesvalidextension'] = params;
+        options.messages['multiplefilesvalidextension'] = options.message;
     });
 
-    $.validator.addMethod('filevalidextension', function (value, element, params) {
+    $.validator.addMethod('multiplefilesvalidextension', function (value, element, params) {
         if (element.files.length > 0) {
-            var extension = value.substring(value.lastIndexOf(".") + 1).toLowerCase();            
-            return $.inArray(extension, params.extensions) != -1;
+            for (var i = 0; i < element.files.length; i++) {
+                var extension = element.files[i].name.substring(element.files[i].name.lastIndexOf(".") + 1).toLowerCase();
+                if ($.inArray(extension, params.extensions) === -1)
+                    return false;
+            }
         }
-        else
-            return true;
+
+        return true;
     });
         
     $.validator.unobtrusive.parse($('#NewPostForm, #NewReplyForm'));
@@ -240,8 +260,7 @@ function eventsforUploadImages() {
                 picReader.fileName = file.name;
 
                 picReader.addEventListener("load", function (event) {
-                    var picFile = event.target;
-                    console.log(picFile.fileName);
+                    var picFile = event.target;                    
 
                     if ($('#videoToUpload').length > 0) {
                         $('#videoToUpload').attr({ src: picFile.result, title: picFile.fileName });
@@ -249,15 +268,15 @@ function eventsforUploadImages() {
                     else {
                         var div = document.createElement("div");
                         div.classList.add("col");                        
-                        var figure = document.createElement("figure");                        
-                        figure.innerHTML = "<div class='card embed-responsive embed-responsive-16by9'><video id='videoToUpload' src=" + picFile.result + " class='embed-responsive-item' controls autoplay></video></div><button class='gif-remove-thumbnail' type='button' title='Eliminar'>&times;</button>";
+                        var figure = document.createElement("figure");
+                        figure.innerHTML = "<div class='alert alert-dismissible alert-secondary'><button type='button' class='close video-remove-thumbnail' title='Eliminar'>&times;</button><i class='fas fa-video'></i> " + picFile.fileName + "</div><div class='card embed-responsive embed-responsive-16by9'><video id='videoToUpload' src=" + picFile.result + " class='embed-responsive-item' controls></video></div>";
 
                         div.insertBefore(figure, null);
                         output.insertBefore(div, null);
                     }
 
-                    $('.gif-remove-thumbnail').on('click', function () {
-                        $(this).parent("figure").parent("div").remove();
+                    $('.video-remove-thumbnail').on('click', function () {
+                        $(this).closest("figure").parent("div").remove();
 
                         if ($imgThumbnailsRow.is(':empty'))
                             $imgThumbnailsRow.addClass('d-none');
@@ -302,8 +321,7 @@ function eventsforUploadImages() {
                 for (var i = 0; i < files.length; i++) {
                     var file = files[i];
                     //var fileExt = file.name.substring(file.name.lastIndexOf('.') + 1);
-                    filesTotalSize = filesTotalSize + files[i].size;
-                    console.log(filesTotalSize);
+                    filesTotalSize = filesTotalSize + files[i].size;                    
 
                     if (filesTotalSize > 200*1024) {
                         // Permitido hasta 2MB
