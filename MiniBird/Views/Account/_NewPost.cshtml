@@ -27,12 +27,12 @@
                     <div class="w-100 justify-content-start">
                         @Html.TextBoxFor(m => m.ImageFiles, new { name = "imgUploaded", type = "file", @class = "d-none", accept = "image/jpeg", multiple = "multiple" })
                         @*<input type="file" id="UploadImage" name="imgUploaded" class="d-none" accept="image/jpeg,image/png" multiple />*@
-                        <button id="newImageBtn" type="button" class="btn btn-secondary" title="Agregar imágenes JPG, JPEG o PNG"><i class="fas fa-images"></i></button>
+                        <label id="newImageBtn" class="btn btn-secondary" title="Agregar imágenes JPG, JPEG o PNG"><i class="fas fa-images"></i></label>
                         @Html.TextBoxFor(m => m.GifImage, new { type = "file", @class = "d-none", accept = "image/gif" })
-                        <button id="newGifBtn" type="button" class="btn btn-secondary" title="Agregar una imágen GIF"><i class="fab fa-gofore"></i></button>                        
+                        <label for="GifImage" id="newGifBtn" class="btn btn-secondary" title="Agregar una imágen GIF"><i class="fab fa-gofore"></i></label>                        
                         @Html.TextBoxFor(m => m.VideoFile, new { type = "file", @class = "d-none", accept = "video/mp4,video/avi" })
-                        <button id="newVideoBtn" type="button" class="btn btn-secondary" title="Agregar un video MP4"><i class="fas fa-video"></i></button>
-                        <button id="newLinkBtn" type="button" class="btn btn-secondary" title="Agregar un enlace"><i class="fas fa-link"></i></button>                        
+                        <label id="newVideoBtn" class="btn btn-secondary" title="Agregar un video MP4"><i class="fas fa-video"></i></label>
+                        <button id="newLinkBtn" type="button" class="btn btn-secondary" title="Agregar un enlace"><i class="fas fa-link"></i></button>
                     </div>
                     <div class="w-100 text-right justify-content-end">
                         <label class="mr-2 available-chars">280</label>                        

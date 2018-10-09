@@ -21,8 +21,13 @@ namespace Domain_Layer.Validations
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if ((value as System.Collections.ICollection).Count > _maxLength)
-                return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+            var collection = value as System.Collections.ICollection;
+
+            if(collection != null)
+            {
+                if (collection.Count > _maxLength)
+                    return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+            }            
 
             return ValidationResult.Success;
         }

@@ -1,114 +1,22 @@
 ﻿$(document).ready(function () {
-    //console.log($('#NewPostForm'));
-    //var form = $('#NewReplyForm').removeData("validator").removeData("unobtrusiveValidation");  /* added by the jquery unobtrusive plugin*/    
     $('#Comment').magicsize();
-    $('body').on('click', '#newLinkBtn', addLinkToPost);
-    $('body').on('keydown', '#Comment', calculateChars);
-    eventsforUploadImages();
-
-    $.validator.setDefaults({
-        ignore: ""
-    })
-
-    //$.validator.unobtrusive.adapters.add('filemaxsize', ['maxsize'], function (options) {
-    //    var params = {
-    //        maxSize: options.params.maxsize
-    //    };
-    //    options.rules['filemaxsize'] = params;
-    //    options.messages['filemaxsize'] = options.message;
-    //});
-
-    //$.validator.addMethod('filemaxsize', function (value, element, params) {        
-    //    if (element.files.length > 0)
-    //        return element.files[0].size <= params.maxSize;
-    //    else
-    //        return true;
-    //});
-
-    $.validator.unobtrusive.adapters.add('multiplefilesmaxsize', ['maxsize'], function (options) {
-        var params = {
-            maxSize: options.params.maxsize
-        };
-        options.rules['multiplefilesmaxsize'] = params;
-        options.messages['multiplefilesmaxsize'] = options.message;
-    });
-
-    $.validator.addMethod('multiplefilesmaxsize', function (value, element, params) {
-        var totalSize = 0;
-
-        if (element.files.length > 0) {
-            for (var i = 0; i < element.files.length; i++) {
-                if (element.files[i].size > params.maxSize)
-                    return false;
-
-                totalSize = totalSize + element.files[i].size;
-            }
-
-            if (totalSize > params.maxSize)
-                return false;
-        }
-
-        return true;
-    });
-
-    $.validator.unobtrusive.adapters.add('collectionmaxlength', ['maxlength'], function (options) {
-        var params = {
-            maxLength: options.params.maxlength
-        };
-        options.rules['collectionmaxlength'] = params;
-        options.messages['collectionmaxlength'] = options.message;
-    });
-
-    $.validator.addMethod('collectionmaxlength', function (value, element, params) {        
-        return element.files.length <= params.maxLength;
-    });
-
-    //$.validator.unobtrusive.adapters.add('filevalidextension', ['extensions'], function (options) {        
-    //    var params = {
-    //        extensions: JSON.parse(options.params.extensions)
-    //    };
-    //    options.rules['filevalidextension'] = params;
-    //    options.messages['filevalidextension'] = options.message;
-    //});
-
-    //$.validator.addMethod('filevalidextension', function (value, element, params) {
-    //    if (element.files.length > 0) {
-    //        var extension = value.substring(value.lastIndexOf(".") + 1).toLowerCase();            
-    //        return $.inArray(extension, params.extensions) != -1;
-    //    }
-    //    else
-    //        return true;
-    //});
-
-    $.validator.unobtrusive.adapters.add('multiplefilesvalidextension', ['extensions'], function (options) {
-        var params = {
-            extensions: JSON.parse(options.params.extensions)
-        };
-        options.rules['multiplefilesvalidextension'] = params;
-        options.messages['multiplefilesvalidextension'] = options.message;
-    });
-
-    $.validator.addMethod('multiplefilesvalidextension', function (value, element, params) {
-        if (element.files.length > 0) {
-            for (var i = 0; i < element.files.length; i++) {
-                var extension = element.files[i].name.substring(element.files[i].name.lastIndexOf(".") + 1).toLowerCase();
-                if ($.inArray(extension, params.extensions) === -1)
-                    return false;
-            }
-        }
-
-        return true;
-    });
-        
-    $.validator.unobtrusive.parse($('#NewPostForm, #NewReplyForm'));
+    $(document).on('click', '#newLinkBtn', addLinkToPost);
+    $(document).on('keydown', '#Comment', calculateChars);    
+    $(document).on('change', '#GifImage', { thumbnailsRowId: "#imgThumbnailsRow" }, generateThumbnail);
     //$('#NewPostForm, #NewReplyForm').data('unobtrusiveValidation');
 });
 
-function addLinkToPost() {
+function newReplySuccess() {
+    $('#replyModal').remove();
+    scanSpecialWords();
+    $.validator.unobtrusive.parse($('#NewReplyForm'));
+}
+
+function addLinkToPost() {    
     if ($('#linkGroup').length > 0) {
         $('#linkGroup').remove();
     }
-    else {
+    else {        
         $('#NewPostForm .modal-body, #NewReplyForm .modal-body').append('<div id="linkGroup" class="input-group"><div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-link"></i></span></div><input type="text" class="form-control" id="linkText" placeholder="Ingresa una dirección web"><div class="input-group-append"><button id="addLinkBtn" class="btn btn-outline-primary btn-primary" type="button" title="Añadir"><i class="fas fa-plus"></i></button></div></div>');
         $('#linkText').focus();
 
@@ -161,84 +69,69 @@ function imageErrorMsg(type) {
     return false;
 }
 
-function eventsforUploadImages() {
-    $('#newImageBtn').on('click', function () {
-        if(!$(this).hasClass('disabled'))
-            $('#ImageFiles').click();
-            //$('#UploadImage').click();
-    });
-
-    $('#newGifBtn').on('click', function () {
-        if (!$(this).hasClass('disabled'))
-            $('#GifImage').click();
-    });
-
-    $('#newVideoBtn').on('click', function () {
-        if (!$(this).hasClass('disabled'))
-            $('#VideoFile').click();
-    });
-
+function generateThumbnail(event) {
     //Check File API support
     if (window.File && window.FileList && window.FileReader) {
-        var filesInput = document.getElementById("GifImage");
-        var $imgThumbnailsRow = $('#imgThumbnailsRow');
+        if ($(this).valid()) {
+            var file = event.target.files[0]; //FileList object
+            var $thumbnailsRow = $(event.data.thumbnailsRowId);
+            
+            $('#newImageBtn, #newVideoBtn').addClass("disabled");
 
-        filesInput.addEventListener("change", function (event) {
-            if ($(this).valid()) {
-                var file = event.target.files[0]; //FileList object
-                var output = document.getElementById("imgThumbnailsRow");
+            //Only pics
+            if (!file.type.match('image'))
+                return;
 
-                $('#newImageBtn, #newVideoBtn').addClass("disabled");
+            var picReader = new FileReader();
+            picReader.fileName = file.name;
 
-                //Only pics
-                if (!file.type.match('image'))
-                    return;
+            picReader.addEventListener("load", function (event) {
+                console.log("estoy en LOAD");
+                var picFile = event.target;
 
-                var picReader = new FileReader();
-                picReader.fileName = file.name;
-
-                picReader.addEventListener("load", function (event) {
-                    var picFile = event.target;
-
-                    if ($('.gif-upload-thumbnail').length > 0) {
-                        $('.gif-upload-thumbnail').attr({ src: picFile.result, title: picFile.fileName });
-                    }
-                    else {
-                        var div = document.createElement("div");
-                        div.classList.add("col");
-                        div.classList.add("col-md-5");
-                        var figure = document.createElement("figure");
-
-                        figure.innerHTML = "<img class='gif-upload-thumbnail' src='" + picFile.result + "'" +
-                                "title='" + picFile.fileName + "'/><button class='gif-remove-thumbnail' type='button' title='Eliminar'>&times;</button>";
-
-                        div.insertBefore(figure, null);
-                        output.insertBefore(div, null);                        
-                    }
-
-                    $('.gif-remove-thumbnail').on('click', function () {
-                        $(this).parent("figure").parent("div").remove();
-
-                        if ($imgThumbnailsRow.is(':empty'))
-                            $imgThumbnailsRow.addClass('d-none');
-
-                        $('#newImageBtn, #newVideoBtn').removeClass("disabled");
-                        $('#GifImage').val(null);
-                    });
-                });
-
-                //Read the image
-                picReader.readAsDataURL(file);
-
-                if ($imgThumbnailsRow.hasClass('d-none')) {
-                    $imgThumbnailsRow.removeClass('d-none');
+                if ($('.gif-upload-thumbnail').length > 0) {
+                    $('.gif-upload-thumbnail').attr({ src: picFile.result, title: picFile.fileName });
                 }
+                else {
+                    // Creo los elementos con su contenido
+                    var $wrapper = $('<div></div>');
+                    $wrapper.attr({ "class": "col col-md-5" });
+                    var $figure = $('<figure></figure>');
+                    var $img = $('<img/>');
+                    $img.attr({ "class": "gif-upload-thumbnail", src: picFile.result, title: picFile.fileName });
+                    var $removeButton = $('<button></button>');
+                    $removeButton.attr({ "class": "gif-remove-thumbnail", type: "button", title: "Eliminar" });
+                    $removeButton.html("&times;");
+
+                    // Colocando los elementos creados
+                    $img.appendTo($figure);
+                    $removeButton.appendTo($figure);
+                    $figure.appendTo($wrapper);
+                    $wrapper.appendTo($thumbnailsRow);                    
+                }
+
+                $('.gif-remove-thumbnail').on('click', function () {
+                    $(this).parent("figure").parent("div").remove();
+
+                    if ($thumbnailsRow.is(':empty'))
+                        $thumbnailsRow.addClass('d-none');
+
+                    $('#newImageBtn, #newVideoBtn').removeClass("disabled");
+                    $('#GifImage').val(null);
+                });
+            });
+
+            //Read the image
+            picReader.readAsDataURL(file);
+
+            if ($thumbnailsRow.hasClass('d-none')) {
+                $thumbnailsRow.removeClass('d-none');
             }
-        });
+        }        
     }
-    else {
-        console.log("Tu navegador no soporta File API");
-    }
+    else
+        alert("Tu navegador no soporta File API");
+}
 
     //Check File API support
     if (window.File && window.FileList && window.FileReader) {
@@ -299,85 +192,84 @@ function eventsforUploadImages() {
         console.log("Tu navegador no soporta File API");
     }
 
-    //Check File API support
-    if (window.File && window.FileList && window.FileReader) {        
-        //var filesInput = document.getElementById("UploadImage");
-        var filesInput = document.getElementById("ImageFiles");
-        var $imgThumbnailsRow = $('#imgThumbnailsRow');
-        var filesTotalSize = 0;
+    ////Check File API support
+    //if (window.File && window.FileList && window.FileReader) {        
+    //    //var filesInput = document.getElementById("UploadImage");
+    //    var filesInput = document.getElementById("ImageFiles");
+    //    var $imgThumbnailsRow = $('#imgThumbnailsRow');
+    //    var filesTotalSize = 0;
 
-        filesInput.addEventListener("change", function (event) {
-            if ($(this).valid()) {
-                var files = event.target.files; //FileList object
-                var output = document.getElementById("imgThumbnailsRow");
-                //var allowExt = ["jpg", "jpeg", "png"];                
-                var filesCount = $('input[name=ImagesUploaded]').length + files.length;
+    //    filesInput.addEventListener("change", function (event) {
+    //        if ($(this).valid()) {
+    //            var files = event.target.files; //FileList object
+    //            var output = document.getElementById("imgThumbnailsRow");
+    //            //var allowExt = ["jpg", "jpeg", "png"];                
+    //            var filesCount = $('input[name=ImagesUploaded]').length + files.length;
 
-                if (filesCount > 4)
-                    return imageErrorMsg("length");
-                else
-                    $('.image-error-msg').remove();
+    //            if (filesCount > 4)
+    //                return imageErrorMsg("length");
+    //            else
+    //                $('.image-error-msg').remove();
 
-                for (var i = 0; i < files.length; i++) {
-                    var file = files[i];
-                    //var fileExt = file.name.substring(file.name.lastIndexOf('.') + 1);
-                    filesTotalSize = filesTotalSize + files[i].size;                    
+    //            for (var i = 0; i < files.length; i++) {
+    //                var file = files[i];
+    //                //var fileExt = file.name.substring(file.name.lastIndexOf('.') + 1);
+    //                filesTotalSize = filesTotalSize + files[i].size;                    
 
-                    if (filesTotalSize > 200*1024) {
-                        // Permitido hasta 2MB
-                        filesTotalSize = filesTotalSize - files[i].size;
-                        return imageErrorMsg("size");
-                    }
-                    else
-                        $('.image-error-msg').remove();
+    //                if (filesTotalSize > 200*1024) {
+    //                    // Permitido hasta 2MB
+    //                    filesTotalSize = filesTotalSize - files[i].size;
+    //                    return imageErrorMsg("size");
+    //                }
+    //                else
+    //                    $('.image-error-msg').remove();
 
-                    //Only pics
-                    if (!file.type.match('image'))
-                        continue;
+    //                //Only pics
+    //                if (!file.type.match('image'))
+    //                    continue;
 
-                    //if ($.inArray(fileExt, allowExt) == -1) {
-                    //    return imageErrorMsg("extension");
-                    //}
+    //                //if ($.inArray(fileExt, allowExt) == -1) {
+    //                //    return imageErrorMsg("extension");
+    //                //}
 
-                    var picReader = new FileReader();
-                    picReader.fileName = file.name;
+    //                var picReader = new FileReader();
+    //                picReader.fileName = file.name;
 
-                    picReader.addEventListener("load", function (event) {
-                        var picFile = event.target;
+    //                picReader.addEventListener("load", function (event) {
+    //                    var picFile = event.target;
 
-                        var div = document.createElement("div");
-                        div.classList.add("col");
-                        div.classList.add("col-md-3");
-                        var figure = document.createElement("figure");
+    //                    var div = document.createElement("div");
+    //                    div.classList.add("col");
+    //                    div.classList.add("col-md-3");
+    //                    var figure = document.createElement("figure");
 
-                        figure.innerHTML = "<input type='hidden' name='ImagesUploaded' value='" + picFile.result + "' /><img class='img-upload-newPost' src='" + picFile.result + "'" +
-                                "title='" + picFile.fileName + "'/><button class='img-remove-newPost' type='button' title='Eliminar'>&times;</button>";
+    //                    figure.innerHTML = "<input type='hidden' name='ImagesUploaded' value='" + picFile.result + "' /><img class='img-upload-newPost' src='" + picFile.result + "'" +
+    //                            "title='" + picFile.fileName + "'/><button class='img-remove-newPost' type='button' title='Eliminar'>&times;</button>";
 
-                        div.insertBefore(figure, null);
-                        output.insertBefore(div, null);
+    //                    div.insertBefore(figure, null);
+    //                    output.insertBefore(div, null);
 
-                        $('.img-remove-newPost').on('click', function () {
-                            $(this).parent("figure").parent("div").remove();
+    //                    $('.img-remove-newPost').on('click', function () {
+    //                        $(this).parent("figure").parent("div").remove();
 
-                            if ($imgThumbnailsRow.is(':empty'))
-                                $imgThumbnailsRow.addClass('d-none');                                                       
-                        });
-                    });
+    //                        if ($imgThumbnailsRow.is(':empty'))
+    //                            $imgThumbnailsRow.addClass('d-none');                                                       
+    //                    });
+    //                });
 
-                    //Read the image
-                    picReader.readAsDataURL(file);
-                }
+    //                //Read the image
+    //                picReader.readAsDataURL(file);
+    //            }
 
-                if ($imgThumbnailsRow.hasClass('d-none')) {
-                    $imgThumbnailsRow.removeClass('d-none');
-                }
-            }            
-        });
-    }
-    else {
-        console.log("Tu navegador no soporta File API");
-    }
-}
+    //            if ($imgThumbnailsRow.hasClass('d-none')) {
+    //                $imgThumbnailsRow.removeClass('d-none');
+    //            }
+    //        }            
+    //    });
+    //}
+    //else {
+    //    console.log("Tu navegador no soporta File API");
+    //}
 
 (function ($) {
     $.fn.magicsize = function () {
@@ -417,3 +309,5 @@ function eventsforUploadImages() {
         });
     }
 }(jQuery));
+
+//# sourceURL=newPost.js

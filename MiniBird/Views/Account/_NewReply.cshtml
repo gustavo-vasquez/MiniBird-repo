@@ -2,7 +2,7 @@
 
 <div class="modal fade" id="replyModal" tabindex="-1" role="dialog" aria-labelledby="replyModalTitle" aria-hidden="true" data-backdrop="false">
     <div class="modal-dialog modal-md" role="document">
-        @using (Ajax.BeginForm("NewReply", "Account", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = (string)TempData["UpdateDiv"], InsertionMode = InsertionMode.Replace, OnSuccess = "$('#replyModal').remove();scanSpecialWords();", LoadingElementId = "replying", LoadingElementDuration = 1000 }, new { id = "NewReplyForm" }))
+        @using (Ajax.BeginForm("NewReply", "Account", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = (string)TempData["UpdateDiv"], InsertionMode = InsertionMode.Replace, OnSuccess = "newReplySuccess", LoadingElementId = "replying", LoadingElementDuration = 1000 }, new { id = "NewReplyForm" }))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.InReplyTo)
@@ -15,19 +15,23 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        @Html.ValidationMessageFor(m => m.Comment, null, new { @class = "badge badge-danger mb-1" })
+                        @Html.ValidationMessageFor(m => m.Comment, null, new { @class = "text-danger mb-1" })
                         @Html.TextAreaFor(m => m.Comment, new { @class = "form-control", placeholder = "¿Cuál es tu respuesta?", rows = 1 })
                     </div>
-                    <div class="form-group text-center d-none">
-                        <div id="imgThumbnailsRow" class="row no-gutters"></div>
-                    </div>
+                    <div id="imgThumbnailsRow" class="row no-gutters text-center justify-content-center d-none"></div>
+                    @Html.ValidationMessageFor(m => m.ImageFiles, null, new { @class = "text-danger d-block" })
+                    @Html.ValidationMessageFor(m => m.GifImage, null, new { @class = "text-danger d-block" })
+                    @Html.ValidationMessageFor(m => m.VideoFile, null, new { @class = "text-danger d-block" })                    
                 </div>
                 <div class="modal-footer">
                     <div class="w-100 justify-content-start">
-                        <input type="file" id="UploadImage" name="imgUploaded[]" class="d-none" accept="image/*" multiple />
-                        <button id="newImageBtn" type="button" class="btn btn-secondary" title="Agregar imágenes"><i class="fas fa-images"></i></button>
-                        <button id="newGifBtn" type="button" class="btn btn-secondary" title="Agregar una imágen GIF"><i class="fab fa-gofore"></i></button>
-                        <button id="newVideoBtn" type="button" class="btn btn-secondary" title="Agregar un video"><i class="fas fa-video"></i></button>
+                        @Html.TextBoxFor(m => m.ImageFiles, new { name = "imgUploaded", type = "file", @class = "d-none", accept = "image/jpeg", multiple = "multiple" })
+                        @*<input type="file" id="UploadImage" name="imgUploaded" class="d-none" accept="image/jpeg,image/png" multiple />*@
+                        <label id="newImageBtn" class="btn btn-secondary" title="Agregar imágenes JPG, JPEG o PNG"><i class="fas fa-images"></i></label>
+                        @Html.TextBoxFor(m => m.GifImage, new { type = "file", @class = "d-none", accept = "image/gif" })
+                        <label for="GifImage" id="newGifBtn" class="btn btn-secondary" title="Agregar una imágen GIF"><i class="fab fa-gofore"></i></label>
+                        @Html.TextBoxFor(m => m.VideoFile, new { type = "file", @class = "d-none", accept = "video/mp4,video/avi" })
+                        <label id="newVideoBtn" class="btn btn-secondary" title="Agregar un video MP4"><i class="fas fa-video"></i></label>
                         <button id="newLinkBtn" type="button" class="btn btn-secondary" title="Agregar un enlace"><i class="fas fa-link"></i></button>
                     </div>
                     <div class="w-100 text-right justify-content-end">

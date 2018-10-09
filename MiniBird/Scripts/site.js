@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿var asd = 0;
+$(document).ready(function () {
     $('body').on('mouseenter mouseleave', '.dropdown-menu > a, .dropdown-menu > form > button, .list-group-item', function () {
         $(this).toggleClass('active');
     });
@@ -9,10 +10,12 @@
         $(this).children('a').children('i').removeClass('fas');
     });
 
-    $('body').on('click', '#postBtn', newPost);
-    $('body').on('click', '#replyBtnFixed, #replyBtnDynamic', function () {
-        newReply($(this));
-    });
+    $(document).on('click', '#postBtn', { action: "post" }, drawPublication);
+    $(document).on('click', '#replyBtnFixed, #replyBtnDynamic', { action: "reply" }, drawPublication);
+    //$('body').on('click', '#postBtn', newPost);
+    //$('body').on('click', '#replyBtnFixed, #replyBtnDynamic', function () {
+    //    newReply($(this));
+    //});
 
     $('body').on('click', '.post-images img', function () {
         var src = $(this).attr('src');
@@ -58,8 +61,93 @@ function goTop() {
     return false;
 }
 
+function drawPublication(event) {
+    var $cleanModal, $setModal, queryString, successfulModalLoading;
+
+    switch (event.data.action) {
+        case "post":
+            $cleanModal = $('#replyModal');
+            $setModal = $('#postModal');
+            queryString = "call=post";
+            successfulModalLoading = function (data, textStatus, XMLHttpRequest) {                
+                $('body').append(data);
+                $('#postModal').modal('show');
+                $('#postModal').on('shown.bs.modal', function () {
+                    $('#Comment').focus();
+                });
+
+                $('#NewPostForm').on('keydown', function (event) {
+                    if (event.ctrlKey && event.keyCode === 13) {
+                        $(this).trigger('submit');
+                    }
+                });
+
+                $.validator.unobtrusive.parse($('#NewPostForm'));
+            }
+            break;
+        case "reply":
+            $cleanModal = $('#postModal');
+            $setModal = $('#replyModal');
+            $this = $(this);
+            queryString = "call=reply&updateTarget=" + $this.data('updatetarget');
+            successfulModalLoading = function (data, textStatus, XMLHttpRequest) {                
+                $this.after(data);
+                $('#replyModalTitle').text('En respuesta a ' + $this.data('replyto'));
+                $('#InReplyTo').val($this.data('postid'));
+                $('#replyModal').modal('show');
+                $('#replyModal').on('shown.bs.modal', function () {
+                    $('#Comment').focus();
+                });
+
+                $('#NewReplyForm').on('keydown', function (event) {
+                    if (event.ctrlKey && event.keyCode === 13) {
+                        $this.trigger('submit');
+                    }
+                });
+
+                $.validator.unobtrusive.parse($('#NewReplyForm'));
+            }
+            break;
+        default:
+            return;
+            break;
+    }
+
+    if ($cleanModal.length > 0)
+        $cleanModal.remove();
+    //else {
+    //    console.log("JS cargado");
+    //    $.getScript('/Scripts/account/newPost.js');
+    //}
+
+    if (asd <= 0) {
+        console.log("JS cargado");
+        $.getScript('/Scripts/account/newPost.js');
+        asd++;
+    }    
+
+    if ($setModal.length <= 0) {
+        $.ajax({
+            url: "/Account/DrawPublication",
+            method: "GET",
+            data: queryString,
+            success: successfulModalLoading,
+            error: function () {
+                alert("¡Error al cargar el panel de publicación!\nInténtelo de nuevo más tarde.");
+            }
+        });
+    }
+    else
+        $setModal.modal('show');
+}
+
 function newPost() {
-    $('#replyModal').remove();
+    var $replyModal = $('#replyModal');
+
+    if ($replyModal.length > 0)
+        $replyModal.remove();
+    else
+        $.getScript('/Scripts/account/newPost.js');
 
     if ($('#postModal').length <= 0) {
         $.ajax({
@@ -69,12 +157,23 @@ function newPost() {
             success: function (data) {
                 $('body').append(data);
 
-                $.getScript("/Scripts/account/newPost.js", function () {                    
+                //get the number of `<script>` elements that have the correct `src` attribute
+                //var len = $('script').filter(function () {
+                //    return ($(this).attr('src') == '/Scripts/account/newPost.js');
+                //}).length;
+
+                ////if there are no scripts that match, the load it
+                //if (len === 0) {
+                //    console.log("Voy a cargar el js");
+                //    $.getScript('/Scripts/account/newPost.js');
+                //}
+
+                //$.getScript("/Scripts/account/newPost.js", function () {                    
                     $('#postModal').modal('show');
                     $('#postModal').on('shown.bs.modal', function () {
                         $('#Comment').focus();
                     });
-                });
+                //});
 
                 $('#NewPostForm').on('keydown', function (event) {
                     if (event.ctrlKey && event.keyCode === 13) {
@@ -90,10 +189,26 @@ function newPost() {
     else {
         $('#postModal').modal('show');
     }
+
+    //get the number of `<script>` elements that have the correct `src` attribute
+    //var len = $('script').filter(function () {
+    //    return ($(this).attr('src') == '/Scripts/account/newPost.js');
+    //}).length;
+
+    ////if there are no scripts that match, the load it
+    //if (len === 0) {
+    //    console.log("Voy a cargar el js");
+    //    $.getScript('/Scripts/account/newPost.js');
+    //}
 }
 
 function newReply($replyBtn) {
-    $('#postModal').remove();
+    var $newPost = $('#postModal');
+
+    if ($newPost.length > 0)
+        $newPost.remove();
+    else
+        $.getScript('/Scripts/account/newPost.js');
 
     if ($('#replyModal').length <= 0) {
         $.ajax({
@@ -103,13 +218,10 @@ function newReply($replyBtn) {
             success: function (data, textStatus, XMLHttpRequest) {
                 $replyBtn.after(data);
                 $('#replyModalTitle').text('En respuesta a ' + $replyBtn.data('replyto'));
-                $('#InReplyTo').val($replyBtn.data('postid'));
-
-                $.getScript("/Scripts/account/newPost.js", function () {
-                    $('#replyModal').modal('show');
-                    $('#replyModal').on('shown.bs.modal', function () {
-                        $('#Comment').focus();
-                    });
+                $('#InReplyTo').val($replyBtn.data('postid'));                               
+                $('#replyModal').modal('show');
+                $('#replyModal').on('shown.bs.modal', function () {
+                    $('#Comment').focus();
                 });
 
                 $('#NewReplyForm').on('keydown', function (event) {
