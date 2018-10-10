@@ -183,7 +183,7 @@ body {
     margin-bottom: unset;
 }
 
-.img-upload-newPost {
+.images-upload-thumbnail {
     width: 140px;
     height: 140px;
     border-radius: 5px;
@@ -199,7 +199,7 @@ body {
     object-fit: cover;
 }
 
-.img-remove-newPost {
+.image-remove-thumbnail {
     position: absolute !important;
     top: 4px !important;
     right: 8px !important;
@@ -223,7 +223,7 @@ body {
     font-size: 0.9rem;
 }
 
-.img-remove-newPost:hover, .gif-remove-thumbnail:hover {
+.image-remove-thumbnail:hover, .gif-remove-thumbnail:hover {
     background-color: red;
     cursor: pointer;
     border-color: black;

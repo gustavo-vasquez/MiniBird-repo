@@ -87,8 +87,6 @@ $.validator.addMethod('multiplefilesvalidextension', function (value, element, p
             if ($.inArray(extension, params.extensions) === -1)
                 return false;
         }
-
-        //return true;
     }
 
     return true;
