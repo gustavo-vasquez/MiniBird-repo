@@ -115,6 +115,9 @@ function drawPublication(event) {
 
     if ($cleanModal.length > 0)
         $cleanModal.remove();
+
+    filesTotalSize = 0; // vuelve a inicializar el peso total de imágenes para la validación
+        
     //else {
     //    console.log("JS cargado");
     //    $.getScript('/Scripts/account/newPost.js');

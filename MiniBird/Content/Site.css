@@ -20,7 +20,7 @@ body {
 }
 
 .dropdown-item {
-    border-radius: 0.5rem;    
+    border-radius: 0.5rem;
 }
 
 .input-group-text {
@@ -232,6 +232,10 @@ body {
 #imgThumbnailsRow {
     border-top: 1px dashed rgba(0,0,0,0.1);    
     padding-top: 1rem;
+}
+
+.label-off {
+    pointer-events: none;
 }
 
 

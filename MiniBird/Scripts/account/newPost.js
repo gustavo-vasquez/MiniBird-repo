@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {
+﻿var filesTotalSize = 0;
+
+$(document).ready(function () {
     $('#Comment').magicsize();
     $(document).on('click', '#newLinkBtn', addLinkToPost);
     $(document).on('keydown', '#Comment', calculateChars);    
@@ -152,9 +154,9 @@ function generateThumbnail(event) {
                     return;
             }
 
-            $(buttonsToDisable).addClass("disabled");
+            $(buttonsToDisable).addClass("disabled label-off");
 
-            if (event.target.files.length > 1 || $this.attr('id') == "ImageFiles") {
+            if ($this.attr('id') == "ImageFiles") {
                 var files = event.target.files; //FileList object
                 var filesCount = $('input[name=ImagesUploaded]').length + files.length;
 
@@ -165,11 +167,11 @@ function generateThumbnail(event) {
 
                 for (var i = 0; i < files.length; i++) {
                     var file = files[i];
-                    event.data.filesTotalSize = event.data.filesTotalSize + files[i].size;                    
+                    filesTotalSize = filesTotalSize + files[i].size;                    
 
-                    if (event.data.filesTotalSize > 200 * 1024) {
+                    if (filesTotalSize > 200 * 1024) {
                         // Permitido hasta 2MB
-                        event.data.filesTotalSize = event.data.filesTotalSize - files[i].size;                        
+                        filesTotalSize = filesTotalSize - files[i].size;                        
                         return imageErrorMsg("size");
                     }
                     else
@@ -182,18 +184,18 @@ function generateThumbnail(event) {
                     var picReader = new FileReader();
                     picReader.fileName = file.name;
 
-                    picReader.addEventListener("load", function (event) {
-                        console.log("estoy en el LOAD de las multiples imagenes!");
-                        var picFile = event.target;                        
+                    picReader.addEventListener("load", function (event) {                        
+                        var picFile = event.target;
                         createHTMLElements(picFile);
 
-                        $('.image-remove-thumbnail, .gif-remove-thumbnail, .video-remove-thumbnail').on('click', function () {
+                        $('.image-remove-thumbnail').on('click', function () {
                             $(this).closest("figure").parent("div").remove();
 
-                            if ($thumbnailsRow.is(':empty'))
+                            if ($thumbnailsRow.is(':empty')) {
                                 $thumbnailsRow.addClass('d-none');
-
-                            $(buttonsToDisable).removeClass("disabled");
+                                $(buttonsToDisable).removeClass("disabled label-off");
+                            }
+                                
                             $this.val(null);
                         });
                     });
@@ -216,8 +218,7 @@ function generateThumbnail(event) {
             var picReader = new FileReader();
             picReader.fileName = file.name;
 
-            picReader.addEventListener("load", function (event) {
-                console.log("estoy en LOAD");
+            picReader.addEventListener("load", function (event) {                
                 var picFile = event.target;
                 
                 if ($(multimediaElement).length > 0)                    
@@ -225,7 +226,7 @@ function generateThumbnail(event) {
                 else
                     createHTMLElements(picFile);
 
-                $('.image-remove-thumbnail, .gif-remove-thumbnail, .video-remove-thumbnail').on('click', function () {
+                $('.gif-remove-thumbnail, .video-remove-thumbnail').on('click', function () {
                     $(this).closest("figure").parent("div").remove();
 
                     if ($thumbnailsRow.is(':empty'))
