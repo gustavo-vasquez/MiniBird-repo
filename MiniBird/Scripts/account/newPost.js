@@ -78,12 +78,13 @@ function generateThumbnail(event) {
 
         if ($this.valid()) {            
             var $thumbnailsRow = $(event.data.thumbnailsRowId);
-            var buttonsToDisable,multimediaElement,createHTMLElements;
+            var buttonsToDisable,multimediaElement,createHTMLElements,filetype;
             
             switch ($this.attr('id')) {
                 case "ImageFiles":
                     buttonsToDisable = "#newGifBtn, #newVideoBtn";
                     multimediaElement = ".images-upload-thumbnail";
+                    filetype = "image";
                     createHTMLElements = function (picFile) {
                         // Creo los elementos con su contenido
                         var $wrapper = $('<div></div>');
@@ -108,6 +109,7 @@ function generateThumbnail(event) {
                 case "GifImage":
                     buttonsToDisable = "#newImageBtn, #newVideoBtn";
                     multimediaElement = ".gif-upload-thumbnail";
+                    filetype = "image";
                     createHTMLElements = function (picFile) {
                         // Creo los elementos con su contenido
                         var $wrapper = $('<div></div>');
@@ -129,6 +131,7 @@ function generateThumbnail(event) {
                 case "VideoFile":
                     buttonsToDisable = "#newImageBtn, #newGifBtn";
                     multimediaElement = ".video-upload-thumbnail";
+                    filetype = "video";
                     createHTMLElements = function (picFile) {
                         // Creo los elementos con su contenido
                         var $wrapper = $('<div></div>');
@@ -167,7 +170,11 @@ function generateThumbnail(event) {
 
                 for (var i = 0; i < files.length; i++) {
                     var file = files[i];
-                    filesTotalSize = filesTotalSize + files[i].size;                    
+
+                    if (!file.type.match(filetype))
+                        continue;
+
+                    filesTotalSize = filesTotalSize + files[i].size;
 
                     if (filesTotalSize > 200 * 1024) {
                         // Permitido hasta 2MB
@@ -175,11 +182,7 @@ function generateThumbnail(event) {
                         return imageErrorMsg("size");
                     }
                     else
-                        $('.image-error-msg').remove();
-
-                    //Only pics
-                    if (!file.type.match('image'))
-                        continue;                    
+                        $('.image-error-msg').remove();                    
 
                     var picReader = new FileReader();
                     picReader.fileName = file.name;
@@ -208,13 +211,13 @@ function generateThumbnail(event) {
                     $thumbnailsRow.removeClass('d-none');
                 }
                 return;
-            }
-
-            //Only pics
-            //if (!file.type.match('image'))
-            //    return;            
+            }                       
             
             var file = event.target.files[0]; //FileList object
+
+            if (!file.type.match(filetype))
+                return;
+
             var picReader = new FileReader();
             picReader.fileName = file.name;
 
@@ -232,7 +235,7 @@ function generateThumbnail(event) {
                     if ($thumbnailsRow.is(':empty'))
                         $thumbnailsRow.addClass('d-none');
 
-                    $(buttonsToDisable).removeClass("disabled");
+                    $(buttonsToDisable).removeClass("disabled label-off");
                     $this.val(null);
                 });
             });
@@ -247,81 +250,7 @@ function generateThumbnail(event) {
     }
     else
         alert("Tu navegador no soporta File API");
-}
-
-
-    //Check File API support
-    //if (window.File && window.FileList && window.FileReader) {        
-    //    //var filesInput = document.getElementById("UploadImage");
-    //    var filesInput = document.getElementById("ImageFiles");
-    //    var $imgThumbnailsRow = $('#imgThumbnailsRow');
-    //    var filesTotalSize = 0;
-
-    //    filesInput.addEventListener("change", function (event) {
-    //        if ($(this).valid()) {
-    //            var files = event.target.files; //FileList object
-    //            var output = document.getElementById("imgThumbnailsRow");                
-    //            var filesCount = $('input[name=ImagesUploaded]').length + files.length;
-
-    //            if (filesCount > 4)
-    //                return imageErrorMsg("length");
-    //            else
-    //                $('.image-error-msg').remove();
-
-    //            for (var i = 0; i < files.length; i++) {
-    //                var file = files[i];
-    //                //var fileExt = file.name.substring(file.name.lastIndexOf('.') + 1);
-    //                filesTotalSize = filesTotalSize + files[i].size;                    
-
-    //                if (filesTotalSize > 200*1024) {
-    //                    // Permitido hasta 2MB
-    //                    filesTotalSize = filesTotalSize - files[i].size;
-    //                    return imageErrorMsg("size");
-    //                }
-    //                else
-    //                    $('.image-error-msg').remove();
-
-    //                //Only pics
-    //                if (!file.type.match('image'))
-    //                    continue;
-
-    //                var picReader = new FileReader();
-    //                picReader.fileName = file.name;
-
-    //                picReader.addEventListener("load", function (event) {
-    //                    var picFile = event.target;
-
-    //                    var div = document.createElement("div");
-    //                    div.classList.add("col");
-    //                    div.classList.add("col-md-3");
-    //                    var figure = document.createElement("figure");
-
-    //                    figure.innerHTML = "<input type='hidden' name='ImagesUploaded' value='" + picFile.result + "' /><img class='img-upload-newPost' src='" + picFile.result + "'" +
-    //                            "title='" + picFile.fileName + "'/><button class='image-remove-thumbnail' type='button' title='Eliminar'>&times;</button>";
-
-    //                    div.insertBefore(figure, null);
-    //                    output.insertBefore(div, null);
-
-    //                    $('.image-remove-thumbnail').on('click', function () {
-    //                        $(this).parent("figure").parent("div").remove();
-
-    //                        if ($imgThumbnailsRow.is(':empty'))
-    //                            $imgThumbnailsRow.addClass('d-none');                                                       
-    //                    });
-    //                });
-
-    //                //Read the image
-    //                picReader.readAsDataURL(file);
-    //            }
-
-    //            if ($imgThumbnailsRow.hasClass('d-none')) {
-    //                $imgThumbnailsRow.removeClass('d-none');
-    //            }
-    //        }            
-    //    });
-    //}
-    //else
-    //    console.log("Tu navegador no soporta File API");
+}    
 
 (function ($) {
     $.fn.magicsize = function () {

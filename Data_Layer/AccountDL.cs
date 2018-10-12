@@ -133,9 +133,7 @@ namespace Data_Layer
                         if (hashtags.Count > 0)
                             foreach (var hashtag in hashtags)
                                 post.Hashtag.Add(hashtag);
-
-                        //var hash = context.Hashtag.First(h => h.Name == "#UnaFrase");
-                        //post.Hashtag.Add(hash);
+                        
                         context.Post.Add(post);
                         context.SaveChanges();
                         
@@ -761,58 +759,6 @@ namespace Data_Layer
                 throw;
             }
         }
-
-        public bool CreateNewReplyDL(NewPostDTO model, int personID, HttpServerUtilityBase localServer)
-        {
-            try
-            {
-                using (var context = new MiniBirdEntities())
-                {
-                    if (context.Person.Any(p => p.PersonID == personID))
-                    {
-                        var post = new Post();
-                        post.Comment = model.Comment;
-
-                        if (model.ImagesUploaded != null && model.ImagesUploaded.Length > 0)
-                        {
-                            int iteration = 1;
-
-                            foreach (string image in model.ImagesUploaded)
-                            {
-                                context.Thumbnail.Add(new Thumbnail() { ImagePath = SaveThumbnailOnServer(image, post.PostID, localServer, iteration), ID_Post = post.PostID });
-                                context.SaveChanges();
-                                iteration++;
-                            }
-                        }
-
-                        post.PublicationDate = DateTime.Now;
-
-                        if (model.InReplyTo != null && model.InReplyTo != 0)
-                            post.InReplyTo = model.InReplyTo;
-
-                        post.ID_Person = personID;
-
-                        List<Hashtag> hashtags = DiscoverHashtag(model.Comment, context);
-
-                        if (hashtags.Count > 0)
-                            foreach (var hashtag in hashtags)
-                                post.Hashtag.Add(hashtag);
-
-                        context.Post.Add(post);
-                        context.SaveChanges();
-
-                        return true;
-                    }
-
-                    return false;
-                }
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
 
         public bool FollowUserDL(int personID, int follow)
         {

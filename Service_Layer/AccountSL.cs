@@ -114,12 +114,6 @@ namespace Service_Layer
             return Account.ViewPostCollectionDataDL(postID);
         }
 
-        public bool CreateNewReplySL(NewPostDTO data, int personID, HttpServerUtilityBase localServer)
-        {
-            return Account.CreateNewReplyDL(data, personID, localServer);
-        }
-
-
         public bool FollowUserSL(int personID, int follow)
         {
             return Account.FollowUserDL(personID, follow);

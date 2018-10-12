@@ -300,7 +300,7 @@ namespace MiniBird.Controllers
             if (!ModelState.IsValid)
                 return Content("Fallaron las validaciones.");
 
-            if (Account.CreateNewReplySL(model, ActiveSession.GetPersonID(), Server))
+            if (Account.CreateNewPostSL(model, ActiveSession.GetPersonID(), Server))
             {
                 var newModel = Account.ViewPostCollectionDataSL(Convert.ToInt32(model.InReplyTo));
                 return PartialView("_RepliesToPost", newModel.RepliesToPost);
