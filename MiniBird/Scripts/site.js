@@ -144,55 +144,6 @@ function drawPublication(event) {
         $setModal.modal('show');
 }
 
-function newPost() {
-    var $replyModal = $('#replyModal');
-
-    if ($replyModal.length > 0)
-        $replyModal.remove();
-    else
-        $.getScript('/Scripts/account/newPost.js');
-
-    if ($('#postModal').length <= 0) {
-        $.ajax({
-            url: "/Account/DrawPublication",
-            method: "GET",
-            data: "call=post",
-            success: function (data) {
-                $('body').append(data);
-
-                //get the number of `<script>` elements that have the correct `src` attribute
-                //var len = $('script').filter(function () {
-                //    return ($(this).attr('src') == '/Scripts/account/newPost.js');
-                //}).length;
-
-                ////if there are no scripts that match, the load it
-                //if (len === 0) {
-                //    console.log("Voy a cargar el js");
-                //    $.getScript('/Scripts/account/newPost.js');
-                //}
-
-                //$.getScript("/Scripts/account/newPost.js", function () {                    
-                    $('#postModal').modal('show');
-                    $('#postModal').on('shown.bs.modal', function () {
-                        $('#Comment').focus();
-                    });
-                //});
-
-                $('#NewPostForm').on('keydown', function (event) {
-                    if (event.ctrlKey && event.keyCode === 13) {
-                        $(this).trigger('submit');
-                    }
-                });
-            },
-            error: function () {
-                alert("¡Error al cargar el panel de publicación!\nInténtelo de nuevo más tarde.");                
-            }
-        });
-    }
-    else {
-        $('#postModal').modal('show');
-    }
-
     //get the number of `<script>` elements that have the correct `src` attribute
     //var len = $('script').filter(function () {
     //    return ($(this).attr('src') == '/Scripts/account/newPost.js');
@@ -203,45 +154,6 @@ function newPost() {
     //    console.log("Voy a cargar el js");
     //    $.getScript('/Scripts/account/newPost.js');
     //}
-}
-
-function newReply($replyBtn) {
-    var $newPost = $('#postModal');
-
-    if ($newPost.length > 0)
-        $newPost.remove();
-    else
-        $.getScript('/Scripts/account/newPost.js');
-
-    if ($('#replyModal').length <= 0) {
-        $.ajax({
-            url: "/Account/DrawPublication",
-            method: "GET",
-            data: "call=reply&updateTarget=" + $replyBtn.data('updatetarget'),
-            success: function (data, textStatus, XMLHttpRequest) {
-                $replyBtn.after(data);
-                $('#replyModalTitle').text('En respuesta a ' + $replyBtn.data('replyto'));
-                $('#InReplyTo').val($replyBtn.data('postid'));                               
-                $('#replyModal').modal('show');
-                $('#replyModal').on('shown.bs.modal', function () {
-                    $('#Comment').focus();
-                });
-
-                $('#NewReplyForm').on('keydown', function (event) {
-                    if (event.ctrlKey && event.keyCode === 13) {
-                        $(this).trigger('submit');
-                    }
-                });
-            },
-            error: function () {
-                alert("¡Error al cargar el panel de publicación!\nInténtelo de nuevo más tarde.");
-            }
-        });
-    }
-    else {
-        $('#replyModal').modal('show');
-    }
-}
 
 function loadImagePreview(srcArray, src) {
     var index = srcArray.indexOf(src);

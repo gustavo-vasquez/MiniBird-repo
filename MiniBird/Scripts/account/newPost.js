@@ -6,10 +6,32 @@ $(document).ready(function () {
     $(document).on('keydown', '#Comment', calculateChars);    
     $(document).on('change', '#ImageFiles, #GifImage, #VideoFile', { thumbnailsRowId: "#imgThumbnailsRow", filesTotalSize: 0 }, generateThumbnail);
     //$('#NewPostForm, #NewReplyForm').data('unobtrusiveValidation');
+
+    $(document).on('submit', '#NewReplyForm', function (event) {
+        // Prevent submit
+        event.preventDefault();
+        var formData = new FormData($(this)[0]);        
+
+        $.ajax({
+            url: "/Account/NewReply",
+            method: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                $('#replying').removeClass('d-none');                
+            },
+            success: newReplySuccess,
+            error: function () {
+                alert("Ocurrió un error al procesar la réplica.");
+            }
+        });
+    });
 });
 
-function newReplySuccess() {
-    $('#replyModal').remove();
+function newReplySuccess(data) {
+    $("#repliesDynamic").html(data);
+    $('#replyModal').remove();        
     scanSpecialWords();
     $.validator.unobtrusive.parse($('#NewReplyForm'));
 }

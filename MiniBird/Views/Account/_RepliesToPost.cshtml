@@ -105,88 +105,21 @@
                                 </div>
                             </div>
                             break;
+                        default:
+                            if (!string.IsNullOrWhiteSpace(reply.GIFImage))
+                            {
+                                <div class="card post-images one-thumbnail ovh">
+                                    <img src="@reply.GIFImage" alt="posted_image">
+                                </div>
+                            }
+                            else if (reply.VideoFile != null)
+                            {
+                                <div class="card embed-responsive embed-responsive-16by9">
+                                    <video src="@reply.VideoFile" class="embed-responsive-item" controls></video>
+                                </div>
+                            }
+                            break;
                     }
-
-                    @*@if (reply.ImageFirstSlot != null && reply.ImageSecondSlot == null && reply.ImageThirdSlot == null && reply.ImageFourthSlot == null)
-                    {
-                        <div class="card post-images one-thumbnail ovh">
-                            <img src="@reply.ImageFirstSlot" alt="posted_image">
-                        </div>
-                    }
-                    else if (reply.ImageFirstSlot != null && reply.ImageSecondSlot != null && reply.ImageThirdSlot == null && reply.ImageFourthSlot == null)
-                    {
-                        <div class="card post-images two-thumbnails">
-                            <div class="row no-gutters">
-                                <div class="col tpr">
-                                    <div class="ovh">
-                                        <img src="@reply.ImageFirstSlot" alt="posted_image">
-                                    </div>
-                                </div>
-                                <div class="col tpl">
-                                    <div class="ovh">
-                                        <img src="@reply.ImageSecondSlot" alt="posted_image" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                    else if (reply.ImageFirstSlot != null && reply.ImageSecondSlot != null && reply.ImageThirdSlot != null && reply.ImageFourthSlot == null)
-                    {
-                        <div class="card post-images three-thumbnails">
-                            <div class="row no-gutters">
-                                <div class="col-md-8 tpr">
-                                    <div class="ovh">
-                                        <img src="@reply.ImageFirstSlot" alt="posted_image">
-                                    </div>
-                                </div>
-                                <div class="col-md-4 tpl">
-                                    <div class="row tpb">
-                                        <div class="col">
-                                            <div class="ovh">
-                                                <img class="mini-thumbnail" src="@reply.ImageSecondSlot" alt="posted_image" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="ovh">
-                                                <img class="mini-thumbnail" src="@reply.ImageThirdSlot" alt="posted_image" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                    else if (reply.ImageFirstSlot != null && reply.ImageSecondSlot != null && reply.ImageThirdSlot != null && reply.ImageFourthSlot != null)
-                    {
-                        <div class="card post-images four-thumbnails">
-                            <div class="row no-gutters">
-                                <div class="col-md-6 tpr">
-                                    <div class="ovh">
-                                        <img src="@reply.ImageFirstSlot" alt="posted_image">
-                                    </div>
-                                </div>
-                                <div class="col-md-6 tpl">
-                                    <div class="ovh">
-                                        <img src="@reply.ImageSecondSlot" alt="posted_image">
-                                    </div>
-                                </div>
-                                <div class="w-100 tpb"></div>
-                                <div class="col-md-6 tpr">
-                                    <div class="ovh">
-                                        <img src="@reply.ImageThirdSlot" alt="posted_image" />
-                                    </div>
-                                </div>
-                                <div class="col-md-6 tpl">
-                                    <div class="ovh">
-                                        <img src="@reply.ImageFourthSlot" alt="posted_image" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    }*@
-
                 </div>
             </div>
             <div class="row mt-4 justify-content-center">

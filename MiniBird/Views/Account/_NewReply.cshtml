@@ -2,8 +2,9 @@
 
 <div class="modal fade" id="replyModal" tabindex="-1" role="dialog" aria-labelledby="replyModalTitle" aria-hidden="true" data-backdrop="false">
     <div class="modal-dialog modal-md" role="document">
-        @using (Ajax.BeginForm("NewReply", "Account", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = (string)TempData["UpdateDiv"], InsertionMode = InsertionMode.Replace, OnSuccess = "newReplySuccess", LoadingElementId = "replying", LoadingElementDuration = 1000 }, new { id = "NewReplyForm" }))
-        {
+        @*@using (Ajax.BeginForm("NewReply", "Account", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = (string)TempData["UpdateDiv"], InsertionMode = InsertionMode.Replace, OnSuccess = "newReplySuccess", LoadingElementId = "replying", LoadingElementDuration = 1000 }, new { id = "NewReplyForm", enctype = "multipart/form-data" }))
+        {*@
+        <form id="NewReplyForm" action="/Account/NewReply" method="post" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.InReplyTo)
             <div class="modal-content">
@@ -21,7 +22,7 @@
                     <div id="imgThumbnailsRow" class="row no-gutters text-center justify-content-center d-none"></div>
                     @Html.ValidationMessageFor(m => m.ImageFiles, null, new { @class = "text-danger d-block" })
                     @Html.ValidationMessageFor(m => m.GifImage, null, new { @class = "text-danger d-block" })
-                    @Html.ValidationMessageFor(m => m.VideoFile, null, new { @class = "text-danger d-block" })                    
+                    @Html.ValidationMessageFor(m => m.VideoFile, null, new { @class = "text-danger d-block" })
                 </div>
                 <div class="modal-footer">
                     <div class="w-100 justify-content-start">
@@ -40,9 +41,10 @@
                     </div>
                 </div>
             </div>
-        }
+        @*}*@
+        </form>
     </div>
-    <div id="replying" class="progress" style="display: none;">
-        <div class="progress-bar progress-bar-striped bg-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+    <div id="replying" class="progress d-none">
+        <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 100%"></div>
     </div>
 </div>
