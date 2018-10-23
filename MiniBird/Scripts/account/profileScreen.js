@@ -160,6 +160,35 @@
             }
         });
     });
+
+    $('#manageUserInList').on('click', function () {
+        var $this = $(this);
+        var $arrow = $this.children('i');
+
+        if ($this.data('isopen')) {
+            $this.data('isopen', false);
+            $this.removeClass('btn-info').addClass('btn-outline-info');
+            $arrow.removeClass('fa-caret-down').addClass('fa-caret-up');
+            $this.next().remove();
+        }
+        else {
+            $this.data('isopen', true);
+            $this.removeClass('btn-outline-info').addClass('btn-info');
+            $arrow.removeClass('fa-caret-up').addClass('fa-caret-down');
+
+            $.ajax({
+                url: "/Account/CheckboxLists",
+                method: "GET",
+                data: "currentProfileID=" + $this.data('profileid'),
+                success: function (data) {
+                    $this.after(data);
+                },
+                error: function () {
+                    alert("No se pudo desplegar la lista.");
+                }
+            });
+        }        
+    });
 });
 
 

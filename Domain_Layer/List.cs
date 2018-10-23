@@ -17,7 +17,7 @@ namespace Domain_Layer
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public List()
         {
-            this.Person1 = new HashSet<Person>();
+            this.UserToList = new HashSet<UserToList>();
         }
     
         public int ListID { get; set; }
@@ -29,6 +29,6 @@ namespace Domain_Layer
     
         public virtual Person Person { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Person> Person1 { get; set; }
+        public virtual ICollection<UserToList> UserToList { get; set; }
     }
 }

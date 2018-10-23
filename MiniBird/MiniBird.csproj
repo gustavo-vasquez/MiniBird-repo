@@ -312,6 +312,7 @@
     <Content Include="Views\Home\_Suggestions.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Home\Hashtag.cshtml" />
+    <Content Include="Views\Account\_CheckboxLists.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

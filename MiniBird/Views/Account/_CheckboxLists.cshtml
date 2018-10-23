@@ -1,0 +1,27 @@
+﻿@model List<Domain_Layer.DTO.CheckboxListsDTO>
+
+<div class="row justify-content-center mt-4" style="overflow: auto; max-height: 360px;">
+    @if (Model != null && Model.Count > 0)
+    {
+        using (Html.BeginForm("AddProfileToLists", "Account", new { currentProfileID = ViewBag.currentProfileID }, FormMethod.Post, new { id = "AddProfileToListsForm" }))
+        {
+            @Html.AntiForgeryToken()
+
+            for (var i = 0; i < Model.Count(); i++)
+            {                
+                @Html.HiddenFor(m => m[i].MyListID)
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                        @Html.CheckBoxFor(m => m[i].PersonalList, new { id = "personalList_" + i, @class = "custom-control-input" })
+                        <label class="custom-control-label" for="@("personalList_" + i)">@Model[i].Name</label>
+                    </div>
+                </div>
+            }
+            <button type="submit" class="btn btn-outline-primary"><i class="far fa-save"></i> Guardar cambios</button>
+        }
+    }
+    else
+    {
+        <p class="font-italic">No tienes listas creadas</p>
+    }
+</div>

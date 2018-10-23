@@ -19,7 +19,7 @@ namespace Domain_Layer.DTO
         public List<FollowingDTO> Followers { get; set; }
         public List<PostSectionDTO> LikesSection { get; set; }
         public List<ListDTO> MyLists { get; set; }
-        public bool Following { get; set; }
+        public bool Following { get; set; }        
 
         public ProfileScreenDTO()
         {

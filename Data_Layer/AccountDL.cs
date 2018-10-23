@@ -143,7 +143,7 @@ namespace Data_Layer
 
                             foreach (string image in model.ImagesUploaded)
                             {
-                                context.Thumbnail.Add(new Thumbnail() { ImagePath = SaveThumbnailOnServer(image, post.PostID, localServer, iteration), ID_Post = post.PostID });
+                                context.Thumbnail.Add(new Thumbnail() { FilePath = SaveThumbnailOnServer(image, post.PostID, localServer, iteration), ID_Post = post.PostID });
                                 context.SaveChanges();
                                 iteration++;
                             }
@@ -178,6 +178,7 @@ namespace Data_Layer
                 using(var context = new MiniBirdEntities())
                 {
                     Person person = context.Person.Find(personID);
+                    var follows = context.Follow;
 
                     var profileScreenDTO = new ProfileScreenDTO();
                     profileScreenDTO.ProfileInformation.PersonID = person.PersonID;
@@ -191,47 +192,55 @@ namespace Data_Layer
                     profileScreenDTO.ProfileInformation.ProfileHeader = (person.ProfileHeader != null) ? ByteArrayToBase64(person.ProfileHeader, person.ProfileHeader_MimeType) : defaultHeader;
                     profileScreenDTO.TopTrendings = TopTrendings();
                     profileScreenDTO.StatisticsBar.PostsCount = context.Post.Where(ps => ps.ID_Person == person.PersonID).Count();
-                    profileScreenDTO.StatisticsBar.FollowingCount = person.Person3.Count;
-                    profileScreenDTO.StatisticsBar.FollowersCount = person.Person11.Count;
+                    profileScreenDTO.StatisticsBar.FollowingCount = this.GetFollowingCount(follows, person.PersonID);
+                    profileScreenDTO.StatisticsBar.FollowersCount = this.GetFollowersCount(follows, person.PersonID);
                     profileScreenDTO.StatisticsBar.LikesCount = context.LikePost.Where(lp => lp.ID_PersonThatLikesPost == person.PersonID).Count();
                     profileScreenDTO.StatisticsBar.ListsCount = context.List.Where(ml => ml.ID_Person == person.PersonID).Count();
 
                     if(ActiveSession.GetPersonID() != person.PersonID)
                     {
                         Person activeUser = context.Person.Find(ActiveSession.GetPersonID());
-                        profileScreenDTO.Following = activeUser.Person3.Any(p => p.PersonID == person.PersonID);
-                    }                        
+                        profileScreenDTO.Following = follows.Any(f => f.ID_Person == activeUser.PersonID && f.ID_PersonFollowed == person.PersonID);
+                    }                    
 
                     switch(v)
                     {
                         case "following":
-                            foreach(var p in person.Person3)
+                            var myFollowings = follows.Where(f => f.ID_Person == person.PersonID);
+
+                            foreach(var following in myFollowings)
                             {
+                                var personFollowed = context.Person.Find(following.ID_PersonFollowed);
+
                                 profileScreenDTO.Followings.Add(new FollowingDTO()
                                 {
-                                    PersonID = p.PersonID,
-                                    NickName = p.NickName,
-                                    UserName = p.UserName,
+                                    PersonID = personFollowed.PersonID,
+                                    NickName = personFollowed.NickName,
+                                    UserName = personFollowed.UserName,
                                     ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar,
-                                    Description = p.PersonalDescription,
-                                    FollowingCount = p.Person3.Count,
-                                    FollowersCount = p.Person11.Count
+                                    Description = personFollowed.PersonalDescription,
+                                    FollowingCount = this.GetFollowingCount(follows, personFollowed.PersonID),
+                                    FollowersCount = this.GetFollowersCount(follows, personFollowed.PersonID)
                                 });
-                            }
+                            }                            
 
                             break;
                         case "followers":
-                            foreach (var p in person.Person11)
+                            var myFollowers = follows.Where(f => f.ID_PersonFollowed == person.PersonID);
+
+                            foreach (var follower in myFollowers)
                             {
+                                var personThatFollowMe = context.Person.Find(follower.ID_Person);
+
                                 profileScreenDTO.Followers.Add(new FollowingDTO()
                                 {
-                                    PersonID = p.PersonID,
-                                    NickName = p.NickName,
-                                    UserName = p.UserName,
+                                    PersonID = personThatFollowMe.PersonID,
+                                    NickName = personThatFollowMe.NickName,
+                                    UserName = personThatFollowMe.UserName,
                                     ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar,
-                                    Description = p.PersonalDescription,
-                                    FollowingCount = p.Person3.Count,
-                                    FollowersCount = p.Person11.Count
+                                    Description = personThatFollowMe.PersonalDescription,
+                                    FollowingCount = follows.Where(f => f.ID_Person == personThatFollowMe.PersonID).Count(),
+                                    FollowersCount = follows.Where(f => f.ID_PersonFollowed == personThatFollowMe.PersonID).Count()
                                 });
                             }
 
@@ -274,7 +283,7 @@ namespace Data_Layer
                                     Name = list.Name,
                                     Description = list.Description,
                                     Privacy = (list.IsPrivate != true) ? Privacy.Public : Privacy.Private,
-                                    MembersCount = list.Person1.Count
+                                    MembersCount = context.UserToList.Where(ul => ul.ID_List == list.ListID).Count()
                                 });
                             }
 
@@ -411,16 +420,19 @@ namespace Data_Layer
                     timelineDTO.ProfileSection.ProfileHeader = (person.ProfileHeader != null) ? ByteArrayToBase64(person.ProfileHeader, person.ProfileHeader_MimeType) : defaultHeader;
                     timelineDTO.ProfileSection.ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar;
                     timelineDTO.ProfileSection.PostCount = posts.Count();
-                    timelineDTO.ProfileSection.FollowerCount = person.Person11.Count;
-                    timelineDTO.ProfileSection.FollowingCount = person.Person3.Count;
+                    timelineDTO.ProfileSection.FollowingCount = this.GetFollowingCount(context.Follow, person.PersonID);
+                    timelineDTO.ProfileSection.FollowerCount = this.GetFollowersCount(context.Follow, person.PersonID);                    
                     timelineDTO.TopTrendingsSection = TopTrendings();
 
                     var reposts = context.RePost.Where(rp => rp.ID_PersonThatRePost == person.PersonID).ToList();
+                    var myFollowings = context.Follow.Where(f => f.ID_Person == personID);
 
-                    foreach (var p in person.Person3)
+                    foreach (var follow in myFollowings)
                     {
-                        var postsOfFollowing = context.Post.Where(ps => ps.ID_Person == p.PersonID && ps.InReplyTo == null).ToList();
-                        var repostsOfFollowing = context.RePost.Where(rp => rp.ID_PersonThatRePost == p.PersonID).ToList();
+                        var personFollowedID = context.Person.Find(follow.ID_PersonFollowed).PersonID;
+
+                        var postsOfFollowing = context.Post.Where(ps => ps.ID_Person == personFollowedID && ps.InReplyTo == null).ToList();
+                        var repostsOfFollowing = context.RePost.Where(rp => rp.ID_PersonThatRePost == personFollowedID).ToList();
 
                         if (postsOfFollowing.Count > 0)
                             posts.AddRange(postsOfFollowing);
@@ -566,6 +578,7 @@ namespace Data_Layer
                     Name = data.Name,
                     Description = data.Description,
                     IsPrivate = (data.Privacy != Privacy.Public) ? true : false,
+                    CreationDate = DateTime.Now,
                     ID_Person = personID
                 });
 
@@ -579,13 +592,13 @@ namespace Data_Layer
             {
                 using (var context = new MiniBirdEntities())
                 {
-                    var currentList = context.List.Where(l => l.ListID == listID).First();
+                    var currentList = context.List.Find(listID);
 
                     var listScreenDTO = new ListScreenDTO();
                     listScreenDTO.CurrentListSection.MyListID = currentList.ListID;
                     listScreenDTO.CurrentListSection.Name = currentList.Name;
                     listScreenDTO.CurrentListSection.Description = currentList.Description;
-                    listScreenDTO.CurrentListSection.MembersCount = currentList.Person1.Count;
+                    listScreenDTO.CurrentListSection.MembersCount = context.UserToList.Where(ul => ul.ID_List == currentList.ListID).Count();
 
                     var myLists = context.List.Where(ml => ml.ID_Person == personID);
 
@@ -600,9 +613,11 @@ namespace Data_Layer
                         });
                     }
 
-                    foreach(var pe in currentList.Person1)
+                    IQueryable<UserToList> personsInThisList = context.UserToList.Where(ul => ul.ID_List == currentList.ListID);
+
+                    foreach(var personITL in personsInThisList)
                     {
-                        var posts = context.Post.Where(p => p.ID_Person == pe.PersonID);
+                        var posts = context.Post.Where(p => p.ID_Person == personITL.ID_Person);
                         posts = posts.OrderByDescending(ps => ps.PublicationDate);
 
                         foreach (var post in posts)
@@ -615,7 +630,7 @@ namespace Data_Layer
                                 Comment = post.Comment,
                                 GIFImage = post.GIFImage,
                                 VideoFile = post.VideoFile,
-                                Thumbnails = GetPostedThumbnails(post.PostID),                                
+                                Thumbnails = GetPostedThumbnails(post.PostID),
                                 PublicationDate = post.PublicationDate,
                                 CreatedBy = createdBy.PersonID,
                                 NickName = createdBy.NickName,
@@ -623,8 +638,34 @@ namespace Data_Layer
                                 ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
                                 InteractButtons = GetInteractsCountDL(post.PostID)
                             });
-                        }                        
+                        }
                     }
+
+                    //foreach(var pe in currentList.Person1)
+                    //{
+                    //    var posts = context.Post.Where(p => p.ID_Person == pe.PersonID);
+                    //    posts = posts.OrderByDescending(ps => ps.PublicationDate);
+
+                    //    foreach (var post in posts)
+                    //    {
+                    //        var createdBy = context.Person.Where(p => p.PersonID == post.ID_Person).First();
+
+                    //        listScreenDTO.PostSection.Add(new PostSectionDTO()
+                    //        {
+                    //            PostID = post.PostID,
+                    //            Comment = post.Comment,
+                    //            GIFImage = post.GIFImage,
+                    //            VideoFile = post.VideoFile,
+                    //            Thumbnails = GetPostedThumbnails(post.PostID),                                
+                    //            PublicationDate = post.PublicationDate,
+                    //            CreatedBy = createdBy.PersonID,
+                    //            NickName = createdBy.NickName,
+                    //            UserName = createdBy.UserName,
+                    //            ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
+                    //            InteractButtons = GetInteractsCountDL(post.PostID)
+                    //        });
+                    //    }
+                    //}
 
                     return listScreenDTO;
                 }
@@ -660,13 +701,13 @@ namespace Data_Layer
             {
                 using (var context = new MiniBirdEntities())
                 {
-                    var listToRemove = context.List.Find(listID);                    
+                    List listToRemove = context.List.Find(listID);
 
-                    foreach(var p in context.Person)
+                    foreach(var row in context.UserToList.Where(ul => ul.ID_List == listID))
                     {
-                        if(p.List1.Any(l => l.ListID == listID))
-                            p.List1.Remove(listToRemove);
+                        context.UserToList.Remove(row);                        
                     }
+
                     context.List.Remove(listToRemove);
                     context.SaveChanges();
                 }
@@ -769,16 +810,17 @@ namespace Data_Layer
                     var person = context.Person.Find(personID);
                     var personToFollow = context.Person.Find(follow);
 
-                    if (person.Person3.Any(f => f.PersonID == follow))
+                    if (context.Follow.Any(f => f.ID_Person == personID && f.ID_PersonFollowed == follow))
                     {
-                        person.Person3.Remove(personToFollow);
+                        Follow followToRemove = context.Follow.Where(f => f.ID_Person == personID && f.ID_PersonFollowed == follow).FirstOrDefault();
+                        context.Follow.Remove(followToRemove);
                         context.SaveChanges();
                         return false;
                     }
                         
                     else
                     {
-                        person.Person3.Add(personToFollow);
+                        context.Follow.Add(new Follow() { ID_Person = personID, ID_PersonFollowed = follow, DateOfAction = DateTime.Now });
                         context.SaveChanges();
                         return true;
                     }                        
@@ -791,6 +833,51 @@ namespace Data_Layer
         }
 
 
+        public List<CheckboxListsDTO> CheckboxListsDL(int currentProfileID, int activeUser)
+        {
+            using(var context = new MiniBirdEntities())
+            {
+                var myLists = context.List.Where(ml => ml.ID_Person == activeUser);
+                List<CheckboxListsDTO> checkboxListsDTO = new List<CheckboxListsDTO>();
+
+                foreach (var list in myLists)
+                {
+                    checkboxListsDTO.Add(new CheckboxListsDTO()
+                    {
+                        MyListID = list.ListID,
+                        Name = list.Name,
+                        Description = list.Description,
+                        PersonalList = (context.UserToList.Any(ul => ul.ID_Person == currentProfileID && ul.ID_List == list.ListID)) ? true : false
+                    });
+                }
+
+                return checkboxListsDTO;
+            }            
+        }
+
+        public void AddProfileToListsDL(List<CheckboxListsDTO> model, int currentProfileID)
+        {
+            using(var context = new MiniBirdEntities())
+            {
+                foreach(var list in model)
+                {
+                    if(context.UserToList.Any(ul => ul.ID_List == list.MyListID && ul.ID_Person == currentProfileID) != list.PersonalList)
+                    {
+                        if(list.PersonalList)
+                        {
+                            context.UserToList.Add(new UserToList() { ID_List = list.MyListID, ID_Person = currentProfileID, DateOfAggregate = DateTime.Now });
+                            context.SaveChanges();
+                        }
+                        else
+                        {
+                            context.UserToList.Remove(context.UserToList.Find(list.MyListID, currentProfileID));
+                            context.SaveChanges();
+                        }
+                    }
+                }
+            }
+        }
+
 
         #region TAREAS AUXILIARES
 
@@ -800,7 +887,7 @@ namespace Data_Layer
             {
                 return context.Person.Any(p => p.Email == email || p.UserName == userName);
             }
-        }        
+        }
 
         private string ByteArrayToBase64(byte[] profileAvatar, string mimeType)
         {
@@ -1067,11 +1154,21 @@ namespace Data_Layer
 
                 foreach(var thumbnail in thumbnails)
                 {
-                    postedThumbnails.Add(thumbnail.ImagePath);
+                    postedThumbnails.Add(thumbnail.FilePath);
                 }
 
                 return postedThumbnails;
             }
+        }
+
+        private int GetFollowingCount(IEnumerable<Follow> follows, int personID)
+        {
+            return follows.Where(f => f.ID_Person == personID).Count();
+        }
+
+        private int GetFollowersCount(IEnumerable<Follow> follows, int personID)
+        {
+            return follows.Where(f => f.ID_PersonFollowed == personID).Count();
         }
 
         #endregion

@@ -21,4 +21,9 @@ namespace Domain_Layer.DTO
         public Privacy Privacy { get; set; }
         public int MembersCount { get; set; }
     }
+
+    public class CheckboxListsDTO : ListDTO
+    {
+        public bool PersonalList { get; set; }
+    }
 }

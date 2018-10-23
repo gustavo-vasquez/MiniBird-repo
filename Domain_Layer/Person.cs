@@ -17,17 +17,13 @@ namespace Domain_Layer
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Person()
         {
+            this.Follow = new HashSet<Follow>();
+            this.Follow1 = new HashSet<Follow>();
             this.LikePost = new HashSet<LikePost>();
             this.List = new HashSet<List>();
             this.Post = new HashSet<Post>();
             this.RePost = new HashSet<RePost>();
-            this.Person1 = new HashSet<Person>();
-            this.Person2 = new HashSet<Person>();
-            this.Person11 = new HashSet<Person>();
-            this.Person3 = new HashSet<Person>();
-            this.Person12 = new HashSet<Person>();
-            this.Person4 = new HashSet<Person>();
-            this.List1 = new HashSet<List>();
+            this.UserToList = new HashSet<UserToList>();
         }
     
         public int PersonID { get; set; }
@@ -42,9 +38,13 @@ namespace Domain_Layer
         public string ProfileAvatar_MimeType { get; set; }
         public byte[] ProfileHeader { get; set; }
         public string ProfileHeader_MimeType { get; set; }
-        public System.DateTime RegistrationDate { get; set; }
         public string PersonCryptID { get; set; }
+        public System.DateTime RegistrationDate { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Follow> Follow { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Follow> Follow1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LikePost> LikePost { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -54,18 +54,6 @@ namespace Domain_Layer
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RePost> RePost { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Person> Person1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Person> Person2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Person> Person11 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Person> Person3 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Person> Person12 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Person> Person4 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<List> List1 { get; set; }
+        public virtual ICollection<UserToList> UserToList { get; set; }
     }
 }

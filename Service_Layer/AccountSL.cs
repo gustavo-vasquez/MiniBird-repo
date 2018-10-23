@@ -119,6 +119,15 @@ namespace Service_Layer
             return Account.FollowUserDL(personID, follow);
         }
 
+        public List<CheckboxListsDTO> CheckboxListsSL(int currentProfileID, int activeUser)
+        {
+            return Account.CheckboxListsDL(currentProfileID, activeUser);
+        }
+
+        public void AddProfileToListsSL(List<CheckboxListsDTO> model, int currentProfileID)
+        {
+            Account.AddProfileToListsDL(model, currentProfileID);
+        }
 
 
         #region TAREAS AUXILIARES

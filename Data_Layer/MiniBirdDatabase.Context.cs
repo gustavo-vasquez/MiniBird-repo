@@ -25,6 +25,7 @@ namespace Domain_Layer
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Follow> Follow { get; set; }
         public virtual DbSet<Hashtag> Hashtag { get; set; }
         public virtual DbSet<LikePost> LikePost { get; set; }
         public virtual DbSet<List> List { get; set; }
@@ -32,5 +33,6 @@ namespace Domain_Layer
         public virtual DbSet<Post> Post { get; set; }
         public virtual DbSet<RePost> RePost { get; set; }
         public virtual DbSet<Thumbnail> Thumbnail { get; set; }
+        public virtual DbSet<UserToList> UserToList { get; set; }
     }
 }

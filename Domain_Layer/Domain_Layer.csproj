@@ -70,6 +70,9 @@
     <Compile Include="DTO\TimelineDTO.cs" />
     <Compile Include="DTO\ViewPostDTO.cs" />
     <Compile Include="Enum\Privacy.cs" />
+    <Compile Include="Follow.cs">
+      <DependentUpon>MiniBirdDatabase.tt</DependentUpon>
+    </Compile>
     <Compile Include="Hashtag.cs">
       <DependentUpon>MiniBirdDatabase.tt</DependentUpon>
     </Compile>
@@ -96,6 +99,9 @@
     </Compile>
     <Compile Include="SessionInformation.cs" />
     <Compile Include="Thumbnail.cs">
+      <DependentUpon>MiniBirdDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserToList.cs">
       <DependentUpon>MiniBirdDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="Validations\CollectionMaxLengthAttribute.cs" />

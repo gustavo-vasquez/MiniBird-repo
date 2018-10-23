@@ -154,7 +154,7 @@ namespace MiniBird.Controllers
 
             Account.NewListSL(model, ActiveSession.GetPersonID());
 
-            return RedirectToAction("ProfileScreen", "Account", new { v = "lists" });
+            return RedirectToAction("ProfileScreen", "Account", new { id = ActiveSession.GetPersonID(), v = "lists" });
         }
 
         public ActionResult ListScreen(int id)
@@ -176,7 +176,7 @@ namespace MiniBird.Controllers
         public ActionResult RemoveList(ListScreenDTO model)
         {
             Account.RemoveListSL(model.CurrentListSection.MyListID, ActiveSession.GetPersonID());
-            return RedirectToAction("ProfileScreen", "Account", new { v = "lists" });
+            return RedirectToAction("ProfileScreen", "Account", new { id = ActiveSession.GetPersonID(), v = "lists" });
         }
 
         public ActionResult ViewPost(int postID)
@@ -315,6 +315,22 @@ namespace MiniBird.Controllers
                 return Json(new { buttonText = "Dejar de seguir", className = "btn-danger" }, JsonRequestBehavior.AllowGet);
             else
                 return Json(new { buttonText = "Seguir", className = "btn-success" }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public PartialViewResult CheckboxLists(int currentProfileID)
+        {
+            ViewBag.currentProfileID = currentProfileID;
+            return PartialView("_CheckboxLists", Account.CheckboxListsSL(currentProfileID, ActiveSession.GetPersonID()));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddProfileToLists(List<CheckboxListsDTO> model, int currentProfileID)
+        {
+            Account.AddProfileToListsSL(model, currentProfileID);
+
+            return RedirectToAction("ProfileScreen", new { id = currentProfileID });
         }
 
         #endregion

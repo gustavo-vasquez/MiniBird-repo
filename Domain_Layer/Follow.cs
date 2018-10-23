@@ -12,12 +12,13 @@ namespace Domain_Layer
     using System;
     using System.Collections.Generic;
     
-    public partial class Thumbnail
+    public partial class Follow
     {
-        public int ThumbnailID { get; set; }
-        public string FilePath { get; set; }
-        public int ID_Post { get; set; }
+        public int ID_Person { get; set; }
+        public int ID_PersonFollowed { get; set; }
+        public System.DateTime DateOfAction { get; set; }
     
-        public virtual Post Post { get; set; }
+        public virtual Person Person { get; set; }
+        public virtual Person Person1 { get; set; }
     }
 }
