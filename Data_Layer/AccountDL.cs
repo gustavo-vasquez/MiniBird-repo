@@ -219,8 +219,8 @@ namespace Data_Layer
                                     UserName = personFollowed.UserName,
                                     ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar,
                                     Description = personFollowed.PersonalDescription,
-                                    FollowingCount = this.GetFollowingCount(follows, personFollowed.PersonID),
-                                    FollowersCount = this.GetFollowersCount(follows, personFollowed.PersonID)
+                                    FollowingCount = GetFollowingCount(follows, personFollowed.PersonID),
+                                    FollowersCount = GetFollowersCount(follows, personFollowed.PersonID)
                                 });
                             }                            
 
@@ -240,7 +240,8 @@ namespace Data_Layer
                                     ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar,
                                     Description = personThatFollowMe.PersonalDescription,
                                     FollowingCount = follows.Where(f => f.ID_Person == personThatFollowMe.PersonID).Count(),
-                                    FollowersCount = follows.Where(f => f.ID_PersonFollowed == personThatFollowMe.PersonID).Count()
+                                    FollowersCount = follows.Where(f => f.ID_PersonFollowed == personThatFollowMe.PersonID).Count(),
+                                    Following = context.Follow.Any(f => f.ID_Person == person.PersonID && f.ID_PersonFollowed == personThatFollowMe.PersonID)
                                 });
                             }
 
@@ -266,7 +267,7 @@ namespace Data_Layer
                                     NickName = createdBy.NickName,
                                     UserName = createdBy.UserName,
                                     ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
-                                    InteractButtons = GetInteractsCountDL(postLiked.PostID)                                    
+                                    InteractButtons = GetInteractsCountDL(postLiked.PostID, person.PersonID)                                    
                                 });
                             }
 
@@ -309,7 +310,7 @@ namespace Data_Layer
                                     NickName = createdBy.NickName,
                                     UserName = createdBy.UserName,
                                     ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
-                                    InteractButtons = GetInteractsCountDL(postReposted.PostID),
+                                    InteractButtons = GetInteractsCountDL(postReposted.PostID, person.PersonID),
                                     RepostedBy = (repost.ID_PersonThatRePost != person.PersonID) ? context.Person.Find(repost.ID_PersonThatRePost).NickName : "ti"
                                 });
                             }
@@ -329,7 +330,7 @@ namespace Data_Layer
                                     NickName = person.NickName,
                                     UserName = person.UserName,
                                     ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar,
-                                    InteractButtons = GetInteractsCountDL(post.PostID)
+                                    InteractButtons = GetInteractsCountDL(post.PostID, person.PersonID)
                                 });
                             }
                             break;
@@ -420,8 +421,8 @@ namespace Data_Layer
                     timelineDTO.ProfileSection.ProfileHeader = (person.ProfileHeader != null) ? ByteArrayToBase64(person.ProfileHeader, person.ProfileHeader_MimeType) : defaultHeader;
                     timelineDTO.ProfileSection.ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar;
                     timelineDTO.ProfileSection.PostCount = posts.Count();
-                    timelineDTO.ProfileSection.FollowingCount = this.GetFollowingCount(context.Follow, person.PersonID);
-                    timelineDTO.ProfileSection.FollowerCount = this.GetFollowersCount(context.Follow, person.PersonID);                    
+                    timelineDTO.ProfileSection.FollowingCount = GetFollowingCount(context.Follow, person.PersonID);
+                    timelineDTO.ProfileSection.FollowerCount = GetFollowersCount(context.Follow, person.PersonID);
                     timelineDTO.TopTrendingsSection = TopTrendings();
 
                     var reposts = context.RePost.Where(rp => rp.ID_PersonThatRePost == person.PersonID).ToList();
@@ -462,7 +463,7 @@ namespace Data_Layer
                                     NickName = createdBy.NickName,
                                     UserName = createdBy.UserName,
                                     ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
-                                    InteractButtons = GetInteractsCountDL(post.PostID),
+                                    InteractButtons = GetInteractsCountDL(post.PostID, person.PersonID),
                                     RepostedBy = (repost.ID_PersonThatRePost != person.PersonID) ? context.Person.Find(repost.ID_PersonThatRePost).NickName : "ti"
                                 });
                             }
@@ -474,13 +475,13 @@ namespace Data_Layer
                             Comment = post.Comment,
                             GIFImage = post.GIFImage,
                             VideoFile = post.VideoFile,
-                            Thumbnails = GetPostedThumbnails(post.PostID),                            
+                            Thumbnails = GetPostedThumbnails(post.PostID),
                             PublicationDate = post.PublicationDate,
                             CreatedBy = createdBy.PersonID,
                             NickName = createdBy.NickName,
                             UserName = createdBy.UserName,
                             ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
-                            InteractButtons = GetInteractsCountDL(post.PostID)
+                            InteractButtons = GetInteractsCountDL(post.PostID, person.PersonID)
                         });
                     }
 
@@ -522,7 +523,7 @@ namespace Data_Layer
             }
         }
 
-        public InteractButtonsDTO GetInteractsCountDL(int postID)
+        public InteractButtonsDTO GetInteractsCountDL(int postID, int personID)
         {
             using(var context = new MiniBirdEntities())
             {
@@ -534,7 +535,9 @@ namespace Data_Layer
                 {
                     ReplysCount = replys,
                     RepostsCount = reposts,
-                    LikesCount = likes
+                    LikesCount = likes,
+                    IReposted = context.RePost.Any(r => r.ID_PersonThatRePost == personID && r.ID_Post == postID),
+                    ILiked = context.LikePost.Any(l => l.ID_PersonThatLikesPost == personID && l.ID_Post == postID)
                 };
             }
         }
@@ -636,36 +639,10 @@ namespace Data_Layer
                                 NickName = createdBy.NickName,
                                 UserName = createdBy.UserName,
                                 ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
-                                InteractButtons = GetInteractsCountDL(post.PostID)
+                                InteractButtons = GetInteractsCountDL(post.PostID, personID)
                             });
                         }
-                    }
-
-                    //foreach(var pe in currentList.Person1)
-                    //{
-                    //    var posts = context.Post.Where(p => p.ID_Person == pe.PersonID);
-                    //    posts = posts.OrderByDescending(ps => ps.PublicationDate);
-
-                    //    foreach (var post in posts)
-                    //    {
-                    //        var createdBy = context.Person.Where(p => p.PersonID == post.ID_Person).First();
-
-                    //        listScreenDTO.PostSection.Add(new PostSectionDTO()
-                    //        {
-                    //            PostID = post.PostID,
-                    //            Comment = post.Comment,
-                    //            GIFImage = post.GIFImage,
-                    //            VideoFile = post.VideoFile,
-                    //            Thumbnails = GetPostedThumbnails(post.PostID),                                
-                    //            PublicationDate = post.PublicationDate,
-                    //            CreatedBy = createdBy.PersonID,
-                    //            NickName = createdBy.NickName,
-                    //            UserName = createdBy.UserName,
-                    //            ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
-                    //            InteractButtons = GetInteractsCountDL(post.PostID)
-                    //        });
-                    //    }
-                    //}
+                    }                    
 
                     return listScreenDTO;
                 }
@@ -738,7 +715,7 @@ namespace Data_Layer
                     ViewPost.PostSection.NickName = createdBy.NickName;
                     ViewPost.PostSection.UserName = createdBy.UserName;
                     ViewPost.PostSection.ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar;
-                    ViewPost.PostSection.InteractButtons = GetInteractsCountDL(post.PostID);
+                    ViewPost.PostSection.InteractButtons = GetInteractsCountDL(post.PostID, ActiveSession.GetPersonID());
 
                     var replies = context.Post.Where(r => r.InReplyTo == postID).OrderByDescending(r => r.PublicationDate);
 
@@ -758,7 +735,7 @@ namespace Data_Layer
                             NickName = replyCreatedBy.NickName,
                             UserName = replyCreatedBy.UserName,
                             ProfileAvatar = (replyCreatedBy.ProfileAvatar != null) ? ByteArrayToBase64(replyCreatedBy.ProfileAvatar, replyCreatedBy.ProfileAvatar_MimeType) : defaultAvatar,
-                            InteractButtons = GetInteractsCountDL(reply.PostID)
+                            InteractButtons = GetInteractsCountDL(reply.PostID, ActiveSession.GetPersonID())
                         });
                     }
 

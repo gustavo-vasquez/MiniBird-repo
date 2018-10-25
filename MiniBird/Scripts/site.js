@@ -1,5 +1,4 @@
-﻿var asd = 0;
-$(document).ready(function () {
+﻿$(document).ready(function () {
     $('body').on('mouseenter mouseleave', '.dropdown-menu > a, .dropdown-menu > form > button, .list-group-item', function () {
         $(this).toggleClass('active');
     });
@@ -11,11 +10,7 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '#postBtn', { action: "post" }, drawPublication);
-    $(document).on('click', '#replyBtnFixed, #replyBtnDynamic', { action: "reply" }, drawPublication);
-    //$('body').on('click', '#postBtn', newPost);
-    //$('body').on('click', '#replyBtnFixed, #replyBtnDynamic', function () {
-    //    newReply($(this));
-    //});
+    $(document).on('click', '#replyBtnFixed, #replyBtnDynamic', { action: "reply" }, drawPublication);    
 
     $('body').on('click', '.post-images img', function () {
         var src = $(this).attr('src');
@@ -48,9 +43,8 @@ $(document).ready(function () {
         copyLinkToClipboard($(this));
     });
 
-    $('#search').on('click', search);    
+    $('#search').on('click', search);        
 });
-
 
 // FUNCIONES
 
@@ -76,10 +70,9 @@ function drawPublication(event) {
                     $('#Comment').focus();
                 });
 
-                $('#NewPostForm').on('keydown', function (event) {
-                    if (event.ctrlKey && event.keyCode === 13) {
+                $('#NewPostForm').on('keydown keyup', { map: {} }, function (event) {
+                    if (twoPressedKeys(event, "Control", "Enter", event.data.map))
                         $(this).trigger('submit');
-                    }
                 });
 
                 $.validator.unobtrusive.parse($('#NewPostForm'));
@@ -88,21 +81,28 @@ function drawPublication(event) {
         case "reply":
             $cleanModal = $('#postModal');
             $setModal = $('#replyModal');
-            $this = $(this);
+
+            if(event.data.thisElement === undefined)
+                $this = $(this);
+            else
+                $this = event.data.thisElement;
+
             queryString = "call=reply&updateTarget=" + $this.data('updatetarget');
             successfulModalLoading = function (data, textStatus, XMLHttpRequest) {                
-                $this.after(data);
-                $('#replyModalTitle').text('En respuesta a ' + $this.data('replyto'));
-                $('#InReplyTo').val($this.data('postid'));
-                $('#replyModal').modal('show');
-                $('#replyModal').on('shown.bs.modal', function () {
-                    $('#Comment').focus();
-                });
+                    $this.after(data);
+                    $('#replyModalTitle').text('En respuesta a ' + $this.data('replyto'));
+                    $('#InReplyTo').val($this.data('postid'));
+                    $('#replyModal').modal('show');
+                    $('#replyModal').on('shown.bs.modal', function () {
+                        if ($this.attr('id') == "replyBtnFixed")
+                            $('body').css('overflow', 'visible');
 
-                $('#NewReplyForm').on('keydown', function (event) {
-                    if (event.ctrlKey && event.keyCode === 13) {
-                        $this.trigger('submit');
-                    }
+                        $('#Comment').focus();
+                    });
+                    
+                    $('#NewReplyForm').on('keydown keyup', { map: {} }, function (event) {
+                        if (twoPressedKeys(event, "Control", "Enter", event.data.map))
+                            $(this).trigger('submit');
                 });
 
                 $.validator.unobtrusive.parse($('#NewReplyForm'));
@@ -116,18 +116,20 @@ function drawPublication(event) {
     if ($cleanModal.length > 0)
         $cleanModal.remove();
 
-    filesTotalSize = 0; // vuelve a inicializar el peso total de imágenes para la validación
-        
-    //else {
-    //    console.log("JS cargado");
-    //    $.getScript('/Scripts/account/newPost.js');
-    //}
+    filesTotalSize = 0; // vuelve a inicializar el peso total de imágenes para la validación           
 
-    if (asd <= 0) {
-        console.log("JS cargado");
-        $.getScript('/Scripts/account/newPost.js');
-        asd++;
-    }    
+    var existNewPostJs = $('script').filter(function (index) {
+        return $(this)[0].src.includes("/newPost.js");
+    }).length;
+
+    if (existNewPostJs === 0) {
+        var fileref = document.createElement('script')
+        fileref.setAttribute("type", "text/javascript")
+        fileref.setAttribute("src", '/Scripts/account/newPost.js')
+
+        if (typeof fileref != "undefined")
+            document.getElementsByTagName("body")[0].appendChild(fileref);
+    }
 
     if ($setModal.length <= 0) {
         $.ajax({
@@ -142,18 +144,14 @@ function drawPublication(event) {
     }
     else
         $setModal.modal('show');
+}   
+
+function twoPressedKeys(event, firstKey, secondKey, map) {    
+    map[event.key] = event.type == 'keydown';    
+    
+    if (map[firstKey] && map[secondKey])
+        return true;
 }
-
-    //get the number of `<script>` elements that have the correct `src` attribute
-    //var len = $('script').filter(function () {
-    //    return ($(this).attr('src') == '/Scripts/account/newPost.js');
-    //}).length;
-
-    ////if there are no scripts that match, the load it
-    //if (len === 0) {
-    //    console.log("Voy a cargar el js");
-    //    $.getScript('/Scripts/account/newPost.js');
-    //}
 
 function loadImagePreview(srcArray, src) {
     var index = srcArray.indexOf(src);

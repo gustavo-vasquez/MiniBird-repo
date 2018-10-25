@@ -79,9 +79,9 @@ namespace Service_Layer
             Account.GiveALikeDL(postID, personID);
         }
 
-        public InteractButtonsDTO GetInteractsCountSL(int postID)
+        public InteractButtonsDTO GetInteractsCountSL(int postID, int personID)
         {
-            return Account.GetInteractsCountDL(postID);
+            return Account.GetInteractsCountDL(postID, personID);
         }
 
         public void NewListSL(ListDTO data, int personID)

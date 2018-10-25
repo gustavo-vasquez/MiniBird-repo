@@ -318,7 +318,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\images\temporary\" />
     <Folder Include="Content\thumbnails\" />
-    <Folder Include="Views\Exception\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

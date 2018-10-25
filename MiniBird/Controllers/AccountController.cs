@@ -267,15 +267,17 @@ namespace MiniBird.Controllers
         [HttpPost]
         public PartialViewResult SendRepost(int postID)
         {
-            Account.SendRepostSL(postID, ActiveSession.GetPersonID());
-            return PartialView("_InteractButtons", Account.GetInteractsCountSL(postID));
+            int currentPersonID = ActiveSession.GetPersonID();
+            Account.SendRepostSL(postID, currentPersonID);
+            return PartialView("_InteractButtons", Account.GetInteractsCountSL(postID, currentPersonID));
         }
 
         [HttpPost]
         public PartialViewResult GiveALike(int postID)
         {
-            Account.GiveALikeSL(postID, ActiveSession.GetPersonID());
-            return PartialView("_InteractButtons", Account.GetInteractsCountSL(postID));
+            int currentPersonID = ActiveSession.GetPersonID();
+            Account.GiveALikeSL(postID, currentPersonID);
+            return PartialView("_InteractButtons", Account.GetInteractsCountSL(postID, currentPersonID));
         }
 
         [HttpGet]

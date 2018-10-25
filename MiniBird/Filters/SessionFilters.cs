@@ -18,7 +18,10 @@ namespace MiniBird.Filters
 
                 if (session != null)
                     Domain_Layer.ActiveSession.Fill(session);
-                else if (loginCookie != null)
+                else
+                    Domain_Layer.ActiveSession.Clear();
+
+                if (loginCookie != null)
                 {
                     filterContext.HttpContext.Session["MiniBirdAccount"] = new Service_Layer.AccountSL().CreateSessionFromCookieSL(loginCookie.Value);
                     Domain_Layer.ActiveSession.Fill(filterContext.HttpContext.Session["MiniBirdAccount"]);
@@ -48,24 +51,7 @@ namespace MiniBird.Filters
                         filterContext.Result = new HttpStatusCodeResult(403, "Acceso no autorizado - Solo usuarios registrados pueden ver el contenido");
                 }                    
             }
-        }        
-
-        //public class GuestAttribute : FilterAttribute
-        //{
-
-        //}
-
-        //public class AuthorizedOnlyAttribute : ActionFilterAttribute
-        //{
-        //    public override void OnActionExecuting(ActionExecutingContext filterContext)
-        //    {
-        //        object[] attributes = filterContext.ActionDescriptor.GetCustomAttributes(true);
-
-        //        if (!attributes.Any(a => a is GuestAttribute))
-        //            if (filterContext.HttpContext.Session["MiniBirdAccount"] == null)
-        //                filterContext.Result = new HttpStatusCodeResult(403, "Acceso no autorizado - Solo usuarios registrados pueden ver el contenido");                
-        //    }
-        //}
+        }
 
         internal class HttpStatusCodeResult : ActionResult
         {

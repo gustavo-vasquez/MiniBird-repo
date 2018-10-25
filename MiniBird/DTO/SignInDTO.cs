@@ -32,8 +32,6 @@ namespace MiniBird.DTO
         [Required(ErrorMessage = "Volver a ingresar la contraseña.")]
         [Compare("Password", ErrorMessage = "Las contraseñas no coinciden.")]
         public string ConfirmPassword { get; set; }
-
-        public bool TermsAndConditions { get; set; }
     }
 
     public class LoginDTO

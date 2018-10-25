@@ -1,28 +1,14 @@
-﻿$(document).on('keydown', function (event) {
+﻿$(document).on('keydown', { }, function (event) {
     if (!($(document.activeElement).is('textarea') || $(document.activeElement).is('input'))) {
         switch (event.keyCode) {
             case 77:
                 $('#profileMenuLink').trigger('click');
                 break; // key m
             case 78:
-                newPost();
+                event.data.action = "post";
+                drawPublication(event);
                 break; // key n
-        }
-
-        //if (event.keyCode === 71 && event.keyCode === 72) // keys g h
-        //    window.location.href = "/Account/Timeline";
-
-        //if (event.keyCode === 71 && event.keyCode === 73) // keys g i
-        //    window.location.href = "/Account/ProfileScreen/lists";
-
-        //if (event.keyCode === 71 && event.keyCode === 78) // keys g n
-        //    window.location.href = "/Account/Notifications";
-
-        //if (event.keyCode === 71 && event.keyCode === 80) // keys g p
-        //    window.location.href = "/Account/ProfileScreen";
-
-        //if (event.keyCode === 71 && event.keyCode === 72) // keys g l
-        //    window.location.href = "/Account/ProfileScreen/likes";        
+        }        
 
         if ($('#viewingPostDynamic').length > 0) {
             var containerDiv = $('#viewingPostDynamic > .card-body').find('.interact-buttons');
@@ -35,7 +21,9 @@
                     giveALike(containerDiv);
                     break; // key l
                 case 82:
-                    newReply($('#replyBtnDynamic'));
+                    event.data.action = "reply";
+                    event.data.thisElement = $('#replyBtnDynamic');
+                    drawPublication(event);
                     break; // key r
                 case 27:
                     closePost();
@@ -53,7 +41,9 @@
                     giveALike(containerDiv);
                     break; // key l
                 case 82:
-                    newReply($('#replyBtnFixed'));
+                    event.data.action = "reply";
+                    event.data.thisElement = $('#replyBtnFixed');
+                    drawPublication(event);
                     break; // key r
                 case 27:
                     closePost();
@@ -61,4 +51,20 @@
             }
         }        
     }
+});
+
+$(document).on('keydown keyup', { map: {}, activeUser: $('#profileMenuLink').data('active-user') }, function (event) {
+    if (!($(document.activeElement).is('textarea') || $(document.activeElement).is('input'))) {
+        if (twoPressedKeys(event, "g", "h", event.data.map))
+            window.location.href = "/Account/Timeline";
+
+        if (twoPressedKeys(event, "g", "i", event.data.map))
+            window.location.href = "/Account/ProfileScreen/" + event.data.activeUser + "/lists";
+
+        if (twoPressedKeys(event, "g", "p", event.data.map))
+            window.location.href = "/Account/ProfileScreen/" + event.data.activeUser;
+
+        if (twoPressedKeys(event, "g", "l", event.data.map))
+            window.location.href = "/Account/ProfileScreen/" + event.data.activeUser + "/likes";
+    }    
 });

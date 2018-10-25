@@ -38,11 +38,7 @@
                         <div class="form-group">
                             @Html.PasswordFor(m => m.Register.ConfirmPassword, new { @class = "form-control", placeholder = "Repetir contraseña" })
                             @Html.ValidationMessageFor(m => m.Register.ConfirmPassword, null, new { @class = "badge badge-danger" })
-                        </div>
-                        <div class="custom-control custom-checkbox mb-4">
-                            @Html.CheckBoxFor(m => m.Register.TermsAndConditions, new { @class = "custom-control-input" })
-                            <label class="custom-control-label" for="Register_TermsAndConditions">Acepto los <a href="#">términos y condiciones</a> @Html.ValidationMessageFor(m => m.Register.TermsAndConditions, null, new { @class = "badge badge-danger" }) </label>
-                        </div>
+                        </div>                        
                         <button type="submit" class="btn btn-primary">Registrarme</button>
                         <div class="form-group mt-5">
                             <span>¿Ya tienes cuenta? <a href="#" id="loginLink">Haz clic aquí para iniciar sesión</a></span>

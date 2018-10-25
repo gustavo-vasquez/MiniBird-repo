@@ -30,8 +30,12 @@ $(document).ready(function () {
 });
 
 function newReplySuccess(data) {
-    $("#repliesDynamic").html(data);
-    $('#replyModal').remove();        
+    if ($("#repliesDynamic").length > 0)
+        $("#repliesDynamic").html(data);
+    else
+        $("#repliesFixed").html(data);
+
+    $('#replyModal').remove();
     scanSpecialWords();
     $.validator.unobtrusive.parse($('#NewReplyForm'));
 }

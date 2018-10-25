@@ -161,7 +161,7 @@
                                                 </div>
                                                 @if (Domain_Layer.ActiveSession.GetPersonID() == Model.ProfileInformation.PersonID)
                                                 {
-                                                    <button class="btn btn-sm btn-outline-danger mt-3 follow-btn" data-follow="@follow.PersonID">Dejar de seguir</button>
+                                                    <button class="btn btn-danger mt-3 follow-btn" data-follow="@follow.PersonID">Dejar de seguir</button>
                                                 }                                                
                                             </div>
                                         </div>
@@ -199,7 +199,14 @@
                                                 </div>
                                                 @if (Domain_Layer.ActiveSession.GetPersonID() == Model.ProfileInformation.PersonID)
                                                 {
-                                                    <button class="btn btn-sm btn-outline-danger mt-3 follow-btn" data-follow="@follower.PersonID">Dejar de seguir</button>
+                                                    if (follower.Following)
+                                                    {
+                                                        <button class="btn btn-danger mt-3 follow-btn" data-follow="@follower.PersonID">Dejar de seguir</button>
+                                                    }
+                                                    else
+                                                    {
+                                                        <button class="btn btn-success mt-3 follow-btn" data-follow="@follower.PersonID">Seguir</button>
+                                                    }
                                                 }
                                             </div>
                                         </div>

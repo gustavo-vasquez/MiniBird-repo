@@ -156,7 +156,7 @@
                 $this.addClass(data.className);
             },
             error: function () {
-                alert("Ups!");
+                alert("Hubo un fallo al intentar seguir/dejar de seguir usuario");
             }
         });
     });

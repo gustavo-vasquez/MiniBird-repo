@@ -82,7 +82,7 @@ namespace Data_Layer
                             NickName = createdBy.NickName,
                             UserName = createdBy.UserName,
                             ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : "/Content/images/defaultAvatar.png",
-                            InteractButtons = new AccountDL().GetInteractsCountDL(post.PostID),
+                            InteractButtons = new AccountDL().GetInteractsCountDL(post.PostID, ActiveSession.GetPersonID()),
                         });
                     }
 

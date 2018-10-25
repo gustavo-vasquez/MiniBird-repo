@@ -44,11 +44,7 @@ namespace Domain_Layer.DTO
         public string Comment { get; set; }
         public string GIFImage { get; set; }
         public string VideoFile { get; set; }
-        public List<string> Thumbnails { get; set; }
-        //public string ImageFirstSlot { get; set; }
-        //public string ImageSecondSlot { get; set; }
-        //public string ImageThirdSlot { get; set; }
-        //public string ImageFourthSlot { get; set; }
+        public List<string> Thumbnails { get; set; }        
         public DateTime PublicationDate { get; set; }
         public int InReplyTo { get; set; }
         public int ID_Person { get; set; }
@@ -71,5 +67,7 @@ namespace Domain_Layer.DTO
         public int ReplysCount { get; set; }
         public int RepostsCount { get; set; }
         public int LikesCount { get; set; }
+        public bool IReposted { get; set; }
+        public bool ILiked { get; set; }
     }
 }
