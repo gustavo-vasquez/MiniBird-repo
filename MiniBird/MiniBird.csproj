@@ -313,6 +313,7 @@
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Home\Hashtag.cshtml" />
     <Content Include="Views\Account\_CheckboxLists.cshtml" />
+    <Content Include="Views\Shared\_HotkeysPanel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

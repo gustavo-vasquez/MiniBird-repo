@@ -511,22 +511,15 @@ body {
     color: white !important;
 }
 
-/* Set padding to keep content from hitting the edges */
-/*.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}*/
+/************************/
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-/*.dl-horizontal dt {
-    white-space: normal;
-}*/
+/* PANEL DE ATAJOS DE TECLADO */
 
-/* Set width on the form input elements since they're 100% wide by default */
-/*input,
-select,
-textarea {
-    max-width: 280px;
-}*/
+.hotkeys-info {
+    position: fixed;
+    bottom: 0;
+    z-index: 9999;    
+    box-shadow: 0 0 4px black;    
+    border-bottom-left-radius: unset !important;
+    border-bottom-right-radius: unset !important;    
+}

@@ -377,3 +377,26 @@ function search() {
         }
     });
 }
+
+function toggleHotkeysPanel() {
+    var $hotkeysPanel = $('#hotkeysPanel');
+
+    if ($hotkeysPanel.length > 0)
+        $hotkeysPanel.remove();
+    else {
+        $.ajax({
+            url: "/Home/HotkeysPanel",
+            method: "GET",
+            success: function (data) {
+                $('body').append(data);
+
+                $('#hotkeysPanel').on('click', '.close', function () {
+                    $('#hotkeysPanel').remove();
+                });
+            },
+            error: function () {
+                alert("Error al cargar el panel de hotkeys");
+            }
+        });
+    }    
+}

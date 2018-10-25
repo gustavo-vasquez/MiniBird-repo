@@ -59,8 +59,7 @@
                                 <a class="dropdown-item" href="@Url.Action("ProfileScreen", "Account", new { id = ActiveSession.GetPersonID() })"><i class="far fa-user"></i> Perfil</a>
                                 @*<a class="dropdown-item" href="#"><i class="far fa-envelope"></i> Mensajes</a>*@
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#"><i class="far fa-keyboard"></i> Atajos de teclado</a>
-                                <a class="dropdown-item" href="#"><i class="far fa-address-card"></i> Contacto</a>
+                                <a class="dropdown-item" href="javascript:void(0)" onclick="toggleHotkeysPanel();"><i class="far fa-keyboard"></i> Atajos de teclado</a>                                
                                 @*<a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Configuración</a>*@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#"><i class="far fa-moon"></i> Modo oscuro</a>
@@ -94,13 +93,13 @@
             }            
         }        
 
-        @RenderBody()        
+        @RenderBody()                      
                 
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - MiniBird</p>
         </footer>        
-    </div>       
+    </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")    

@@ -21,9 +21,7 @@ namespace MiniBird.Controllers
             if (ActiveSession.IsAuthenticated)
                 return RedirectToAction("Timeline", "Account");
             else
-                return View();
-
-            
+                return View();            
         }
         
         [HttpPost]
@@ -191,6 +189,11 @@ namespace MiniBird.Controllers
             {
                 throw ex;
             }
+        }
+
+        public PartialViewResult HotkeysPanel()
+        {
+            return PartialView("_HotkeysPanel");
         }
 
         #endregion
