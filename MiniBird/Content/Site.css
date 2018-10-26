@@ -5,7 +5,7 @@
 
 body {
     padding-top: 50px;
-    background-color: rgb(240, 237, 236);
+    /*background-color: rgb(240, 237, 236);*/
     font-family: Arimo;
 }
 
@@ -246,7 +246,8 @@ body {
 }
 
 .post:hover {
-    background-color: rgb(255,252,240);
+    /*background-color: rgb(255,252,240);*/
+    background-color: rgba(0, 0, 0, 0.06);
 }
 
 .post-profile-img {

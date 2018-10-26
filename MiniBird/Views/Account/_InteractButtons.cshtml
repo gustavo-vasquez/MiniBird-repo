@@ -1,6 +1,6 @@
 ﻿@model Domain_Layer.DTO.InteractButtonsDTO
 
-<button class="leave-comment" title="Responder"><i class="far fa-comment"></i><span> @Model.ReplysCount</span></button>
+<button class="leave-comment text-muted" title="Responder"><i class="far fa-comment"></i><span> @Model.ReplysCount</span></button>
 
 @if (Model.IReposted)
 {
@@ -8,7 +8,7 @@
 }
 else
 {
-    <button class="repost" title="Repostear"><i class="fas fa-retweet"></i> @Model.RepostsCount</button>
+    <button class="repost text-muted" title="Repostear"><i class="fas fa-retweet"></i> @Model.RepostsCount</button>
 }
 
 @if(Model.ILiked)
@@ -17,5 +17,5 @@ else
 }
 else
 {
-    <button class="like" title="Me gusta"><i class="far fa-heart"></i> @Model.LikesCount</button>
+    <button class="like text-muted" title="Me gusta"><i class="far fa-heart"></i> @Model.LikesCount</button>
 }

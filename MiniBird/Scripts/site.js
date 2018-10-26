@@ -43,7 +43,8 @@
         copyLinkToClipboard($(this));
     });
 
-    $('#search').on('click', search);        
+    $('#search').on('click', search);
+    $('#toggleTheme').on('click', setTheme);
 });
 
 // FUNCIONES
@@ -398,5 +399,28 @@ function toggleHotkeysPanel() {
                 alert("Error al cargar el panel de hotkeys");
             }
         });
-    }    
+    }
+}
+
+function setTheme() {
+    $.ajax({
+        url: "/Account/ToggleTheme",
+        method: "GET",
+        success: function (data) {
+            lightModePath = "/Content/themes/bootstrap.journal.min.css";
+            darkModePath = "/Content/themes/bootstrap.darkly.min.css";
+
+            if (data.darkMode) {
+                $('link[href*="' + lightModePath + '"]').attr('href', darkModePath);
+                $('#toggleTheme').html('<i class="far fa-sun"></i> Modo claro');
+            }
+            else {
+                $('link[href*="' + darkModePath + '"]').attr('href', lightModePath);
+                $('#toggleTheme').html('<i class="far fa-moon"></i> Modo oscuro');
+            }                
+        },
+        error: function () {
+            alert("Error al cambiar de tema");
+        }
+    });
 }

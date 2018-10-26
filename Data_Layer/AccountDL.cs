@@ -74,7 +74,8 @@ namespace Data_Layer
                         Email = person.Email,
                         NickName = person.NickName,
                         ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar,
-                        ProfileHeader = (person.ProfileHeader != null) ? ByteArrayToBase64(person.ProfileHeader, person.ProfileHeader_MimeType) : defaultHeader
+                        ProfileHeader = (person.ProfileHeader != null) ? ByteArrayToBase64(person.ProfileHeader, person.ProfileHeader_MimeType) : defaultHeader,
+                        Theme = (person.DarkMode == true || person.DarkMode != null) ? Theme.Dark : Theme.Light
                     };
                 }
             }
@@ -192,8 +193,8 @@ namespace Data_Layer
                     profileScreenDTO.ProfileInformation.ProfileHeader = (person.ProfileHeader != null) ? ByteArrayToBase64(person.ProfileHeader, person.ProfileHeader_MimeType) : defaultHeader;
                     profileScreenDTO.TopTrendings = TopTrendings();
                     profileScreenDTO.StatisticsBar.PostsCount = context.Post.Where(ps => ps.ID_Person == person.PersonID).Count();
-                    profileScreenDTO.StatisticsBar.FollowingCount = this.GetFollowingCount(follows, person.PersonID);
-                    profileScreenDTO.StatisticsBar.FollowersCount = this.GetFollowersCount(follows, person.PersonID);
+                    profileScreenDTO.StatisticsBar.FollowingCount = GetFollowingCount(follows, person.PersonID);
+                    profileScreenDTO.StatisticsBar.FollowersCount = GetFollowersCount(follows, person.PersonID);
                     profileScreenDTO.StatisticsBar.LikesCount = context.LikePost.Where(lp => lp.ID_PersonThatLikesPost == person.PersonID).Count();
                     profileScreenDTO.StatisticsBar.ListsCount = context.List.Where(ml => ml.ID_Person == person.PersonID).Count();
 
@@ -217,7 +218,7 @@ namespace Data_Layer
                                     PersonID = personFollowed.PersonID,
                                     NickName = personFollowed.NickName,
                                     UserName = personFollowed.UserName,
-                                    ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar,
+                                    ProfileAvatar = (personFollowed.ProfileAvatar != null) ? ByteArrayToBase64(personFollowed.ProfileAvatar, personFollowed.ProfileAvatar_MimeType) : defaultAvatar,
                                     Description = personFollowed.PersonalDescription,
                                     FollowingCount = GetFollowingCount(follows, personFollowed.PersonID),
                                     FollowersCount = GetFollowersCount(follows, personFollowed.PersonID)
@@ -237,7 +238,7 @@ namespace Data_Layer
                                     PersonID = personThatFollowMe.PersonID,
                                     NickName = personThatFollowMe.NickName,
                                     UserName = personThatFollowMe.UserName,
-                                    ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar,
+                                    ProfileAvatar = (personThatFollowMe.ProfileAvatar != null) ? ByteArrayToBase64(personThatFollowMe.ProfileAvatar, personThatFollowMe.ProfileAvatar_MimeType) : defaultAvatar,
                                     Description = personThatFollowMe.PersonalDescription,
                                     FollowingCount = follows.Where(f => f.ID_Person == personThatFollowMe.PersonID).Count(),
                                     FollowersCount = follows.Where(f => f.ID_PersonFollowed == personThatFollowMe.PersonID).Count(),
@@ -1146,6 +1147,28 @@ namespace Data_Layer
         private int GetFollowersCount(IEnumerable<Follow> follows, int personID)
         {
             return follows.Where(f => f.ID_PersonFollowed == personID).Count();
+        }
+
+        public bool ToggleThemeDL(int userID)
+        {
+            using(var context = new MiniBirdEntities())
+            {
+                Person person = context.Person.Find(userID);
+
+                if (person.DarkMode == true)
+                {
+                    person.DarkMode = false;                    
+                    ActiveSession.Theme = Theme.Light;
+                }
+                else
+                {
+                    person.DarkMode = true;
+                    ActiveSession.Theme = Theme.Dark;
+                }
+
+                context.SaveChanges();
+                return Convert.ToBoolean(person.DarkMode);
+            }
         }
 
         #endregion

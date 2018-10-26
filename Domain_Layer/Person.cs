@@ -40,6 +40,7 @@ namespace Domain_Layer
         public string ProfileHeader_MimeType { get; set; }
         public string PersonCryptID { get; set; }
         public System.DateTime RegistrationDate { get; set; }
+        public Nullable<bool> DarkMode { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Follow> Follow { get; set; }

@@ -198,15 +198,26 @@ namespace MiniBird.Controllers
             {
                 return ProcessError(ex);
             }
-        }        
+        }
 
+        #region TAREAS AUXILIARES
 
+        public JsonResult ToggleTheme()
+        {
+            var darkMode = Account.ToggleThemeSL(ActiveSession.GetPersonID());
+            var session = (SessionInformation)Session["MiniBirdAccount"];
 
-        #region TAREAS AUXILIARES        
+            if (darkMode)            
+                session.Theme = Domain_Layer.Enum.Theme.Dark;
+            else
+                session.Theme = Domain_Layer.Enum.Theme.Light;
+
+            Session["MiniBirdAccount"] = session;
+
+            return Json(new { darkMode = darkMode }, JsonRequestBehavior.AllowGet);
+        }
 
         #endregion
-
-
 
 
         #region PETICIONES AJAX

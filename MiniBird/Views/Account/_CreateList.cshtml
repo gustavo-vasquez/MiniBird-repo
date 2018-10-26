@@ -26,7 +26,7 @@
                         @Html.ValidationMessageFor(m => m.Description, null, new { @class = "text-danger" })
                     </div>
                     <h6 class="mt-4">Privacidad</h6>
-                    <hr />
+                    <hr class="border-secondary" />
                     <div class="form-group">
                         <div class="custom-control custom-radio">
                             @Html.RadioButtonFor(m => m.Privacy, Privacy.Public , new { id = "Public", name = "myListRadio", @class = "custom-control-input", @checked = true })

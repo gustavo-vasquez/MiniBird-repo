@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain_Layer.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,5 +15,6 @@ namespace Domain_Layer
         public string NickName { get; set; }
         public string ProfileAvatar { get; set; }        
         public string ProfileHeader { get; set; }
+        public Theme Theme { get; set; }
     }
 }

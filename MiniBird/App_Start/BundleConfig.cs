@@ -24,8 +24,7 @@ namespace MiniBird
                       "~/Scripts/bootstrap.bundle.js",
                       "~/Scripts/respond.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/themes/bootstrap.journal.min.css",
+            bundles.Add(new StyleBundle("~/Content/css").Include(                      
                       "~/Content/all.min.css",
                       "~/Content/site.css"));
         }

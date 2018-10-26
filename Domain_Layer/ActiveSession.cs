@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain_Layer.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,51 +15,36 @@ namespace Domain_Layer
         private static string _NickName { get; set; }
         private static string _ProfileAvatar { get; set; }
         private static string _ProfileHeader { get; set; }
+        public static Theme Theme { get; set; }
         public static bool IsAuthenticated { get; set; }
 
         public static void Fill(object session)
         {
             if (session != null && session is SessionInformation)
             {
-                var active = (SessionInformation)session;
+                var active = (SessionInformation)session;                
                 _PersonID = active.PersonID;
                 _UserName = active.UserName;
                 _Email = active.Email;
                 _NickName = active.NickName;
                 _ProfileAvatar = active.ProfileAvatar;
                 _ProfileHeader = active.ProfileHeader;
+                Theme = active.Theme;
                 IsAuthenticated = true;
             }
         }
 
         public static void Clear()
-        {
+        {            
             _PersonID = 0;
             _UserName = null;
             _Email = null;
             _NickName = null;
             _ProfileAvatar = null;
             _ProfileHeader = null;
-            IsAuthenticated = false;
+            Theme = Theme.None;
+            IsAuthenticated = false;            
         }
-
-        //public static bool IsAuthenticated(object session)
-        //{
-        //    if (session != null && session is SessionInformation)
-        //    {
-        //        var active = (SessionInformation)session;
-        //        _PersonID = active.PersonID;
-        //        _UserName = active.UserName;
-        //        _Email = active.Email;
-        //        _NickName = active.NickName;
-        //        _ProfileAvatar = active.ProfileAvatar;
-        //        _ProfileHeader = active.ProfileHeader;
-
-        //        return true;
-        //    }                
-        //    else
-        //        return false;
-        //}
 
         public static int GetPersonID()
         {
@@ -88,6 +74,6 @@ namespace Domain_Layer
         public static string GetProfileHeader()
         {
             return _ProfileHeader;
-        }
+        }        
     }
 }

@@ -142,10 +142,10 @@ namespace Service_Layer
             return Account.EncryptCookieValueDL(email);
         }
 
-        //public string TemporaryPostImageSL(HttpPostedFile tempImage, HttpServerUtilityBase localServer, int personID)
-        //{
-        //    return Account.TemporaryPostImageDL(tempImage, localServer, personID);
-        //}
+        public bool ToggleThemeSL(int userID)
+        {
+            return Account.ToggleThemeDL(userID);
+        }
 
         #endregion
     }

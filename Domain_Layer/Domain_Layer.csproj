@@ -70,6 +70,7 @@
     <Compile Include="DTO\TimelineDTO.cs" />
     <Compile Include="DTO\ViewPostDTO.cs" />
     <Compile Include="Enum\Privacy.cs" />
+    <Compile Include="Enum\Theme.cs" />
     <Compile Include="Follow.cs">
       <DependentUpon>MiniBirdDatabase.tt</DependentUpon>
     </Compile>
