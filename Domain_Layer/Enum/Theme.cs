@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 namespace Domain_Layer.Enum
 {
     public enum Theme
-    {
-        None,
+    {        
         Light,
         Dark
     };

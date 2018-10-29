@@ -42,7 +42,7 @@ namespace Domain_Layer
             _NickName = null;
             _ProfileAvatar = null;
             _ProfileHeader = null;
-            Theme = Theme.None;
+            Theme = Theme.Light;
             IsAuthenticated = false;            
         }
 

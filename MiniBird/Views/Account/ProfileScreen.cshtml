@@ -22,7 +22,7 @@
                 {
                     foreach (var trending in Model.TopTrendings)
                     {
-                        <a class="mr-3" href="@Url.Action("Search", "Home", new { q = trending.Name })">@trending.Name</a>
+                        <a class="mr-3" href="@Url.Action("Hashtag", "Home", new { name = trending.Name })">@trending.Name</a>
                     }
                 }
                 else

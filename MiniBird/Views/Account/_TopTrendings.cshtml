@@ -6,7 +6,7 @@
         <li>
             <a href="@Url.Action("Hashtag", "Home", new { name = trending.Name })" class="card-link">
                 <span class="trend-name">@trending.Name</span>
-                <div class="trend-stats">@trending.UseCount posts</div>
+                <div class="trend-stats">@((trending.UseCount != 1) ? trending.UseCount + " posts" : trending.UseCount + " post")</div>
             </a>
         </li>
     }    

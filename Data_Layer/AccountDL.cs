@@ -30,6 +30,7 @@ namespace Data_Layer
                         Email = email,
                         NickName = userName,
                         Password = password,
+                        DarkMode = false,
                         RegistrationDate = DateTime.Now
                     };
                     context.Person.Add(newPerson);
@@ -75,7 +76,7 @@ namespace Data_Layer
                         NickName = person.NickName,
                         ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar,
                         ProfileHeader = (person.ProfileHeader != null) ? ByteArrayToBase64(person.ProfileHeader, person.ProfileHeader_MimeType) : defaultHeader,
-                        Theme = (person.DarkMode == true || person.DarkMode != null) ? Theme.Dark : Theme.Light
+                        Theme = (person.DarkMode == true) ? Theme.Dark : Theme.Light
                     };
                 }
             }
@@ -413,7 +414,7 @@ namespace Data_Layer
                 using(var context = new MiniBirdEntities())
                 {
                     var person = context.Person.Find(personID);
-                    var posts = context.Post.Where(ps => ps.ID_Person == personID && ps.InReplyTo == null).ToList();
+                    var posts = context.Post.Where(ps => ps.ID_Person == personID).ToList();
 
                     var timelineDTO = new TimelineDTO();
                     timelineDTO.ProfileSection.PersonID = person.PersonID;
@@ -433,7 +434,7 @@ namespace Data_Layer
                     {
                         var personFollowedID = context.Person.Find(follow.ID_PersonFollowed).PersonID;
 
-                        var postsOfFollowing = context.Post.Where(ps => ps.ID_Person == personFollowedID && ps.InReplyTo == null).ToList();
+                        var postsOfFollowing = context.Post.Where(ps => ps.ID_Person == personFollowedID).ToList();
                         var repostsOfFollowing = context.RePost.Where(rp => rp.ID_PersonThatRePost == personFollowedID).ToList();
 
                         if (postsOfFollowing.Count > 0)
@@ -445,7 +446,7 @@ namespace Data_Layer
 
                     foreach (var post in posts)
                     {
-                        var createdBy = context.Person.Where(p => p.PersonID == post.ID_Person).First();
+                        var createdBy = context.Person.Find(post.ID_Person);
                         var reposted = reposts.Where(rp => rp.ID_Post == post.PostID);
 
                         if (reposted != null)
@@ -470,20 +471,23 @@ namespace Data_Layer
                             }
                         }
 
-                        timelineDTO.PostSection.Add(new PostSectionDTO()
+                        if(post.InReplyTo == null)
                         {
-                            PostID = post.PostID,
-                            Comment = post.Comment,
-                            GIFImage = post.GIFImage,
-                            VideoFile = post.VideoFile,
-                            Thumbnails = GetPostedThumbnails(post.PostID),
-                            PublicationDate = post.PublicationDate,
-                            CreatedBy = createdBy.PersonID,
-                            NickName = createdBy.NickName,
-                            UserName = createdBy.UserName,
-                            ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
-                            InteractButtons = GetInteractsCountDL(post.PostID, person.PersonID)
-                        });
+                            timelineDTO.PostSection.Add(new PostSectionDTO()
+                            {
+                                PostID = post.PostID,
+                                Comment = post.Comment,
+                                GIFImage = post.GIFImage,
+                                VideoFile = post.VideoFile,
+                                Thumbnails = GetPostedThumbnails(post.PostID),
+                                PublicationDate = post.PublicationDate,
+                                CreatedBy = createdBy.PersonID,
+                                NickName = createdBy.NickName,
+                                UserName = createdBy.UserName,
+                                ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
+                                InteractButtons = GetInteractsCountDL(post.PostID, person.PersonID)
+                            });
+                        }
                     }
 
                     timelineDTO.PostSection = timelineDTO.PostSection.OrderByDescending(ps => ps.PublicationDate).ToList();
@@ -547,10 +551,10 @@ namespace Data_Layer
         {
             using (var context = new MiniBirdEntities())
             {
-                var repost = context.RePost.Where(lp => lp.ID_Post == postID && lp.ID_PersonThatRePost == personID).FirstOrDefault();
+                var repost = context.RePost.Any(lp => lp.ID_Post == postID && lp.ID_PersonThatRePost == personID);
 
-                if (repost != null)
-                    context.RePost.Remove(repost);
+                if (repost)
+                    context.RePost.Remove(context.RePost.Where(rp => rp.ID_Post == postID && rp.ID_PersonThatRePost == personID).FirstOrDefault());
                 else
                     context.RePost.Add(new RePost() { ID_Post = postID, ID_PersonThatRePost = personID, PublicationDate = DateTime.Now });
 
