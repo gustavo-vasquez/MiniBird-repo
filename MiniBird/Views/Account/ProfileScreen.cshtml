@@ -227,10 +227,12 @@
                         break;
 
                     case "lists":
+                        if (Domain_Layer.ActiveSession.GetPersonID() == Model.ProfileInformation.PersonID)
+                        {
+                            <button type="button" class="btn btn-block btn-outline-primary mb-2" data-toggle="modal" data-target="#myListModal"><i class="fas fa-plus"></i> Agregar nueva lista</button>
+                        }
 
-                        <button type="button" class="btn btn-block btn-outline-primary mb-2" data-toggle="modal" data-target="#myListModal"><i class="fas fa-plus"></i> Agregar nueva lista</button>
-
-                        if(Model.MyLists.Count > 0)
+                        if (Model.MyLists.Count > 0)
                         {
                             <div class="list-group">
                                 @foreach (var list in Model.MyLists)

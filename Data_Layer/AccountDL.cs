@@ -293,52 +293,13 @@ namespace Data_Layer
                             break;
                         default:
                             var myPosts = context.Post.Where(mp => mp.ID_Person == personID && mp.InReplyTo == null).ToList();
-                            var myReposts = context.RePost.Where(rp => rp.ID_PersonThatRePost == person.PersonID).ToList();                            
+                            var myReposts = context.RePost.Where(rp => rp.ID_PersonThatRePost == person.PersonID).ToList();
 
-                            foreach (var repost in myReposts)
-                            {
-                                var postReposted = context.Post.Find(repost.ID_Post);
-                                var createdBy = context.Person.Where(p => p.PersonID == postReposted.ID_Person).First();
-
-                                profileScreenDTO.PostsSection.Add(new PostSectionDTO()
-                                {
-                                    PostID = postReposted.PostID,
-                                    Comment = postReposted.Comment,
-                                    GIFImage = postReposted.GIFImage,
-                                    VideoFile = postReposted.VideoFile,
-                                    Thumbnails = GetPostedThumbnails(postReposted.PostID),                                    
-                                    PublicationDate = repost.PublicationDate,
-                                    CreatedBy = createdBy.PersonID,
-                                    NickName = createdBy.NickName,
-                                    UserName = createdBy.UserName,
-                                    ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
-                                    InteractButtons = GetInteractsCountDL(postReposted.PostID, person.PersonID),
-                                    RepostedBy = (repost.ID_PersonThatRePost != person.PersonID) ? context.Person.Find(repost.ID_PersonThatRePost).NickName : "ti"
-                                });
-                            }
-
-
-                            foreach (var post in myPosts)
-                            {
-                                profileScreenDTO.PostsSection.Add(new PostSectionDTO()
-                                {
-                                    PostID = post.PostID,
-                                    Comment = post.Comment,
-                                    GIFImage = post.GIFImage,
-                                    VideoFile = post.VideoFile,
-                                    Thumbnails = GetPostedThumbnails(post.PostID),                                    
-                                    PublicationDate = post.PublicationDate,
-                                    CreatedBy = person.PersonID,
-                                    NickName = person.NickName,
-                                    UserName = person.UserName,
-                                    ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar,
-                                    InteractButtons = GetInteractsCountDL(post.PostID, person.PersonID)
-                                });
-                            }
+                            profileScreenDTO.PostsSection.AddRange(FillPostSection(myPosts, person.PersonID, myReposts));
+                            profileScreenDTO.PostsSection = profileScreenDTO.PostsSection.OrderByDescending(ps => ps.PublicationDate).ToList();                            
                             break;
                     }
-
-                    profileScreenDTO.PostsSection = profileScreenDTO.PostsSection.OrderByDescending(ps => ps.PublicationDate).ToList();
+                    
                     return profileScreenDTO;
                 }
             }
@@ -407,6 +368,58 @@ namespace Data_Layer
             }
         }
 
+        private List<PostSectionDTO> FillPostSection(List<Post> posts, int currentPersonID, List<RePost> reposts)
+        {
+            using (var context = new MiniBirdEntities())
+            {
+                List<PostSectionDTO> postSection = new List<PostSectionDTO>();
+
+                foreach (var post in posts)
+                {
+                    var createdBy = context.Person.Find(post.ID_Person);
+
+                    postSection.Add(new PostSectionDTO()
+                    {
+                        PostID = post.PostID,
+                        Comment = post.Comment,
+                        GIFImage = post.GIFImage,
+                        VideoFile = post.VideoFile,
+                        Thumbnails = GetPostedThumbnails(post.PostID),
+                        PublicationDate = post.PublicationDate,
+                        CreatedBy = createdBy.PersonID,
+                        NickName = createdBy.NickName,
+                        UserName = createdBy.UserName,
+                        ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
+                        InteractButtons = GetInteractsCountDL(post.PostID, currentPersonID)
+                    });
+                }
+
+                foreach (var repost in reposts)
+                {
+                    var post = context.Post.Find(repost.ID_Post);
+                    var createdBy = context.Person.Find(post.ID_Person);
+
+                    postSection.Add(new PostSectionDTO()
+                    {
+                        PostID = post.PostID,
+                        Comment = post.Comment,
+                        GIFImage = post.GIFImage,
+                        VideoFile = post.VideoFile,
+                        Thumbnails = GetPostedThumbnails(post.PostID),
+                        PublicationDate = repost.PublicationDate,
+                        CreatedBy = createdBy.PersonID,
+                        NickName = createdBy.NickName,
+                        UserName = createdBy.UserName,
+                        ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
+                        InteractButtons = GetInteractsCountDL(post.PostID, currentPersonID),
+                        RepostedBy = (repost.ID_PersonThatRePost != currentPersonID) ? context.Person.Find(repost.ID_PersonThatRePost).NickName : "ti"
+                    });
+                }                                                    
+
+                return postSection;
+            }
+        }
+
         public TimelineDTO TimelineCollectionDataDL(int personID)
         {
             try
@@ -414,7 +427,8 @@ namespace Data_Layer
                 using(var context = new MiniBirdEntities())
                 {
                     var person = context.Person.Find(personID);
-                    var posts = context.Post.Where(ps => ps.ID_Person == personID).ToList();
+                    var posts = context.Post.Where(ps => ps.ID_Person == personID && ps.InReplyTo == null).ToList();
+                    var reposts = context.RePost.Where(rp => rp.ID_PersonThatRePost == person.PersonID).ToList();
 
                     var timelineDTO = new TimelineDTO();
                     timelineDTO.ProfileSection.PersonID = person.PersonID;
@@ -425,74 +439,24 @@ namespace Data_Layer
                     timelineDTO.ProfileSection.PostCount = posts.Count();
                     timelineDTO.ProfileSection.FollowingCount = GetFollowingCount(context.Follow, person.PersonID);
                     timelineDTO.ProfileSection.FollowerCount = GetFollowersCount(context.Follow, person.PersonID);
-                    timelineDTO.TopTrendingsSection = TopTrendings();
+                    timelineDTO.TopTrendingsSection = TopTrendings();                    
 
-                    var reposts = context.RePost.Where(rp => rp.ID_PersonThatRePost == person.PersonID).ToList();
+                    timelineDTO.PostSection.AddRange(FillPostSection(posts, person.PersonID, reposts));
+
                     var myFollowings = context.Follow.Where(f => f.ID_Person == personID);
 
                     foreach (var follow in myFollowings)
                     {
                         var personFollowedID = context.Person.Find(follow.ID_PersonFollowed).PersonID;
-
-                        var postsOfFollowing = context.Post.Where(ps => ps.ID_Person == personFollowedID).ToList();
+                        var postsOfFollowing = context.Post.Where(ps => ps.ID_Person == personFollowedID && ps.InReplyTo == null).ToList();
                         var repostsOfFollowing = context.RePost.Where(rp => rp.ID_PersonThatRePost == personFollowedID).ToList();
 
-                        if (postsOfFollowing.Count > 0)
-                            posts.AddRange(postsOfFollowing);
-
-                        if (repostsOfFollowing.Count > 0)
-                            reposts.AddRange(repostsOfFollowing);
-                    }
-
-                    foreach (var post in posts)
-                    {
-                        var createdBy = context.Person.Find(post.ID_Person);
-                        var reposted = reposts.Where(rp => rp.ID_Post == post.PostID);
-
-                        if (reposted != null)
-                        {
-                            foreach (var repost in reposted)
-                            {
-                                timelineDTO.PostSection.Add(new PostSectionDTO()
-                                {
-                                    PostID = post.PostID,
-                                    Comment = post.Comment,
-                                    GIFImage = post.GIFImage,
-                                    VideoFile = post.VideoFile,
-                                    Thumbnails = GetPostedThumbnails(post.PostID),                                    
-                                    PublicationDate = repost.PublicationDate,
-                                    CreatedBy = createdBy.PersonID,
-                                    NickName = createdBy.NickName,
-                                    UserName = createdBy.UserName,
-                                    ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
-                                    InteractButtons = GetInteractsCountDL(post.PostID, person.PersonID),
-                                    RepostedBy = (repost.ID_PersonThatRePost != person.PersonID) ? context.Person.Find(repost.ID_PersonThatRePost).NickName : "ti"
-                                });
-                            }
-                        }
-
-                        if(post.InReplyTo == null)
-                        {
-                            timelineDTO.PostSection.Add(new PostSectionDTO()
-                            {
-                                PostID = post.PostID,
-                                Comment = post.Comment,
-                                GIFImage = post.GIFImage,
-                                VideoFile = post.VideoFile,
-                                Thumbnails = GetPostedThumbnails(post.PostID),
-                                PublicationDate = post.PublicationDate,
-                                CreatedBy = createdBy.PersonID,
-                                NickName = createdBy.NickName,
-                                UserName = createdBy.UserName,
-                                ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
-                                InteractButtons = GetInteractsCountDL(post.PostID, person.PersonID)
-                            });
-                        }
-                    }
+                        timelineDTO.PostSection.AddRange(FillPostSection(postsOfFollowing, person.PersonID, repostsOfFollowing));
+                    }                    
 
                     timelineDTO.PostSection = timelineDTO.PostSection.OrderByDescending(ps => ps.PublicationDate).ToList();
                     return timelineDTO;
-                }                
+                }
             }
             catch
             {
@@ -607,6 +571,7 @@ namespace Data_Layer
                     listScreenDTO.CurrentListSection.Name = currentList.Name;
                     listScreenDTO.CurrentListSection.Description = currentList.Description;
                     listScreenDTO.CurrentListSection.MembersCount = context.UserToList.Where(ul => ul.ID_List == currentList.ListID).Count();
+                    listScreenDTO.CanEdit = (personID == currentList.ID_Person) ? true : false;
 
                     var myLists = context.List.Where(ml => ml.ID_Person == personID);
 
@@ -625,29 +590,34 @@ namespace Data_Layer
 
                     foreach(var personITL in personsInThisList)
                     {
-                        var posts = context.Post.Where(p => p.ID_Person == personITL.ID_Person);
-                        posts = posts.OrderByDescending(ps => ps.PublicationDate);
+                        var posts = context.Post.Where(p => p.ID_Person == personITL.ID_Person).ToList();
+                        var reposts = context.RePost.Where(rp => rp.ID_PersonThatRePost == personITL.ID_Person).ToList();
 
-                        foreach (var post in posts)
-                        {
-                            var createdBy = context.Person.Where(p => p.PersonID == post.ID_Person).First();
+                        listScreenDTO.PostSection.AddRange(FillPostSection(posts, personID, reposts));
+                        //posts = posts.OrderByDescending(ps => ps.PublicationDate);
 
-                            listScreenDTO.PostSection.Add(new PostSectionDTO()
-                            {
-                                PostID = post.PostID,
-                                Comment = post.Comment,
-                                GIFImage = post.GIFImage,
-                                VideoFile = post.VideoFile,
-                                Thumbnails = GetPostedThumbnails(post.PostID),
-                                PublicationDate = post.PublicationDate,
-                                CreatedBy = createdBy.PersonID,
-                                NickName = createdBy.NickName,
-                                UserName = createdBy.UserName,
-                                ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
-                                InteractButtons = GetInteractsCountDL(post.PostID, personID)
-                            });
-                        }
-                    }                    
+                        //foreach (var post in posts)
+                        //{
+                        //    var createdBy = context.Person.Where(p => p.PersonID == post.ID_Person).First();
+
+                        //    listScreenDTO.PostSection.Add(new PostSectionDTO()
+                        //    {
+                        //        PostID = post.PostID,
+                        //        Comment = post.Comment,
+                        //        GIFImage = post.GIFImage,
+                        //        VideoFile = post.VideoFile,
+                        //        Thumbnails = GetPostedThumbnails(post.PostID),
+                        //        PublicationDate = post.PublicationDate,
+                        //        CreatedBy = createdBy.PersonID,
+                        //        NickName = createdBy.NickName,
+                        //        UserName = createdBy.UserName,
+                        //        ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
+                        //        InteractButtons = GetInteractsCountDL(post.PostID, personID)
+                        //    });
+                        //}
+                    }
+
+                    listScreenDTO.PostSection = listScreenDTO.PostSection.OrderByDescending(ps => ps.PublicationDate).ToList();
 
                     return listScreenDTO;
                 }

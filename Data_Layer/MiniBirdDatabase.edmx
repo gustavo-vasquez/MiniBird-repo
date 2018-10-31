@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="MiniBirdModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="MiniBirdModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Follow">
           <Key>
             <PropertyRef Name="ID_Person" />
@@ -59,9 +59,9 @@
           <Property Name="ProfileAvatar_MimeType" Type="nvarchar" MaxLength="15" />
           <Property Name="ProfileHeader" Type="varbinary(max)" />
           <Property Name="ProfileHeader_MimeType" Type="nvarchar" MaxLength="15" />
+          <Property Name="DarkMode" Type="bit" />
           <Property Name="PersonCryptID" Type="nvarchar(max)" />
           <Property Name="RegistrationDate" Type="datetime" Nullable="false" />
-          <Property Name="DarkMode" Type="bit" />
         </EntityType>
         <EntityType Name="Post">
           <Key>
@@ -88,7 +88,6 @@
             <PropertyRef Name="RePostID" />
           </Key>
           <Property Name="RePostID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Comment" Type="nvarchar" MaxLength="280" />
           <Property Name="PublicationDate" Type="datetime" Nullable="false" />
           <Property Name="ID_Post" Type="int" Nullable="false" />
           <Property Name="ID_PersonThatRePost" Type="int" Nullable="false" />
@@ -346,7 +345,8 @@
             <End Role="UserToList" EntitySet="UserToList" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MiniBirdModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -411,6 +411,7 @@
           <Property Name="ProfileAvatar_MimeType" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="ProfileHeader" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="ProfileHeader_MimeType" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="DarkMode" Type="Boolean" />
           <Property Name="PersonCryptID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="RegistrationDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Follow" Relationship="Self.FKFollow_Followed_PersonT" FromRole="Person" ToRole="Follow" />
@@ -420,7 +421,6 @@
           <NavigationProperty Name="Post" Relationship="Self.FKPost_PersonT" FromRole="Person" ToRole="Post" />
           <NavigationProperty Name="RePost" Relationship="Self.FKRePost_PersonT" FromRole="Person" ToRole="RePost" />
           <NavigationProperty Name="UserToList" Relationship="Self.FKUserToList_PersonT" FromRole="Person" ToRole="UserToList" />
-          <Property Name="DarkMode" Type="Boolean" />
         </EntityType>
         <EntityType Name="Post">
           <Key>
@@ -446,7 +446,6 @@
             <PropertyRef Name="RePostID" />
           </Key>
           <Property Name="RePostID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Comment" Type="String" MaxLength="280" FixedLength="false" Unicode="true" />
           <Property Name="PublicationDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ID_Post" Type="Int32" Nullable="false" />
           <Property Name="ID_PersonThatRePost" Type="Int32" Nullable="false" />
@@ -734,7 +733,6 @@
           <EntitySetMapping Name="Person">
             <EntityTypeMapping TypeName="MiniBirdModel.Person">
               <MappingFragment StoreEntitySet="Person">
-                <ScalarProperty Name="DarkMode" ColumnName="DarkMode" />
                 <ScalarProperty Name="PersonID" ColumnName="PersonID" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
@@ -747,6 +745,7 @@
                 <ScalarProperty Name="ProfileAvatar_MimeType" ColumnName="ProfileAvatar_MimeType" />
                 <ScalarProperty Name="ProfileHeader" ColumnName="ProfileHeader" />
                 <ScalarProperty Name="ProfileHeader_MimeType" ColumnName="ProfileHeader_MimeType" />
+                <ScalarProperty Name="DarkMode" ColumnName="DarkMode" />
                 <ScalarProperty Name="PersonCryptID" ColumnName="PersonCryptID" />
                 <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
               </MappingFragment>
@@ -769,7 +768,6 @@
             <EntityTypeMapping TypeName="MiniBirdModel.RePost">
               <MappingFragment StoreEntitySet="RePost">
                 <ScalarProperty Name="RePostID" ColumnName="RePostID" />
-                <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="PublicationDate" ColumnName="PublicationDate" />
                 <ScalarProperty Name="ID_Post" ColumnName="ID_Post" />
                 <ScalarProperty Name="ID_PersonThatRePost" ColumnName="ID_PersonThatRePost" />

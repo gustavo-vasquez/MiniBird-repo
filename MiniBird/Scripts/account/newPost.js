@@ -202,7 +202,7 @@ function generateThumbnail(event) {
 
                     filesTotalSize = filesTotalSize + files[i].size;
 
-                    if (filesTotalSize > 200 * 1024) {
+                    if (filesTotalSize > (2*1024*1024)) {
                         // Permitido hasta 2MB
                         filesTotalSize = filesTotalSize - files[i].size;                        
                         return imageErrorMsg("size");

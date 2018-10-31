@@ -11,6 +11,7 @@ namespace Domain_Layer.DTO
         public ListDTO CurrentListSection { get; set; }
         public List<ListDTO> MyListsSection { get; set; }
         public List<PostSectionDTO> PostSection { get; set; }
+        public bool CanEdit { get; set; }
 
         public ListScreenDTO()
         {
@@ -18,13 +19,5 @@ namespace Domain_Layer.DTO
             this.MyListsSection = new List<ListDTO>();
             this.PostSection = new List<PostSectionDTO>();
         }
-    }
-
-    //public class CurrentListDTO
-    //{
-    //    public int MyListID { get; set; }
-    //    public string Name { get; set; }
-    //    public string Description { get; set; }
-    //    public int MembersCount { get; set; }
-    //}
+    }    
 }

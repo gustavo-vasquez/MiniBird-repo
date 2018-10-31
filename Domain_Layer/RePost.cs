@@ -15,7 +15,6 @@ namespace Domain_Layer
     public partial class RePost
     {
         public int RePostID { get; set; }
-        public string Comment { get; set; }
         public System.DateTime PublicationDate { get; set; }
         public int ID_Post { get; set; }
         public int ID_PersonThatRePost { get; set; }

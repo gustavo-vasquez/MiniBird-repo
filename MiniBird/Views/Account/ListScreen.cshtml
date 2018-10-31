@@ -12,19 +12,22 @@
                     <h4 class="card-title">@Model.CurrentListSection.Name</h4>
                     <h6 class="card-subtitle mb-2 text-muted">@Model.CurrentListSection.Description</h6>
                     <p class="card-text">@(Model.CurrentListSection.MembersCount != 1 ? Model.CurrentListSection.MembersCount + " miembros" : Model.CurrentListSection.MembersCount + " miembro")</p>
-                    <div class="row">
-                        <div class="col-md-6">                            
-                            <button type="button" class="btn btn-block btn-outline-success" data-toggle="modal" data-target="#myListModal">Editar</button>                            
+                    @if (Model.CanEdit)
+                    {
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-block btn-outline-success" data-toggle="modal" data-target="#myListModal">Editar</button>
+                            </div>
+                            <div class="col-md-6">
+                                @using (Html.BeginForm("RemoveList", "Account", FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.HiddenFor(m => m.CurrentListSection.MyListID)
+                                    <button id="removeList" type="submit" class="btn btn-block btn-outline-danger">Eliminar</button>
+                                }
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            @using (Html.BeginForm("RemoveList", "Account", FormMethod.Post))
-                            {
-                                @Html.AntiForgeryToken()
-                                @Html.HiddenFor(m => m.CurrentListSection.MyListID)                                
-                                <button id="removeList" type="submit" class="btn btn-block btn-outline-danger">Eliminar</button>
-                            }
-                        </div>
-                    </div>                                       
+                    }
                 </div>
             </div>
             <h5 class="mt-4">Mis listas</h5>            

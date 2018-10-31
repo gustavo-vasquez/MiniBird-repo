@@ -4,16 +4,16 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="499f6a4841e14cd9b1692dba8cebb560" Name="Diagram1">
+      <Diagram DiagramId="802fbe27f1d34c92b215e4d9c2393a08" Name="Diagram1">
         <EntityTypeShape EntityType="MiniBirdModel.Follow" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MiniBirdModel.Hashtag" Width="1.5" PointX="3.75" PointY="2.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="MiniBirdModel.LikePost" Width="1.5" PointX="6" PointY="7.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="MiniBirdModel.List" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="MiniBirdModel.Person" Width="1.5" PointX="0.75" PointY="5.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="MiniBirdModel.Post" Width="1.5" PointX="6" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MiniBirdModel.Hashtag" Width="1.5" PointX="3.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MiniBirdModel.LikePost" Width="1.5" PointX="6" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MiniBirdModel.List" Width="1.5" PointX="3" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MiniBirdModel.Person" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MiniBirdModel.Post" Width="1.5" PointX="6" PointY="2.5" IsExpanded="true" />
         <EntityTypeShape EntityType="MiniBirdModel.RePost" Width="1.5" PointX="8.25" PointY="2.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MiniBirdModel.Thumbnail" Width="1.5" PointX="8.25" PointY="6.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MiniBirdModel.UserToList" Width="1.5" PointX="5.25" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="MiniBirdModel.Thumbnail" Width="1.5" PointX="8.25" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MiniBirdModel.UserToList" Width="1.5" PointX="5.25" PointY="10.875" IsExpanded="true" />
         <AssociationConnector Association="MiniBirdModel.FKFollow_Followed_PersonT" ManuallyRouted="false" />
         <AssociationConnector Association="MiniBirdModel.FKFollow_Follower_PersonT" ManuallyRouted="false" />
         <AssociationConnector Association="MiniBirdModel.FKLikePost_PersonT" ManuallyRouted="false" />

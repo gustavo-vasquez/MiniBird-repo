@@ -19,7 +19,7 @@ namespace Domain_Layer.DTO
 
         [CollectionMaxLength(4)]
         [MultipleFilesValidExtension("jpg", "jpeg")]
-        [MultipleFilesMaxSize(200*1024)]                
+        [MultipleFilesMaxSize(2*1024*1024)]
         public IEnumerable<HttpPostedFileBase> ImageFiles { get; set; }
 
         [FileMaxSize(1*1024*1024)]
