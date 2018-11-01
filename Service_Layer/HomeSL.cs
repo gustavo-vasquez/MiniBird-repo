@@ -12,9 +12,9 @@ namespace Service_Layer
     {
         static HomeDL home = new HomeDL();
 
-        public MatchesFoundDTO FindMatchesSL(string queryString)
+        public MatchesFoundDTO FindMatchesSL(string queryString, int personID)
         {
-            return home.FindMatchesDL(queryString);
+            return home.FindMatchesDL(queryString, personID);
         }
 
         public HashtagDTO GetPostsUsingHashtagSL(string name)

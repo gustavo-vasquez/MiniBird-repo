@@ -59,7 +59,10 @@
                                 <div class="col-9 col-md-10 pl-0">
                                     <div class="d-flex w-100 justify-content-between">
                                         <h6 class="mb-1">@profile.NickName</h6>
-                                        <small class="text-success font-weight-bold">Siguiendo</small>
+                                        @if (profile.Following)
+                                        {
+                                            <small class="text-success font-weight-bold">Siguiendo</small>
+                                        }                                        
                                     </div>
                                     <small class="mb-1">@profile.UserName</small>
                                 </div>

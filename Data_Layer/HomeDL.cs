@@ -10,7 +10,7 @@ namespace Data_Layer
 {
     public class HomeDL
     {
-        public MatchesFoundDTO FindMatchesDL(string queryString)
+        public MatchesFoundDTO FindMatchesDL(string queryString, int personID)
         {
             try
             {
@@ -41,7 +41,8 @@ namespace Data_Layer
                                     PersonID = profile.PersonID,
                                     NickName = profile.NickName,
                                     UserName = profile.UserName,
-                                    ProfileAvatar = (profile.ProfileAvatar != null) ? ByteArrayToBase64(profile.ProfileAvatar, profile.ProfileAvatar_MimeType) : "/Content/images/defaultAvatar.png"
+                                    ProfileAvatar = (profile.ProfileAvatar != null) ? ByteArrayToBase64(profile.ProfileAvatar, profile.ProfileAvatar_MimeType) : "/Content/images/defaultAvatar.png",
+                                    Following = context.Follow.Any(f => f.ID_Person == personID && f.ID_PersonFollowed == profile.PersonID)
                                 });
                             }                            
                         }

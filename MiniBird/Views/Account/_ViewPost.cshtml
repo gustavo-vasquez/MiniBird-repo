@@ -7,7 +7,15 @@
             <div class="col-md-6">
                 <div id="viewingPostDynamic" class="card">
                     <div class="card-body">
-                        <button id="closePost" type="button" class="close" title="Cerrar post">&times;</button>
+                        @if (Model.IsReply)
+                        {
+                            <div class="row">
+                                <div class="col text-center mb-3">
+                                    <a href="@Url.Action("ViewPost", "Account", new { id = Model.ReplyData.ToProfile, postID = Model.ReplyData.ToPost })" class="h6"><i class="fas fa-chevron-circle-down"></i> <i>En respuesta a @Model.ReplyData.ToUsername</i></a>
+                                </div>
+                            </div>
+                        }                        
+                        <button id="closePost" type="button" class="close" title="Cerrar post">&times;</button>                        
                         <div class="row">
                             <div class="col">                                
                                 <a class="card-link" href="@Url.Action("ProfileScreen", "Account", new { id = Model.PostSection.CreatedBy })">
@@ -19,9 +27,6 @@
                                     <a id="viewPostLinkActions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-caret-square-down ml-2"></i></a>
                                     <div class="dropdown-menu" aria-labelledby="viewPostLinkActions">
                                         <a class="dropdown-item copy-link" href="javascript:void(0);" data-copyurl="@(Request.Url.Authority + "/Account/ProfileScreen/" + Model.PostSection.CreatedBy + "ViewPost/" + Model.PostSection.PostID)"><i class="far fa-copy"></i> Copiar enlace del post</a>                                        
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#"><i class="fas fa-microphone-alt-slash"></i> Silenciar a @@usuario</a>
-                                        <a class="dropdown-item" href="#"><i class="fas fa-lock"></i> Bloquear a @@usuario</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="@Url.Action("ViewPost", "Account", new { id = Model.PostSection.CreatedBy, postID = Model.PostSection.PostID })" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> Abrir en una pestaña nueva</a>
                                     </div>
@@ -133,7 +138,7 @@
                             <div class="col-md-5 text-right text-muted">
                                 <p class="text-lowercase"><i class="far fa-clock"></i> @Model.PostSection.PublicationDate.ToString("dd/MM/yyyy hh:mm tt", new System.Globalization.CultureInfo("en-US"))</p>
                             </div>
-                        </div>
+                        </div>                        
                     </div>
                     <div class="card border-light mb-3 write-answer">
                         <div class="card-body">

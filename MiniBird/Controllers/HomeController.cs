@@ -99,7 +99,7 @@ namespace MiniBird.Controllers
         {
             try
             {
-                var matchesFound = home.FindMatchesSL(q);
+                var matchesFound = home.FindMatchesSL(q, ActiveSession.GetPersonID());
 
                 if (Request.IsAjaxRequest())
                     return PartialView("_Suggestions", matchesFound);
@@ -124,7 +124,7 @@ namespace MiniBird.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            model.MatchesFound = home.FindMatchesSL(model.WordToSearch);            
+            model.MatchesFound = home.FindMatchesSL(model.WordToSearch, ActiveSession.GetPersonID());
 
             return View(model);
         }

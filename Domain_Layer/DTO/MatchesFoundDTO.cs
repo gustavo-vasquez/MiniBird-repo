@@ -29,6 +29,7 @@ namespace Domain_Layer.DTO
             public string NickName { get; set; }
             public string UserName { get; set; }
             public string ProfileAvatar { get; set; }
+            public bool Following { get; set; }
         }
     }
 }

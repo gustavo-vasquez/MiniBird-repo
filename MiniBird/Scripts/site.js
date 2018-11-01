@@ -350,31 +350,33 @@ function search() {
 
             $('#searchModal').on('shown.bs.modal', function () {
                 $('#WordToSearch').focus();
-            });            
+            });
 
             $('#searchModal').on('hidden.bs.modal', function () {
                 $(this).remove();
             });
 
-            $('#WordToSearch').on('keyup', function () {
-                $.ajax({
-                    url: "/Home/Search",
-                    method: "GET",
-                    data: "q=" + $(this).val(),                    
-                    success: function (data) {
-                        $('#searchModal .modal-footer').remove();
+            $('#WordToSearch').on('keyup', function (event) {
+                if (event.key != "Enter") {
+                    $.ajax({
+                        url: "/Home/Search",
+                        method: "GET",
+                        data: "q=" + $(this).val(),
+                        success: function (data) {
+                            $('#searchModal .modal-footer').remove();
 
-                        if (data != null)
-                            $('#searchModal .modal-content').append(data);
-                    },
-                    error: function () {
-                        alert("Ups!");
-                    }
-                });
+                            if (data != null)
+                                $('#searchModal .modal-content').append(data);
+                        },
+                        error: function () {
+                            alert("Hubo un problema al intentar mostrar los resultados.");
+                        }
+                    });
+                }                
             });
         },
         error: function () {
-            alert("Ups!");
+            alert("Error al cargar el formulario de búsqueda.");
         }
     });
 }

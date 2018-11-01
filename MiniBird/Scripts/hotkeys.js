@@ -8,7 +8,7 @@
                 event.data.action = "post";
                 drawPublication(event);
                 break; // key n
-        }        
+        }
 
         if ($('#viewingPostDynamic').length > 0) {
             var containerDiv = $('#viewingPostDynamic > .card-body').find('.interact-buttons');

@@ -193,7 +193,7 @@ namespace Data_Layer
                     profileScreenDTO.ProfileInformation.ProfileAvatar = (person.ProfileAvatar != null) ? ByteArrayToBase64(person.ProfileAvatar, person.ProfileAvatar_MimeType) : defaultAvatar;
                     profileScreenDTO.ProfileInformation.ProfileHeader = (person.ProfileHeader != null) ? ByteArrayToBase64(person.ProfileHeader, person.ProfileHeader_MimeType) : defaultHeader;
                     profileScreenDTO.TopTrendings = TopTrendings();
-                    profileScreenDTO.StatisticsBar.PostsCount = context.Post.Where(ps => ps.ID_Person == person.PersonID).Count();
+                    profileScreenDTO.StatisticsBar.PostsCount = context.Post.Where(ps => ps.ID_Person == person.PersonID && ps.InReplyTo == null).Count();
                     profileScreenDTO.StatisticsBar.FollowingCount = GetFollowingCount(follows, person.PersonID);
                     profileScreenDTO.StatisticsBar.FollowersCount = GetFollowersCount(follows, person.PersonID);
                     profileScreenDTO.StatisticsBar.LikesCount = context.LikePost.Where(lp => lp.ID_PersonThatLikesPost == person.PersonID).Count();
@@ -677,7 +677,7 @@ namespace Data_Layer
                 using(var context = new MiniBirdEntities())
                 {
                     var post = context.Post.Find(postID);
-                    var createdBy = context.Person.Find(post.ID_Person);
+                    var createdBy = context.Person.Find(post.ID_Person);                    
 
                     var ViewPost = new ViewPostDTO();
                     ViewPost.PostSection.PostID = post.PostID;
@@ -691,6 +691,18 @@ namespace Data_Layer
                     ViewPost.PostSection.UserName = createdBy.UserName;
                     ViewPost.PostSection.ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar;
                     ViewPost.PostSection.InteractButtons = GetInteractsCountDL(post.PostID, ActiveSession.GetPersonID());
+
+                    if (post.InReplyTo > 0)
+                    {
+                        var toProfile = context.Post.Find(post.InReplyTo).ID_Person;
+
+                        ViewPost.IsReply = true;
+                        ViewPost.ReplyData.ToProfile = toProfile;
+                        ViewPost.ReplyData.ToUsername = context.Person.Find(toProfile).UserName;
+                        ViewPost.ReplyData.ToPost = Convert.ToInt32(post.InReplyTo);
+                    }
+                    else
+                        ViewPost.IsReply = false;
 
                     var replies = context.Post.Where(r => r.InReplyTo == postID).OrderByDescending(r => r.PublicationDate);
 

@@ -56,11 +56,11 @@
                                 <div class="dropdown-divider"></div>
                                 @if (ActiveSession.Theme != Domain_Layer.Enum.Theme.Dark)
                                 {
-                                    <a id="toggleTheme" class="dropdown-item" href="javascript:void(0)"><i class="far fa-moon"></i> Modo oscuro</a>
+                                    <a id="toggleTheme" class="dropdown-item" href="javascript:void(0);"><i class="far fa-moon"></i> Modo oscuro</a>
                                 }
                                 else
                                 {
-                                    <a id="toggleTheme" class="dropdown-item" href="javascript:void(0)"><i class="far fa-sun"></i> Modo claro</a>
+                                    <a id="toggleTheme" class="dropdown-item" href="javascript:void(0);"><i class="far fa-sun"></i> Modo claro</a>
                                 }
                                 <div class="dropdown-divider"></div>
                                 @using (Html.BeginForm("LogOff", "Account", FormMethod.Post))

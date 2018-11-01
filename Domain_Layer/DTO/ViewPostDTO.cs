@@ -10,11 +10,14 @@ namespace Domain_Layer.DTO
     {
         public PostSectionDTO PostSection { get; set; }
         public List<PostSectionDTO> RepliesToPost { get; set; }
+        public IsReplyDTO ReplyData { get; set; }
+        public bool IsReply { get; set; }
 
         public ViewPostDTO()
         {
             this.PostSection = new PostSectionDTO();
             this.RepliesToPost = new List<PostSectionDTO>();
+            this.ReplyData = new IsReplyDTO();
         }
     }
 
@@ -26,5 +29,12 @@ namespace Domain_Layer.DTO
         {
             this.ProfileInformation = new ProfileInformationDTO();
         }
+    }
+
+    public class IsReplyDTO
+    {
+        public int ToProfile { get; set; }
+        public string ToUsername { get; set; }
+        public int ToPost { get; set; }
     }
 }
