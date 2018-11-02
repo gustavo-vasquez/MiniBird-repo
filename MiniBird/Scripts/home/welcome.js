@@ -5,15 +5,7 @@
     if ($('#loginForm').hasClass('activate')) {
         $('#registerForm').hide();
         $('#loginForm').removeClass('d-none');
-    }
-
-    $('#loginLink').on('click', function (event) {
-        event.preventDefault();        
-        $('#registerForm').slideUp(200, function () {
-            $('#loginForm').removeClass('d-none');
-            $('#emailLogin').focus();
-        });
-    });
+    }    
 
     $('#Register_UserName').on('blur', function () {
         var userNameInput = $(this);

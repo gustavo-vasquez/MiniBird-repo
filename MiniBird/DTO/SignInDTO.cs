@@ -15,8 +15,9 @@ namespace MiniBird.DTO
     public class RegisterDTO
     {
         [Required(ErrorMessage = "Ingresar un nombre de usuario.")]
+        [MinLength(5, ErrorMessage = "Mínimo 5 caracteres.")]
         [MaxLength(15, ErrorMessage = "Límite: 15 caracteres.")]
-        [RegularExpression("^[a-zA-Z0-9_]*(\\S)$", ErrorMessage = "Permitido: minúsculas, mayúsculas, nº y _")]
+        [RegularExpression("^[A-Za-z0-9_]*[A-Za-z0-9][A-Za-z0-9_]*$", ErrorMessage = "Permitido: minúsculas, mayúsculas, nº y _")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Ingresar dirección de correo.")]
@@ -36,12 +37,10 @@ namespace MiniBird.DTO
 
     public class LoginDTO
     {
-        [Required(ErrorMessage = "Ingresar dirección de correo.")]
-        public string Email { get; set; }
+        [Required(ErrorMessage = "Ingresar usuario o correo.")]
+        public string EmailOrUsername { get; set; }
 
-        [Required(ErrorMessage = "Ingresar contraseña.")]
-        [MinLength(6, ErrorMessage = "Al menos 6 caracteres.")]
-        [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).+$", ErrorMessage = "Al menos: minúscula, mayúscula y número.")]
+        [Required(ErrorMessage = "Ingresar contraseña.")]        
         public string Password { get; set; }
 
         public bool RememberMe { get; set; }

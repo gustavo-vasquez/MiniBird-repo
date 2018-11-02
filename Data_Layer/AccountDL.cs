@@ -45,28 +45,26 @@ namespace Data_Layer
             return false;
         }
 
-        public bool LoginDL(string email, string password)
+        public bool LoginDL(string emailOrUsername, string password)
         {
             using (var context = new MiniBirdEntities())
             {
-                var person = context.Person.Where(p => p.Email == email && p.Password == password).FirstOrDefault();
+                var person = context.Person.Where(p => (p.UserName == "@" + emailOrUsername || p.Email == emailOrUsername) && p.Password == password).FirstOrDefault();
 
-                if(person != null)
-                {
+                if(person != null)                
                     return true;
-                }
-            }                
+            }
                            
             return false;
         }
 
-        public SessionInformation CreateSessionDL(string email)
+        public SessionInformation CreateSessionDL(string emailOrUsername)
         {
             try
             {                
                 using (var context = new MiniBirdEntities())
                 {
-                    var person = context.Person.Where(p => p.Email == email).First();
+                    var person = context.Person.Where(p => p.UserName == "@" + emailOrUsername || p.Email == emailOrUsername).First();
 
                     return new SessionInformation()
                     {
@@ -869,13 +867,13 @@ namespace Data_Layer
             }
         }
 
-        public string EncryptCookieValueDL(string email)
+        public string EncryptCookieValueDL(string emailOrUsername)
         {
             try
             {
                 using (var context = new MiniBirdEntities())
                 {
-                    return EncryptToSHA256(context.Person.Where(p => p.Email == email).First().PersonID);
+                    return EncryptToSHA256(context.Person.Where(p => p.UserName == "@" + emailOrUsername || p.Email == emailOrUsername).First().PersonID);
                 }
             }    
             catch

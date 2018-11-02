@@ -19,14 +19,14 @@ namespace Service_Layer
             return Account.RegisterDL(userName, email, password);
         }
 
-        public bool LoginSL(string email, string password)
+        public bool LoginSL(string emailOrUsername, string password)
         {
-            return Account.LoginDL(email, password);
+            return Account.LoginDL(emailOrUsername, password);
         }
 
-        public SessionInformation CreateSessionSL(string email)
+        public SessionInformation CreateSessionSL(string emailOrUsername)
         {
-            return Account.CreateSessionDL(email);
+            return Account.CreateSessionDL(emailOrUsername);
         }
 
         public SessionInformation CreateSessionFromCookieSL(string hash)
@@ -137,9 +137,9 @@ namespace Service_Layer
             return Account.UserNameExistsDL(username);
         }
 
-        public string EncryptCookieValueSL(string email)
+        public string EncryptCookieValueSL(string emailOrUsername)
         {
-            return Account.EncryptCookieValueDL(email);
+            return Account.EncryptCookieValueDL(emailOrUsername);
         }
 
         public bool ToggleThemeSL(int userID)

@@ -17,73 +17,7 @@ namespace MiniBird.Controllers
     {
         static AccountSL Account = new AccountSL();
 
-        // GET: User
-        //[WithAccount(false)]
-        //[Authenticated(false)]
-        //public ActionResult Register()
-        //{
-        //    return View();
-        //}
-
-        //[Authenticated(false)]
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Register(SignInDTO model)
-        //{
-        //    try
-        //    {
-        //        if (!ModelState.IsValid)
-        //            return View(model);                
-
-        //        if(Account.RegisterSL(model.Register.UserName, model.Register.Email, model.Register.Password))
-        //        {
-        //            Session["MiniBirdAccount"] = Account.CreateSessionSL(model.Register.Email);
-        //            return RedirectToAction("Index", "Home");
-        //        }
-        //        else
-        //        {
-        //            ViewBag.Message = "El usuario/correo ya está registrado.";
-        //            return View(model);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return ProcessError(ex);
-        //    }
-        //}
-
-        //[Authenticated(false)]
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Login(SignInDTO model)
-        //{
-        //    try
-        //    {
-        //        if (!ModelState.IsValid)                
-        //            return View("Welcome", model);
-
-        //        if(Account.LoginSL(model.Login.Email, model.Login.Password))
-        //        {
-        //            Session["MiniBirdAccount"] = Account.CreateSessionSL(model.Login.Email);
-
-        //            if(model.Login.RememberMe)                    
-        //                LoginCookie(model.Login.Email);
-
-        //            return RedirectToAction("Timeline", "Account");
-        //        }
-        //        else
-        //        {
-        //            ViewBag.Message = "Datos incorrectos. Vuelva a iniciar sesión.";
-        //            ViewBag.Login = "activate";
-        //            return View("Register", model);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return ProcessError(ex);
-        //    }
-        //}
-        
+        // GET: User        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()

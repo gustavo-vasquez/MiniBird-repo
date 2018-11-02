@@ -39,36 +39,9 @@
                             @Html.PasswordFor(m => m.Register.ConfirmPassword, new { @class = "form-control", placeholder = "Repetir contraseña" })
                             @Html.ValidationMessageFor(m => m.Register.ConfirmPassword, null, new { @class = "badge badge-danger" })
                         </div>                        
-                        <button type="submit" class="btn btn-primary">Registrarme</button>
-                        <div class="form-group mt-5">
-                            <span>¿Ya tienes cuenta? <a href="#" id="loginLink">Haz clic aquí para iniciar sesión</a></span>
-                        </div>
+                        <button type="submit" class="btn btn-primary">Registrarme</button>                        
                     </fieldset>
-                }
-
-                @using (Html.BeginForm("Login", "Home", FormMethod.Post, new { id = "loginForm", @class = "d-none " + ViewBag.Login }))
-                {
-                    @Html.AntiForgeryToken()
-                    <fieldset>
-                        <legend class="mb-4">Entra a tu cuenta</legend>
-                        <div class="form-group">
-                            @Html.TextBoxFor(m => m.Login.Email, new { @class = "form-control", placeholder = "Correo electrónico" })
-                            @Html.ValidationMessageFor(m => m.Login.Email, null, new { @class = "badge badge-danger" })
-                        </div>
-                        <div class="form-group">
-                            @Html.PasswordFor(m => m.Login.Password, new { @class = "form-control", placeholder = "Contraseña" })
-                            @Html.ValidationMessageFor(m => m.Login.Password, null, new { @class = "badge badge-danger" })
-                        </div>
-                        <div class="custom-control custom-checkbox mb-4">
-                            @Html.CheckBoxFor(m => m.Login.RememberMe, new { @class = "custom-control-input" })
-                            <label class="custom-control-label" for="Login_RememberMe">Recordarme</label>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Iniciar sesión</button>
-                        <div class="form-group mt-5">
-                            <a href="#">¿Olvidaste tu contraseña?</a>
-                        </div>
-                    </fieldset>
-                }
+                }                
             </div>
             <div class="mh-10"></div>
         </div>

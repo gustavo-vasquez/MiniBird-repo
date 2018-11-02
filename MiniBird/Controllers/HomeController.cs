@@ -59,19 +59,18 @@ namespace MiniBird.Controllers
                 if (!ModelState.IsValid)
                     return View("Welcome", model);
 
-                if (Account.LoginSL(model.Login.Email, model.Login.Password))
+                if (Account.LoginSL(model.Login.EmailOrUsername, model.Login.Password))
                 {
-                    Session["MiniBirdAccount"] = Account.CreateSessionSL(model.Login.Email);
+                    Session["MiniBirdAccount"] = Account.CreateSessionSL(model.Login.EmailOrUsername);
 
                     if (model.Login.RememberMe)
-                        LoginCookie(model.Login.Email);
+                        LoginCookie(model.Login.EmailOrUsername);
 
                     return RedirectToAction("Timeline", "Account");
                 }
                 else
                 {
-                    ViewBag.Message = "Datos incorrectos. Vuelva a iniciar sesión.";
-                    ViewBag.Login = "activate";
+                    ViewBag.Message = "Datos incorrectos. Vuelva a iniciar sesión.";                    
                     return View("Welcome", model);
                 }
             }
@@ -148,23 +147,7 @@ namespace MiniBird.Controllers
         public PartialViewResult DrawSearch()
         {
             return PartialView("_Search");
-        }
-
-        //public ActionResult FindMatches(string q)
-        //{
-        //    try
-        //    {
-        //        var matchesFound = home.FindMatchesSL(q);
-        //        if (matchesFound != null)
-        //            return PartialView("_Suggestions", matchesFound);
-        //        else
-        //            return null;
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        return ProcessError(ex);
-        //    }
-        //}
+        }        
 
         #endregion
 
@@ -173,7 +156,7 @@ namespace MiniBird.Controllers
 
         #region TAREAS AUXILIARES
 
-        public void LoginCookie(string email)
+        public void LoginCookie(string emailOrUsername)
         {
             try
             {
@@ -182,7 +165,7 @@ namespace MiniBird.Controllers
                 cookie.Expires = DateTime.Now.AddDays(30);
                 cookie.Path = "/";
                 cookie.Secure = false;
-                cookie.Value = Account.EncryptCookieValueSL(email);
+                cookie.Value = Account.EncryptCookieValueSL(emailOrUsername);
                 Response.Cookies.Add(cookie);
             }
             catch (Exception ex)
