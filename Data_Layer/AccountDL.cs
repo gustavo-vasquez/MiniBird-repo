@@ -591,28 +591,7 @@ namespace Data_Layer
                         var posts = context.Post.Where(p => p.ID_Person == personITL.ID_Person).ToList();
                         var reposts = context.RePost.Where(rp => rp.ID_PersonThatRePost == personITL.ID_Person).ToList();
 
-                        listScreenDTO.PostSection.AddRange(FillPostSection(posts, personID, reposts));
-                        //posts = posts.OrderByDescending(ps => ps.PublicationDate);
-
-                        //foreach (var post in posts)
-                        //{
-                        //    var createdBy = context.Person.Where(p => p.PersonID == post.ID_Person).First();
-
-                        //    listScreenDTO.PostSection.Add(new PostSectionDTO()
-                        //    {
-                        //        PostID = post.PostID,
-                        //        Comment = post.Comment,
-                        //        GIFImage = post.GIFImage,
-                        //        VideoFile = post.VideoFile,
-                        //        Thumbnails = GetPostedThumbnails(post.PostID),
-                        //        PublicationDate = post.PublicationDate,
-                        //        CreatedBy = createdBy.PersonID,
-                        //        NickName = createdBy.NickName,
-                        //        UserName = createdBy.UserName,
-                        //        ProfileAvatar = (createdBy.ProfileAvatar != null) ? ByteArrayToBase64(createdBy.ProfileAvatar, createdBy.ProfileAvatar_MimeType) : defaultAvatar,
-                        //        InteractButtons = GetInteractsCountDL(post.PostID, personID)
-                        //    });
-                        //}
+                        listScreenDTO.PostSection.AddRange(FillPostSection(posts, personID, reposts));                        
                     }
 
                     listScreenDTO.PostSection = listScreenDTO.PostSection.OrderByDescending(ps => ps.PublicationDate).ToList();
@@ -1062,25 +1041,6 @@ namespace Data_Layer
                     image.Write(bytes, 0, bytes.Length);
                     image.Flush();
                 }
-
-                // Verifica si la imágen cumple las condiciones de validación
-                //const int _maxSize = 2 * 1024 * 1024;
-                //const int _maxWidth = 1000;
-                //const int _maxHeight = 1000;
-                //List<string> _fileTypes = new List<string>() { "jpg", "jpeg", "gif", "png" };
-                //string fileExt = Path.GetExtension(tempImage.FileName);
-
-                //if (new FileInfo(imgFullPath).Length > _maxSize)
-                //    throw new FormatException("El avatar no debe superar los 2mb.");
-
-                //if (!_fileTypes.Contains(fileExt.Substring(1), StringComparer.OrdinalIgnoreCase))
-                //    throw new FormatException("Para el avatar solo se admiten imágenes JPG, JPEG, GIF Y PNG.");
-
-                //using (Image img = Image.FromFile(imgFullPath))
-                //{
-                //    if (img.Width > _maxWidth || img.Height > _maxHeight)
-                //        throw new FormatException("El avatar admite hasta una resolución de 1000x1000.");
-                //}
 
                 return pathToNewFile;
             }

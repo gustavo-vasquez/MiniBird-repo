@@ -4,8 +4,7 @@ $(document).ready(function () {
     $('#Comment').magicsize();
     $(document).on('click', '#newLinkBtn', addLinkToPost);
     $(document).on('keydown', '#Comment', calculateChars);    
-    $(document).on('change', '#ImageFiles, #GifImage, #VideoFile', { thumbnailsRowId: "#imgThumbnailsRow", filesTotalSize: 0 }, generateThumbnail);
-    //$('#NewPostForm, #NewReplyForm').data('unobtrusiveValidation');
+    $(document).on('change', '#ImageFiles, #GifImage, #VideoFile', { thumbnailsRowId: "#imgThumbnailsRow", filesTotalSize: 0 }, generateThumbnail);    
 
     $(document).on('submit', '#NewReplyForm', function (event) {
         // Prevent submit
@@ -310,8 +309,7 @@ function generateThumbnail(event) {
             observe(text, 'drop', delayedResize);
             observe(text, 'keydown', delayedResize);
 
-            text.focus();
-            //text.select();
+            text.focus();            
             resize();
         });
     }
