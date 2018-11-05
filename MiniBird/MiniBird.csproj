@@ -250,7 +250,7 @@
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="SQL_file_database\MiniBird_database.sql" />
+    <Content Include="Sql_script\MiniBird_database.sql" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

@@ -1,6 +1,9 @@
 create database MiniBird
 go
 
+use MiniBird
+go
+
 create schema MiniBird
 go
 
