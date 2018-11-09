@@ -1,8 +1,7 @@
-# MiniBird-repo (MiniBird)
-<h4>Una aplicación web que contiene algunas de las funcionalidades de la red social Twitter</h4>
+# MiniBird
+Una aplicación web que contiene funcionalidades de la red social Twitter
 
-Las funcionalidades de la aplicación son:
-
+## Funcionalidades
 <ul>
   <li>Creación de usuarios</li>
   <li>Crear post (similar a hacer un tweet) con la posiblidad de agregar imágenes o video</li>
@@ -20,8 +19,7 @@ Las funcionalidades de la aplicación son:
   <li>Tema claro y tema oscuro</li>
 </ul>
 
-Tecnologías utilizadas:
-
+## Tecnologías
 <ul>
   <li>HTML5</li>
   <li>CSS</li>
@@ -34,6 +32,8 @@ Tecnologías utilizadas:
   <li>SQL Server</li>
 </ul>
 
-<i>Nota: el script de generación de la base de datos se encuentra en la carpeta "Sql_script" dentro del proyecto</i>
+## Notas
+El script de generación de la base de datos se encuentra en la carpeta "Sql_script" dentro del proyecto.
 
-<h5>Autor: Gustavo Vasquez</h5>
+## Autores
+Gustavo Vasquez
