@@ -35,5 +35,5 @@ Una aplicación web que contiene funcionalidades de la red social Twitter
 ## Notas
 El script de generación de la base de datos se encuentra en la carpeta "Sql_script" dentro del proyecto.
 
-## Autores
+## Autor
 Gustavo Vasquez
