@@ -1,5 +1,7 @@
 # MiniBird
-Una aplicación web que contiene funcionalidades de la red social Twitter
+Una aplicación web que contiene funcionalidades de la red social Twitter.
+
+![MiniBird-Preview](https://github.com/gustavo-vasquez/MiniBird-repo/blob/stable/MiniBird/Content/images/MiniBird_preview.png)
 
 ## Funcionalidades
 <ul>
