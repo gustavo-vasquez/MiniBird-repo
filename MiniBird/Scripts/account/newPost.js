@@ -1,7 +1,6 @@
 ﻿var filesTotalSize = 0;
 
-$(document).ready(function () {
-    $('#Comment').magicsize();
+$(document).ready(function () {    
     $(document).on('click', '#newLinkBtn', addLinkToPost);
     $(document).on('keydown', '#Comment', calculateChars);    
     $(document).on('change', '#ImageFiles, #GifImage, #VideoFile', { thumbnailsRowId: "#imgThumbnailsRow", filesTotalSize: 0 }, generateThumbnail);    
@@ -275,44 +274,6 @@ function generateThumbnail(event) {
     }
     else
         alert("Tu navegador no soporta File API");
-}    
-
-(function ($) {
-    $.fn.magicsize = function () {
-        this.filter('textarea').each(function () {
-
-            var observe;
-            if (window.attachEvent) {
-                observe = function (element, event, handler) {
-                    element.attachEvent('on' + event, handler);
-                };
-            }
-            else {
-                observe = function (element, event, handler) {
-                    element.addEventListener(event, handler, false);
-                };
-            }
-
-            var text = document.getElementById('Comment');
-            function resize() {
-                text.style.height = 'auto';
-                if (text.scrollHeight > 0)
-                    text.style.height = (text.scrollHeight + 2) + 'px';
-            }
-            /* 0-timeout to get the already changed text */
-            function delayedResize() {
-                window.setTimeout(resize, 0);
-            }
-            observe(text, 'change', resize);
-            observe(text, 'cut', delayedResize);
-            observe(text, 'paste', delayedResize);
-            observe(text, 'drop', delayedResize);
-            observe(text, 'keydown', delayedResize);
-
-            text.focus();            
-            resize();
-        });
-    }
-}(jQuery));
+}
 
 //# sourceURL=newPost.js

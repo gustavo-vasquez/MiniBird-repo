@@ -68,6 +68,7 @@ function drawPublication(event) {
                 $('body').append(data);
                 $('#postModal').modal('show');
                 $('#postModal').on('shown.bs.modal', function () {
+                    $('#Comment').magicsize();
                     $('#Comment').focus();
                 });
 
@@ -98,6 +99,7 @@ function drawPublication(event) {
                         if ($this.attr('id') == "replyBtnFixed")
                             $('body').css('overflow', 'visible');
 
+                        $('#Comment').magicsize();
                         $('#Comment').focus();
                     });
                     
@@ -130,7 +132,7 @@ function drawPublication(event) {
 
         if (typeof fileref != "undefined")
             document.getElementsByTagName("body")[0].appendChild(fileref);
-    }
+    }    
 
     if ($setModal.length <= 0) {
         $.ajax({
@@ -426,3 +428,41 @@ function setTheme() {
         }
     });
 }
+
+(function ($) {
+    $.fn.magicsize = function () {
+        this.filter('textarea').each(function () {
+
+            var observe;
+            if (window.attachEvent) {
+                observe = function (element, event, handler) {
+                    element.attachEvent('on' + event, handler);
+                };
+            }
+            else {
+                observe = function (element, event, handler) {
+                    element.addEventListener(event, handler, false);
+                };
+            }
+
+            var text = document.getElementById('Comment');
+            function resize() {
+                text.style.height = 'auto';
+                if (text.scrollHeight > 0)
+                    text.style.height = (text.scrollHeight + 2) + 'px';
+            }
+            /* 0-timeout to get the already changed text */
+            function delayedResize() {
+                window.setTimeout(resize, 0);
+            }
+            observe(text, 'change', resize);
+            observe(text, 'cut', delayedResize);
+            observe(text, 'paste', delayedResize);
+            observe(text, 'drop', delayedResize);
+            observe(text, 'keydown', delayedResize);
+
+            text.focus();
+            resize();
+        });
+    }
+}(jQuery));
