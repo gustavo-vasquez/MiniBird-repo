@@ -1,7 +1,13 @@
 # MiniBird
 Una aplicación web que contiene funcionalidades de la red social Twitter.
 
-![MiniBird-Preview](https://github.com/gustavo-vasquez/MiniBird-repo/blob/stable/MiniBird/Content/images/MiniBird_preview.png)
+![MiniBird-Login](MiniBird/Content/images/previews/1-login.png)
+
+![MiniBird-Timeline](MiniBird/Content/images/previews/2-timeline.png)
+
+![MiniBird-Profile](MiniBird/Content/images/previews/3-profile.png)
+
+![MiniBird-Search](MiniBird/Content/images/previews/4-search.png)
 
 ## Funcionalidades
 <ul>
@@ -20,6 +26,8 @@ Una aplicación web que contiene funcionalidades de la red social Twitter.
   <li>Búsqueda de hashtags y usuarios</li>
   <li>Tema claro y tema oscuro</li>
 </ul>
+
+![MiniBird-DarkTheme](MiniBird/Content/images/previews/5-dark_theme.png)
 
 ## Tecnologías
 <ul>
