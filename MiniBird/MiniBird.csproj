@@ -151,6 +151,11 @@
     <Content Include="Content\images\example_avatar.jpg" />
     <Content Include="Content\images\example_header.jpg" />
     <Content Include="Content\images\MiniBird_preview.png" />
+    <Content Include="Content\images\previews\1-login.png" />
+    <Content Include="Content\images\previews\2-timeline.png" />
+    <Content Include="Content\images\previews\3-profile.png" />
+    <Content Include="Content\images\previews\4-search.png" />
+    <Content Include="Content\images\previews\5-dark_theme.png" />
     <Content Include="Content\regular.css" />
     <Content Include="Content\regular.min.css" />
     <Content Include="Content\solid.css" />
@@ -252,6 +257,7 @@
     <Content Include="Scripts\umd\popper.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Sql_script\MiniBird_database.sql" />
+    <Content Include="Sql_script\MiniBird_lote_de_prueba.sql" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

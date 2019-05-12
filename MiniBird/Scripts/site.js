@@ -352,6 +352,9 @@ function search() {
 
             $('#searchModal').on('shown.bs.modal', function () {
                 $('#WordToSearch').focus();
+                $("#searchForm").removeData("validator");
+                $("#searchForm").removeData("unobtrusiveValidation");
+                $.validator.unobtrusive.parse("#searchForm");
             });
 
             $('#searchModal').on('hidden.bs.modal', function () {
@@ -367,8 +370,9 @@ function search() {
                         success: function (data) {
                             $('#searchModal .modal-footer').remove();
 
-                            if (data != null)
+                            if (data != null) {
                                 $('#searchModal .modal-content').append(data);
+                            }   
                         },
                         error: function () {
                             alert("Hubo un problema al intentar mostrar los resultados.");
