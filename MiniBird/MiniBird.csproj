@@ -150,7 +150,6 @@
     <Content Include="Content\images\defaultHeader.jpg" />
     <Content Include="Content\images\example_avatar.jpg" />
     <Content Include="Content\images\example_header.jpg" />
-    <Content Include="Content\images\MiniBird_preview.png" />
     <Content Include="Content\images\previews\1-login.png" />
     <Content Include="Content\images\previews\2-timeline.png" />
     <Content Include="Content\images\previews\3-profile.png" />
