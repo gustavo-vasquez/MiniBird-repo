@@ -1,12 +1,24 @@
 # MiniBird
-Una aplicación web que contiene funcionalidades de la red social Twitter.
+Aplicación web social en la que puedes compartir con el mundo lo que piensas e interactuar con otras personas de la red.
 
+LOGIN Y REGISTRO
+:-------------------------:
 ![MiniBird-Login](MiniBird/Content/images/previews/1-login.png)
 
+TIMELINE
+:-------------------------:
 ![MiniBird-Timeline](MiniBird/Content/images/previews/2-timeline.png)
 
+PUBLICAR POST
+:-------------------------:
+![MiniBird-Timeline](MiniBird/Content/images/previews/6-publicar_post.png)
+
+PERFIL
+:-------------------------:
 ![MiniBird-Profile](MiniBird/Content/images/previews/3-profile.png)
 
+BÚSQUEDA
+:-------------------------:
 ![MiniBird-Search](MiniBird/Content/images/previews/4-search.png)
 
 ## Funcionalidades
@@ -27,6 +39,8 @@ Una aplicación web que contiene funcionalidades de la red social Twitter.
   <li>Tema claro y tema oscuro</li>
 </ul>
 
+TEMA OSCURO
+:-------------------------:
 ![MiniBird-DarkTheme](MiniBird/Content/images/previews/5-dark_theme.png)
 
 ## Tecnologías
