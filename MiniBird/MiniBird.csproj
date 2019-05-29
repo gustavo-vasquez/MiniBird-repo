@@ -155,6 +155,7 @@
     <Content Include="Content\images\previews\3-profile.png" />
     <Content Include="Content\images\previews\4-search.png" />
     <Content Include="Content\images\previews\5-dark_theme.png" />
+    <Content Include="Content\images\previews\6-publicar_post.png" />
     <Content Include="Content\regular.css" />
     <Content Include="Content\regular.min.css" />
     <Content Include="Content\solid.css" />
