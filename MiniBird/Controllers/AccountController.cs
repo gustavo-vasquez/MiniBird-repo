@@ -23,11 +23,12 @@ namespace MiniBird.Controllers
         public ActionResult LogOff()
         {
             Session.Abandon();
+            Session.Clear();
             ActiveSession.Clear();
 
             if (Request.Cookies.AllKeys.Contains("MBLC"))
             {
-                HttpCookie cookie = Request.Cookies["MBLC"];
+                HttpCookie cookie = new HttpCookie("MBLC");
                 cookie.Expires = DateTime.Now.AddDays(-1);
                 Response.Cookies.Add(cookie);
             }

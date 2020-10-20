@@ -127,11 +127,22 @@
                     </div>
                 </div>
                 <div class="row mt-4 justify-content-center">
-                    <div class="col-md-5 interact-buttons" data-postid="@post.PostID">
+                    <div class="col-md-4 interact-buttons" data-postid="@post.PostID">
                         @Html.Partial("~/Views/Account/_InteractButtons.cshtml", post.InteractButtons)
                     </div>
-                    <div class="col-md-5 text-right text-muted">
-                        <p class="text-lowercase"><i class="far fa-clock"></i> @post.PublicationDate.ToString("dd/MM/yyyy hh:mm tt", new System.Globalization.CultureInfo("en-US"))</p>
+                    <div class="col-md-6 text-right text-muted">
+                        @if (!string.IsNullOrEmpty(post.RepostedBy))
+                        {
+                            <p class="text-lowercase">
+                                <i class="far fa-clock"></i> @post.PublicationDate.ToString("dd/MM/yyyy hh:mm tt", new System.Globalization.CultureInfo("en-US")) (repost)
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="text-lowercase">
+                                <i class="far fa-clock"></i> @post.PublicationDate.ToString("dd/MM/yyyy hh:mm tt", new System.Globalization.CultureInfo("en-US"))
+                            </p>
+                        }
                     </div>
                 </div>
             </div>
